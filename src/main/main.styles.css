@@ -1,0 +1,163 @@
+body {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    width: 100%;
+    justify-content: center;
+    height: 90vh;
+    align-items: center;
+    background-color: var(--color-primary);
+    padding-top: 100px;
+}
+
+.left-container {
+    width: 50%;
+}
+
+.o {
+    width: 100%;
+}
+
+.right-container {
+    width: 30%;
+    margin: 50px;
+}
+
+.right-container p {
+    color: white;
+}
+
+li {
+    padding: 10px;
+    border-radius: 8px;
+    transition: .3s;
+    color: black;
+    cursor: pointer;
+}
+
+#jobs, #getStarted, #resume {
+    color: white;
+}
+
+li:hover {
+    background-color: white;
+}
+
+li:hover #getStarted, li:hover #jobs, li:hover #resume {
+    color: black;
+}
+
+.navbar {
+    width: 100%;
+    position: fixed;
+    background-color: transparent;
+    transition: 1s ease;
+}
+
+.navbar-brand {
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    margin-right: 50px;
+}
+
+button {
+    background-color: white;
+    color: var(--color-primary);
+    width: 300px;
+    margin: 0;
+    padding: 0;
+}
+
+.order-specific-2 {
+    width: 30%;
+}
+
+.order-specific-1 {
+    width: 50%;
+}
+
+.footer-main-row-def * {
+    color: white;
+}
+
+.footer-main-row-def {
+    background-color: var(--color-primary);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.col-footer {
+    display: flex;
+    flex-direction: column;
+    margin: 50px;
+}
+
+span {
+    margin-right: 10px;
+}
+
+.news-e {
+    margin: 10px;
+    background-color: white;
+    color: black;
+    font-family: Product-Sans-Regular, sans-serif;
+}
+
+.news {
+    color: var(--color-primary);
+    margin: 10px;
+}
+
+.outer {
+    background-color: #0d6efd;
+    padding: 10px;
+}
+
+.bottom-rights {
+    color: white;
+    width: fit-content;
+    margin: auto;
+}
+
+@media screen and (min-width: 0) and (max-width: 899px) {
+    .main-container {
+        flex-direction: column;
+        padding-top: 20%;
+        height: fit-content;
+    }
+
+    .left-container, .right-container {
+        padding: 5%;
+        width: 100%;
+    }
+
+    .navbar {
+        position: fixed;
+        background-color: var(--color-primary);
+    }
+
+    .navbar-nav {
+        margin-top: 10px;
+    }
+
+    .order-specific-1 {
+        order: 1;
+        width: 100%;
+    }
+
+    .order-specific-2 {
+        order: 2;
+        width: 100%;
+    }
+
+    .footer-main-row-def {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="./external-lib-datepicker/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="cv.styles.css">
+    <title>CV</title>
+</head>
+<body>
+<div class="main-container">
+    <!--    <div class="bg-image"></div>-->
+    <div class="login-container">
+        <div class="header">
+            <img src="../assets/svgs/final.svg" alt="xd-copy-svg">
+            <p>themgi</p>
+        </div>
+        <div class="main">
+            <p>Create Resume</p>
+            <hr>
+            <form action="" onsubmit="return false;">
+                <div class="select-box row-o">
+                    <select
+                            required
+                            class="form-select"
+                            aria-label="Default select example"
+                            style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                            id="select-box"
+                    >
+                        <option selected>You are...</option>
+                        <option value="1">Employer</option>
+                        <option value="2">Job Seeker</option>
+                    </select>
+                    <label for="contact"></label>
+                    <input type="text" id="contact" pattern="[0-9]{3}" placeholder="Contact No." required
+                           title="Contact No. +923xxxxxxxxx">
+                    <div class="is-invalid"></div>
+                </div>
+
+                <div class="row-o">
+                    <label for="firstName"></label>
+                    <input type="text" id="firstName" placeholder="First Name" required>
+                    <div class="is-invalid"></div>
+
+                    <label for="lastName"></label>
+                    <input type="text" id="lastName" placeholder="Last Name" required>
+                    <div class="is-invalid"></div>
+                </div>
+
+                <div class="row-o">
+                    <label for="email"></label>
+                    <input type="email" class="email" id="email" placeholder="Email Address" required>
+                    <div class="is-invalid"></div>
+
+                    <label for="datePicker"></label>
+                    <input type="text" id="datePicker" placeholder="Date Of Birth. Format: mm/dd/yyyy" required>
+                </div>
+
+                <div class="row-o">
+                    <label for="address"></label>
+                    <input type="text" id="address" placeholder="Street Address">
+
+                    <label for="country"></label>
+                    <input type="text" placeholder="Country" id="country">
+                </div>
+
+
+                <div class="summary-pencil-col" id="topCon">
+                    <div id="summaryPencil" class="summary-pencil">
+                        Summary About Yourself
+                        <span id="pencil" role="button" onclick="summaryToTextarea()">&#128393;</span>
+                    </div>
+                    <p class="summary-no-edit" id="actualSummary"></p>
+                </div>
+
+                <div class="summary-pencil-col" id="skillDisplayCon">
+                    <div id="skillsPencil" class="summary-pencil" role="button">
+                        Skills
+                        <span id="pencil-skills" style="font-size: 25px">&#8853;</span>
+                    </div>
+                    <div class="all-skills-display" id="skillsContainer"></div>
+                </div>
+
+                <div class="summary-pencil-col" id="educationDisplayCon">
+                    <div id="educationPlus" class="summary-pencil" role="button">
+                        Education
+                        <span id="educationPlusSymbol" style="font-size: 25px">&#8853;</span>
+                    </div>
+                    <div class="all-skills-display" id="educationContainer"></div>
+                </div>
+
+                <div class="summary-pencil-col" id="experienceContainerCon">
+                    <div id="experiencePlus" class="summary-pencil" role="button">
+                        Experience
+                        <span id="experiencePlusSymbol" style="font-size: 25px">&#8853;</span>
+                    </div>
+                    <div class="all-skills-display" id="experienceContainer"></div>
+                </div>
+
+                <div class="skills" id="skills"></div>
+                <div class="educations" id="education"></div>
+                <div class="experience" id="experience"></div>
+
+                <button style="width: 100%; margin: 0" class="login-btn btn-" id="loginButton" type="submit" value="submit">Save</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript"
+        src="./external-lib-datepicker/http_ajax.googleapis.com_ajax_libs_jquery_3.5.1_jquery.js"></script>
+<script type="text/javascript" src="./external-lib-datepicker/jquery-ui.min.js"></script>
+
+<script src="cv.script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+body {
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../assets/images/6671.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.main-container {
+    display: grid;
+}
+
+.bg-image, .login-container {
+    grid-area: 1 / 1;
+}
+
+.summary-pencil-col {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.summary-pencil {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.summary-pencil span {
+    font-size: 30px;
+    color: var(--color-primary);
+}
+
+.text-area {
+    margin: 10px;
+    height: fit-content;
+}
+
+textarea {
+    border: none;
+    border-radius: 10px;
+    background-color: #F5F5F5;
+    padding: 20px;
+    width: 100%;
+    transition: .3s;
+    margin: auto;
+    height: 200px;
+    position: relative;
+    top: -35px;
+}
+
+.login-container {
+    height: fit-content;
+    margin-top: 1%;
+    width: 50%;
+}
+
+.row-o {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.space-between {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.span-tag {
+    border: 1px solid #0d6efd;
+    color: #0d6efd;
+}
+
+.span-tag:hover {
+    cursor: pointer;
+    background-color: #0d6efd;
+    color: white;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+.add-skill {
+    display: flex;
+    flex-direction: row;
+}
+
+.add-skill input {
+    margin-right: 5px;
+}
+
+.add-skill-input {
+    width: 150px;
+}
+
+button[id=skillAddBtn], button[id=skillAddRemove] {
+    width: 100px;
+}
+
+button[id=skillAddRemove] {
+    background-color: #f18383;
+}
+
+button[id=skillAddRemove]:active {
+    color: #fcd9d9;
+}
+
+button[id=skillAddRemove]:hover {
+    box-shadow: 0 0 0 5px #fcd9d9;
+}
+
+.fields {
+    display: flex;
+    flex-direction: row;
+}
+
+.first {
+    margin: 10px;
+    /*width: fit-content;*/
+}
+
+.add-margin-5 {
+    margin: 5px;
+}
+
+hr {
+    width: 100%;
+}
+
+@media screen and (min-width: 0) and (max-width: 899px) {
+    .row-o {
+        flex-direction: column;
+    }
+
+    .add-skill {
+        display: flex;
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,20 @@
+* {
+    font-family: Product-Sans-Regular, sans-serif;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.o-auth-container {
+    display: flex;
+    flex-direction: row;
+    width: 85%;
+    justify-content: space-between;
+    margin-top: 5%;
+}
+
+.img-last {
+    width: 70px;
+}

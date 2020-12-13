@@ -1,0 +1,25 @@
+MAIN
+    navbar -> job seeker
+        -> self link with logo and company name
+        -> get started / search for a job
+        -> blog
+        -> job i applied
+            -> click on the job and you will be able to see the status of your applied job, and also the details of the
+            job on right side
+        -> offers
+        -> sign out
+    navbar -> employer
+        -> self link with logo and company name
+        -> get started / search for a job
+        -> blog
+        -> my jobs i created
+            -> click on the job and you will be able to see the details of the job you clicked on, also see how many
+            people have applied for it till yet, and just give them the option of downloading their CV's
+        -> sign out
+
+
+
+
+
+create new job, page
+    -> every job will have its corresponding applications received by the job seekers

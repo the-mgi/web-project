@@ -1,0 +1,119 @@
+Job Application Portal
+
+There will be users of two types
+    1) => Job Seekers
+        -> Will be able to search for the available jobs with different criteria for the search
+            => by using certain keywords
+            => by searching for companies
+            => by searching for job posts name
+            => by job type -> PART-TIME or FULL-TIME
+
+        -> When job seekers will SIGN-IN then it will be must for them to enter their following details
+            -> First Name
+            -> Last Name
+            -> Email Address
+            -> Contact Number
+            -> Skills
+            -> Education
+            -> Experience
+
+        -> They can also keep track of the jobs they have applied to up till now with their statuses   
+            for instance:
+                -> None
+                -> Seen By  Employer
+                -> Employer Wants to Schedule an interview
+                -> Hired
+                -> Not Interested
+
+        -> They would also have an inbox if they receive messages from employers, and they won't be able to send messages to employer,
+        unless they contact JOB SEEKERS first.
+
+        -> Users will also be able to rate clients.
+
+        -> Users will also be able to download their RESUMES, based on their given information, which will not be edited.
+
+    2) => Job Posters
+        Will be able to post the jobs, while they are posting for a new job thy have to enter the following things must
+            => Job Post
+            => Eligibility Criteria
+            => Job Description
+            => Job Type -> PART-TIME or FULL-TIME
+
+ERD Entities
+    1) Job Seeker
+        -> username (will be encrypted) {PRIMARY KEY}
+        -> password (will be encrypted)
+        -> First Name
+        -> Last Name
+        -> Email Address
+        -> Contact Number
+        -> Skills
+        -> Summary
+    2) Employer
+        -> username or EMPLOYER ID (will be encrypted) {PRIMARY KEY}
+        -> password (will be encrypted)
+        -> Company ID
+    3) Company
+        -> Company ID {PRIMARY KEY}
+        -> Company Name
+        -> Company Ratings
+    4) Jobs
+        -> Job ID {PRIMARY KEY}
+        -> Posted by Employer ID
+        -> Job Post / Name
+        -> Job Description
+        -> Eligibility Criteria (will be a string)
+        -> Responsibilities
+        -> Pay Low
+        -> Pay High
+
+    5) Education serves as WEAK ENTITY
+        -> username (will be encrypted) {FOREIGN KEY}
+        -> Course Title
+        -> Institute Name
+        -> Institute City
+        -> Duration Start Year
+        -> Duration Start Month
+        -> Duration END Year
+        -> Duration END Month
+        -> Is Ongoing
+
+    6) Experience serves as WEAK ENTITY
+        -> username (will be encrypted) {FOREIGN KEY}
+        -> Organization Name
+        -> Post
+        -> Duration Start Year
+        -> Duration Start Month
+        -> Duration END Year
+        -> Duration END Month
+        -> Is Ongoing
+
+    7) Skills serves as WEAK ENTITY
+        -> username (will be encrypted) {FOREIGN KEY}
+        -> Skill Title
+
+    8) Address serves as WEAK ENTITY
+        -> username (will be encrypted) {FOREIGN KEY}
+        -> Street Address
+        -> Area
+        -> City
+        -> State
+        -> Country
+
+AND I THINK ALL THIS FUNCTIONALITY WILL BE ENOUGH TO PLEASE {PROF. DR. MHUAMMAD IMRAN}
+
+    Tools and Technologies probably will be using
+        1) PhpStorm => That's All - pun intended!
+        2) MySql => Backend Relational Database
+        3) HTML => Markup Language
+        4) CSS => Styling Language
+        5) Javascript => Scripting Language
+        6) Php => CRUD API (API for CREATE, READ, UPDATE, DELETE)
+        7) Firebase Cloud Messaging => For realtime messaging -- implement this if I learn, how to use it. {ON HOLD}
+        8) LUCID Chart => Entity Relationship Diagrams of Database -- if i am extremely WELA
+
+
+BUGS TO BE CORRECTED
+    -> again clicking on summary pencil again adds the edit container on the CV PAGE
+    -> add education button, delete education
+    -> add experience button, delete education

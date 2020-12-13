@@ -1,0 +1,76 @@
+.main-container {
+    width: 80%;
+    margin: 50px auto;
+}
+
+.need {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.app-profile-title {
+    margin-left: 15px;
+    margin-right: 10px;
+}
+
+.date-data {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.add-margin {
+    margin-right: 30px;
+}
+
+.line {
+    font-size: 35px;
+}
+
+.name {
+    display: flex;
+    flex-direction: row;
+}
+
+.popup {
+    background-color: gray;
+    width: 160px;
+    height: 25px;
+    padding: 5px;
+    color: white;
+    border-radius: 3px;
+    text-align: center;
+    margin-bottom: 10px;
+    visibility: hidden;
+}
+
+.app-profile-title {
+    width: 60px;
+    height: 60px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.app-profile-title p {
+    font-size: 30px;
+    color: white;
+    width: fit-content;
+    text-align: center;
+}
+
+mark {
+    padding: 0.2em;
+    background-color: #fcf8e3
+}
+
+@media screen and (min-width: 500px) and (max-width: 900px) {
+    .add-margin {
+        visibility: hidden;
+    }
+}
+
+
