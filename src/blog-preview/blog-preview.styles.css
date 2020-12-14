@@ -66,6 +66,14 @@ h3 {
     opacity: 0.7;
 }
 
+.navbar {
+    background-color: var(--color-primary);
+    position: relative;
+}
+
+.footer-h3 {
+    opacity: 1;
+}
 
 @media screen and (min-width: 0) and (max-width: 1000px) {
     .right {
@@ -77,4 +85,8 @@ h3 {
     .right * {
         margin-bottom: 15px;
     }
+}
+
+.blue-background-class {
+    background-color: var(--color-primary);
 }

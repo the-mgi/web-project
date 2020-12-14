@@ -2,112 +2,167 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./external-lib-datepicker/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="cv.styles.css">
     <title>CV</title>
 </head>
 <body>
-<div class="main-container">
-    <!--    <div class="bg-image"></div>-->
-    <div class="login-container">
-        <div class="header">
-            <img src="../assets/svgs/final.svg" alt="xd-copy-svg">
-            <p>themgi</p>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark">
+        <a href="#" class="navbar-brand" style="color: black;"><img src="../assets/svgs/final.svg" alt="gg_image"
+                                                                    width="50" height="50"> Job Stash</a>
+        <button style="width: 60px" class="navbar-toggler" data-toggle="collapse" data-target="#navbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div id="navbar" class="navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a id="getStarted" href="#" class="nav-link">Get Started</a></li>
+                <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>
+            </ul>
         </div>
-        <div class="main">
-            <p>Create Resume</p>
-            <hr>
-            <form action="" onsubmit="return false;">
-                <div class="select-box row-o">
-                    <select
-                            required
-                            class="form-select"
-                            aria-label="Default select example"
-                            style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
-                            id="select-box"
-                    >
-                        <option selected>You are...</option>
-                        <option value="1">Employer</option>
-                        <option value="2">Job Seeker</option>
-                    </select>
-                    <label for="contact"></label>
-                    <input type="text" id="contact" pattern="[0-9]{3}" placeholder="Contact No." required
-                           title="Contact No. +923xxxxxxxxx">
-                    <div class="is-invalid"></div>
-                </div>
+    </nav>
 
-                <div class="row-o">
-                    <label for="firstName"></label>
-                    <input type="text" id="firstName" placeholder="First Name" required>
-                    <div class="is-invalid"></div>
-
-                    <label for="lastName"></label>
-                    <input type="text" id="lastName" placeholder="Last Name" required>
-                    <div class="is-invalid"></div>
-                </div>
-
-                <div class="row-o">
-                    <label for="email"></label>
-                    <input type="email" class="email" id="email" placeholder="Email Address" required>
-                    <div class="is-invalid"></div>
-
-                    <label for="datePicker"></label>
-                    <input type="text" id="datePicker" placeholder="Date Of Birth. Format: mm/dd/yyyy" required>
-                </div>
-
-                <div class="row-o">
-                    <label for="address"></label>
-                    <input type="text" id="address" placeholder="Street Address">
-
-                    <label for="country"></label>
-                    <input type="text" placeholder="Country" id="country">
-                </div>
-
-
-                <div class="summary-pencil-col" id="topCon">
-                    <div id="summaryPencil" class="summary-pencil">
-                        Summary About Yourself
-                        <span id="pencil" role="button" onclick="summaryToTextarea()">&#128393;</span>
+</header>
+<main>
+    <div class="main-container m-5">
+        <!--    <div class="bg-image"></div>-->
+        <div class="login-container">
+            <div class="main">
+                <p>Create Resume</p>
+                <hr>
+                <form action="" onsubmit="return false;">
+                    <div class="select-box row-o">
+                        <select
+                                required
+                                class="form-select p-3"
+                                aria-label="Default select example"
+                                style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                                id="select-box"
+                        >
+                            <option selected>You are...</option>
+                            <option value="1">Employer</option>
+                            <option value="2">Job Seeker</option>
+                        </select>
+                        <label for="contact"></label>
+                        <input type="text" id="contact" pattern="[0-9]{3}" placeholder="Contact No." required
+                               title="Contact No. +923xxxxxxxxx">
+                        <div class="is-invalid"></div>
                     </div>
-                    <p class="summary-no-edit" id="actualSummary"></p>
-                </div>
 
-                <div class="summary-pencil-col" id="skillDisplayCon">
-                    <div id="skillsPencil" class="summary-pencil" role="button">
-                        Skills
-                        <span id="pencil-skills" style="font-size: 25px">&#8853;</span>
+                    <div class="row-o">
+                        <label for="firstName"></label>
+                        <input type="text" id="firstName" placeholder="First Name" required>
+                        <div class="is-invalid"></div>
+
+                        <label for="lastName"></label>
+                        <input type="text" id="lastName" placeholder="Last Name" required>
+                        <div class="is-invalid"></div>
                     </div>
-                    <div class="all-skills-display" id="skillsContainer"></div>
-                </div>
 
-                <div class="summary-pencil-col" id="educationDisplayCon">
-                    <div id="educationPlus" class="summary-pencil" role="button">
-                        Education
-                        <span id="educationPlusSymbol" style="font-size: 25px">&#8853;</span>
+                    <div class="row-o">
+                        <label for="email"></label>
+                        <input type="email" class="email" id="email" placeholder="Email Address" required>
+                        <div class="is-invalid"></div>
+
+                        <label for="datePicker"></label>
+                        <input type="text" id="datePicker" placeholder="Date Of Birth. Format: mm/dd/yyyy" required>
                     </div>
-                    <div class="all-skills-display" id="educationContainer"></div>
-                </div>
 
-                <div class="summary-pencil-col" id="experienceContainerCon">
-                    <div id="experiencePlus" class="summary-pencil" role="button">
-                        Experience
-                        <span id="experiencePlusSymbol" style="font-size: 25px">&#8853;</span>
+                    <div class="row-o">
+                        <label for="address"></label>
+                        <input type="text" id="address" placeholder="Street Address">
+
+                        <label for="country"></label>
+                        <input type="text" placeholder="Country" id="country">
                     </div>
-                    <div class="all-skills-display" id="experienceContainer"></div>
-                </div>
 
-                <div class="skills" id="skills"></div>
-                <div class="educations" id="education"></div>
-                <div class="experience" id="experience"></div>
 
-                <button style="width: 100%; margin: 0" class="login-btn btn-" id="loginButton" type="submit" value="submit">Save</button>
-            </form>
+                    <div class="summary-pencil-col" id="topCon">
+                        <div id="summaryPencil" class="summary-pencil">
+                            Summary About Yourself
+                            <span id="pencil" role="button" onclick="summaryToTextarea()">&#128393;</span>
+                        </div>
+                        <p class="summary-no-edit" id="actualSummary"></p>
+                    </div>
+
+                    <div class="summary-pencil-col" id="skillDisplayCon">
+                        <div id="skillsPencil" class="summary-pencil" role="button">
+                            Skills
+                            <span id="pencil-skills" style="font-size: 25px">&#8853;</span>
+                        </div>
+                        <div class="all-skills-display" id="skillsContainer"></div>
+                    </div>
+
+                    <div class="summary-pencil-col" id="educationDisplayCon">
+                        <div id="educationPlus" class="summary-pencil" role="button">
+                            Education
+                            <span id="educationPlusSymbol" style="font-size: 25px">&#8853;</span>
+                        </div>
+                        <div class="all-skills-display" id="educationContainer"></div>
+                    </div>
+
+                    <div class="summary-pencil-col" id="experienceContainerCon">
+                        <div id="experiencePlus" class="summary-pencil" role="button">
+                            Experience
+                            <span id="experiencePlusSymbol" style="font-size: 25px">&#8853;</span>
+                        </div>
+                        <div class="all-skills-display" id="experienceContainer"></div>
+                    </div>
+
+                    <div class="skills" id="skills"></div>
+                    <div class="educations" id="education"></div>
+                    <div class="experience" id="experience"></div>
+
+                    <button style="width: 100%; margin: 0" class="login-btn btn-" id="loginButton" type="submit" value="submit">Save</button>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+</main>
+<footer>
+    <div class="footer-main-row-def">
+        <div class="col-zero col-footer">
+            <h3 class="footer-h3">Our Company</h3>
+            <h5><span class="fa fa-id-card-alt span-footer"></span> About Us</h5>
+            <h5><span class="fas fa-blog span-footer"></span> Blogs</h5>
+        </div>
+        <div class="col-two col-footer">
+            <h3 class="footer-h3">Follow Us</h3>
+            <h5><span class="fa fa-facebook-square span-footer"></span> Facebook</h5>
+            <h5><span class="fa fa-twitter-square span-footer"></span> Twitter</h5>
+            <h5><span class="fa fa-linkedin-square span-footer"></span> LinkedIn</h5>
+        </div>
+
+        <div class="col-two col-footer">
+            <h3 class="footer-h3">Contact Us</h3>
+            <h5><span class="fa fa-envelope span-footer"></span> <span role="button">support@josbstash.com</span></h5>
+            <h5><span class="fa fa-phone span-footer"></span> <span role="button">+923156180891</span></h5>
+            <h5><span class="fab fa-telegram span-footer"></span> <span role="button">@jobstash</span></h5>
+        </div>
+
+        <div class="col-one col-footer">
+            <h3 class="footer-h3">Newsletter</h3>
+            <label for="letter-email" id=""></label>
+            <input class="news-e" type="email" placeholder="Email Address" id="letter-email">
+            <button class="blue-on-white button-300">Sign Up For News Letter</button>
+        </div>
+    </div>
+    <div class="outer">
+        <div class="bottom-rights">
+            <span class="fa fa-copyright"></span>
+            <span>themgi inc. </span>
+            <span>2020 All Right Reserved</span>
+        </div>
+    </div>
+</footer>
 <script type="text/javascript"
         src="./external-lib-datepicker/http_ajax.googleapis.com_ajax_libs_jquery_3.5.1_jquery.js"></script>
 <script type="text/javascript" src="./external-lib-datepicker/jquery-ui.min.js"></script>

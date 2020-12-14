@@ -52,9 +52,9 @@ const getBlogDataFromDatabase = () => {
     ];
 }
 
+const sortFunctionality = document.getElementById('main-container');
 function blogPreview() {
     const allBlogPreviews = getBlogDataFromDatabase();
-    const sortFunctionality = document.getElementById('main-container');
 
     for (const [i, preview] of allBlogPreviews.entries()) {
         const singleBlogPreview = document.createElement('div');
@@ -90,3 +90,8 @@ function blogPreview() {
         document.getElementById(`bookmarkIcon_${i}`).src = allBlogPreviews[i].isBookmarked ? '../assets/svgs/bookmarkFilled.svg' : '../assets/svgs/bookmark.svg';
     }
 }
+const mainContainer = document.getElementById('main-container');
+const sort = new Sortable(mainContainer, {
+    animation: 150,
+    ghostClass: 'blue-background-class'
+});

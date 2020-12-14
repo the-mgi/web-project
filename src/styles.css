@@ -16,6 +16,13 @@
     font-family: Product-Sans-Regular, sans-serif;
 }
 
+body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
 body::-webkit-scrollbar {
     width: 8px;
 }
@@ -32,17 +39,12 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
-body {
-    /*min-width: 600px;*/
-}
-
 body::-webkit-scrollbar-thumb {
     background: #5890FF;
     border-radius: 8px;
 }
 
 p, h1, h3, h4, h2, h5, h6 {
-    font-family: Product-Sans-Regular, sans-serif;
     font-weight: normal;
 }
 
@@ -180,33 +182,102 @@ hr {
     flex-direction: column;
 }
 
-/*mark {*/
-/*    border-radius: 4px;*/
-/*}*/
+/*=========================FOOTER============================*/
+.footer-main-row-def * {
+    color: white;
+}
 
-/*button[type=submit] {*/
-/*    border: none;*/
-/*    border-radius: 10px;*/
-/*    outline: none;*/
-/*    width: 300px;*/
-/*    height: 45px;*/
-/*    font-size: 20px;*/
-/*    font-family: Product-Sans-Regular, sans-serif;*/
-/*    background-color: #42e730;*/
-/*    color: white;*/
-/*    transition: 0.2s;*/
-/*}*/
+.footer-main-row-def {
+    background-color: var(--color-primary);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
 
-/*button[type=submit]:hover {*/
-/*    box-shadow: 0 0 10px 0 #42e730;*/
-/*}*/
+.col-footer {
+    display: flex;
+    flex-direction: column;
+    margin: 50px;
+}
 
-/*button[type=submit]:active {*/
-/*    color: #d5fcd1;*/
-/*}*/
+.span-footer {
+    margin-right: 10px;
+}
 
-/*button[type=submit]:disabled {*/
-/*    background-color: #97f88d;*/
-/*    color: #fdf7f7;*/
-/*}*/
+.news-e {
+    margin: 10px;
+    background-color: white;
+    color: black;
+    font-family: Product-Sans-Regular, sans-serif;
+}
 
+.outer {
+    background-color: #0d6efd;
+    padding: 10px;
+}
+
+.bottom-rights {
+    color: white;
+    width: fit-content;
+    margin: auto;
+}
+
+.white-on-blue {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.blue-on-white {
+    background-color: white;
+    color: var(--color-primary);
+    margin: 10px;
+}
+
+@media screen and (min-width: 0) and (max-width: 899px) {
+    .footer-main-row-def {
+        flex-direction: column;
+    }
+}
+/*=========================FOOTER============================*/
+
+/*=========================NAVBAR============================*/
+li {
+    padding: 10px;
+    border-radius: 8px;
+    transition: .3s;
+    color: black;
+    cursor: pointer;
+}
+
+#jobs, #getStarted, #resume {
+    color: white;
+}
+
+li:hover {
+    background-color: white;
+}
+
+li:hover #getStarted, li:hover #jobs, li:hover #resume {
+    color: black;
+}
+
+.navbar {
+    width: 100%;
+    position: fixed;
+    background-color: transparent;
+    transition: 1s ease;
+}
+
+.navbar-brand {
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    margin-right: 50px;
+}
+
+.button-300 {
+    width: 300px;
+    margin: 10px;
+    padding: 0;
+}
+/*=========================NAVBAR============================*/

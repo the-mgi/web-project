@@ -58,13 +58,17 @@
 .app-profile-title p {
     font-size: 30px;
     color: white;
-    width: fit-content;
-    text-align: center;
+    margin: 0;
 }
 
 mark {
     padding: 0.2em;
     background-color: #fcf8e3
+}
+
+.navbar {
+    background-color: var(--color-primary);
+    position: relative;
 }
 
 @media screen and (min-width: 500px) and (max-width: 900px) {

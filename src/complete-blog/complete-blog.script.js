@@ -46,7 +46,7 @@ mainContainer.innerHTML = `<div class="main-container">
         <div class="name">
             <h4>by: </h4>
             <div class="app-profile-title" style="background-color: ${randomColor()}">
-                <p id="firstLetter">T</p>
+                <p id="firstLetter">${a.writtenBy.substring(0, 1)}</p>
             </div>
             <h4 id="writtenBy">${a.writtenBy}</h4>
         </div>
