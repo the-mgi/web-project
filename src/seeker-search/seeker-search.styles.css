@@ -1,0 +1,90 @@
+.complete-container, .available-jobs {
+    display: flex;
+    flex-direction: column;
+}
+
+.top-search-criteria, .jobs-area {
+    display: flex;
+    flex-direction: row;
+}
+
+.top-search-criteria input {
+    width: 50%;
+    margin-right: 10px;
+}
+
+.top-search-criteria select, .top-search-criteria button {
+    margin: 10px;
+    width: 200px;
+}
+
+.complete-container {
+    width: 100%;
+}
+
+.all-housing, .job-details {
+    width: 45%;
+}
+
+.single-container {
+    width: 100%;
+    border: 2px solid #cdc9c9;
+    border-radius: 10px;
+    padding: 5%;
+    transition: .3s;
+}
+
+.single-container:hover {
+    cursor: pointer;
+    border-color: var(--color-primary);
+}
+
+.make-row  {
+    display: flex;
+    flex-direction: row;
+}
+
+.job-details {
+    height: 80vh;
+    overflow: scroll;
+    border: 2px solid #cdc9c9;
+    border-radius: 10px;
+    padding: 2%;
+    box-sizing: content-box;
+}
+
+.navbar {
+    background-color: var(--color-primary);
+    position: relative;
+}
+
+
+@media screen and (min-width: 0) and (max-width: 899px) {
+    .top-search-criteria {
+        flex-direction: column;
+    }
+
+    .make-row button {
+        width: 100%;
+    }
+
+    .job-details {
+        visibility: hidden;
+        width: 0;
+    }
+
+    .all-housing {
+        width: 100%;
+    }
+
+    .single-container {
+        margin: 2%;
+    }
+}
+
+@media screen and (min-width: 0) and (max-width: 1200px) {
+    .make-row input, .make-row select {
+        width: 200px;
+    }
+}
+/**/
