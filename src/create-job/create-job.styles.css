@@ -1,0 +1,32 @@
+.text-area {
+    top: 0;
+    width: 98%;
+    margin: 10px;
+}
+
+.login-container {
+    height: fit-content;
+    margin-top: 1%;
+    width: 50%;
+}
+
+.row-o {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.navbar {
+    background-color: var(--color-primary);
+    position: relative;
+}
+
+@media screen and (min-width: 0) and (max-width: 899px) {
+    .row-o {
+        flex-direction: column;
+    }
+
+    .text-area {
+        width: 408px;
+    }
+}
