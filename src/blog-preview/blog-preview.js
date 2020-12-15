@@ -90,8 +90,3 @@ function blogPreview() {
         document.getElementById(`bookmarkIcon_${i}`).src = allBlogPreviews[i].isBookmarked ? '../assets/svgs/bookmarkFilled.svg' : '../assets/svgs/bookmark.svg';
     }
 }
-const mainContainer = document.getElementById('main-container');
-const sort = new Sortable(mainContainer, {
-    animation: 150,
-    ghostClass: 'blue-background-class'
-});

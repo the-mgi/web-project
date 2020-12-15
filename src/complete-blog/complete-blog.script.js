@@ -1,6 +1,6 @@
 const con = document.getElementById('con');
 const mainContainer = document.createElement('div');
-mainContainer.className = 'main-container';
+mainContainer.className = 'main-seeker-container';
 const randomColor = () => '#' + Math.random().toString(16).substr(-6);
 
 const a = {
