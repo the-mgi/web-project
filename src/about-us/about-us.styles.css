@@ -1,0 +1,43 @@
+.navbar {
+    background-color: var(--color-primary);
+    position: relative;
+    top: 0;
+}
+
+.main-housing {
+    display: flex;
+    flex-direction: row;
+    margin: 100px auto 50px auto;
+}
+
+.col-o {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+img {
+    width: 40%;
+    margin: auto;
+    border-radius: 50%;
+}
+
+.data {
+    margin: 50px 50px;
+}
+
+@media screen and (min-width: 0) and (max-width: 1200px) {
+    .main-housing {
+        flex-direction: column;
+        margin: 50px;
+    }
+
+    .col-o {
+        width: 100%;
+    }
+
+    .data {
+        margin: 0;
+    }
+}
