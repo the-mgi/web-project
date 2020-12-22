@@ -1,3 +1,13 @@
+<?php
+if ($_SESSION["type"] == "Employer") {
+    echo "<script>console.log('i received employer');</script>";
+} else if ($_SESSION["type"] == "Job Seeker") {
+    echo "<script>console.log('i received Job Seeker')</script>";
+} else {
+    header("location: ../login/login.page.html");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,10 +33,10 @@
 
         <div id="navbar" class="navbar-collapse">
             <ul class="navbar-nav">
-                <li class="nav-item"><a id="getStarted" href="#" class="nav-link">Get Started</a></li>
+                <li class="nav-item"><a id="getStarted" href="../seeker-search/seeker-search.page.php" class="nav-link">Get Started</a></li>
                 <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>
-                <li class="nav-item"><a id="newJob" href="#" class="nav-link">Create a new Job</a></li>
-                <li class="nav-item"><a id="alreadyPostedJobs" href="#" class="nav-link">My Jobs</a></li>
+                <li class="nav-item"><a id="newJob" href="../create-job/create-job.page.html" class="nav-link">Create a new Job</a></li>
+                <li class="nav-item"><a id="alreadyPostedJobs" href="../employer-jobs-status/employer-jobs-status.page.html" class="nav-link">My Jobs</a></li>
             </ul>
         </div>
     </nav>
@@ -75,6 +85,9 @@
                 <h5><span>Company Ratings:</span> <strong id="obtainedRating">4.8</strong> out of <strong>5</strong>
                 </h5>
                 <h5><span>Location:</span> <strong id="jobLocation">Islamabad</strong></h5>
+                <h5><strong>Job Status: </strong> <span class="badge rounded-pill bg-primary"
+                                                        style="color: white; font-size: 18px;">Open</span>
+                </h5>
                 <hr style="width: 100%; border-color: #cdc9c9;">
                 <p><strong>Job Description</strong><br> <span id="description">Lorem Ipsum is simply dummy text of the printing and typesetting
                     industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
@@ -91,7 +104,7 @@
                     Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including
                     versions of Lorem Ipsum.</span></p>
                 <p><strong>Salary</strong><br><strong>PKR</strong> <span id="minSalary">10000</span> - <span
-                        id="maxSalary">20000</span></p>
+                            id="maxSalary">20000</span></p>
                 <button><span class="fa fa-check"></span> Apply Now</button>
             </div>
         </div>
@@ -101,19 +114,25 @@
     <div class="footer-main-row-def">
         <div class="col-zero col-footer">
             <h3 class="footer-h3">Our Company</h3>
-            <h5><span class="fa fa-id-card-alt span-footer"></span> About Us</h5>
-            <h5><span class="fas fa-blog span-footer"></span> Blogs</h5>
+            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.html">About
+                    Us</a></h5>
+            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.html">Blogs</a>
+            </h5>
         </div>
         <div class="col-two col-footer">
             <h3 class="footer-h3">Follow Us</h3>
-            <h5><span class="fa fa-facebook-square span-footer"></span> Facebook</h5>
-            <h5><span class="fa fa-twitter-square span-footer"></span> Twitter</h5>
-            <h5><span class="fa fa-linkedin-square span-footer"></span> LinkedIn</h5>
+            <h5><span class="fa fa-facebook-square span-footer"></span> <a href="https://www.facebook.com/job.stash"
+                                                                           target="_blank">Facebook</a></h5>
+            <h5><span class="fa fa-twitter-square span-footer"></span> <a href="https://twitter.com/JobStash?s=20"
+                                                                          target="_blank">Twitter</a></h5>
+            <h5><span class="fa fa-linkedin-square span-footer"></span> <a
+                        href="https://www.linkedin.com/in/job-stash-55bb66201/" target="_blank">LinkedIn</a></h5>
         </div>
 
         <div class="col-two col-footer">
             <h3 class="footer-h3">Contact Us</h3>
-            <h5><span class="fa fa-envelope span-footer"></span> <span role="button">support@josbstash.com</span></h5>
+            <h5><span class="fa fa-envelope span-footer"></span> <span role="button"
+                                                                       id="openMail">support@josbstash.com</span></h5>
             <h5><span class="fa fa-phone span-footer"></span> <span role="button">+923156180891</span></h5>
             <h5><span class="fab fa-telegram span-footer"></span> <span role="button">@jobstash</span></h5>
         </div>
@@ -134,5 +153,7 @@
     </div>
 </footer>
 <script src="./seeker-search.script.js"></script>
+<script src="../employer-jobs-status/employer-job-status-COMMON.script.js"></script>
+<script src="../common.script.js"></script>
 </body>
 </html>

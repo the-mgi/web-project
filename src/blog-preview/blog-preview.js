@@ -53,6 +53,7 @@ const getBlogDataFromDatabase = () => {
 }
 
 const sortFunctionality = document.getElementById('main-container');
+
 function blogPreview() {
     const allBlogPreviews = getBlogDataFromDatabase();
 
@@ -61,7 +62,7 @@ function blogPreview() {
         singleBlogPreview.className = 'container-o';
         singleBlogPreview.role = "button";
         singleBlogPreview.innerHTML = `
-        <div class="blog-preview">
+        <div class="blog-preview" onclick="func(this)" id="${preview.id}">
             <div class="hover-written-by" >${preview["writtenBy"]}</div>
             <div class="con">
                 <div class="col">
@@ -90,3 +91,8 @@ function blogPreview() {
         document.getElementById(`bookmarkIcon_${i}`).src = allBlogPreviews[i].isBookmarked ? '../assets/svgs/bookmarkFilled.svg' : '../assets/svgs/bookmark.svg';
     }
 }
+
+const func = (evenData) => {
+    window.location.href = `../complete-blog/complete-blog.page.html/?blogID=${evenData.id}`;
+    console.log(window.location.href);
+};
