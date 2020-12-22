@@ -24,11 +24,11 @@
         <div class="main">
             <p>LOGIN</p>
             <hr>
-            <form action="" onsubmit="return false;">
+            <form action="" onsubmit="return false;" id="formSignUp">
                 <div class="select-box">
                     <select
                             required
-                            class="form-select p-3"
+                            class="form-select pl-3"
                             aria-label="Default select example"
                             style="width: 408px; height: 50px; border-radius: 10px; margin: 15px; transition: .3s"
                     >
@@ -38,15 +38,15 @@
                     </select>
                 </div>
                 <label for="email"></label>
-                <input type="email" class="email" id="email" placeholder="Email Address" required>
+                <input type="email" class="email" name="email" id="email" placeholder="Email Address" required onkeyup="validateForm(this)">
                 <div class="is-invalid"></div>
 
                 <label for="password"></label>
-                <input type="password" class="password" id="password" placeholder="Password" required>
+                <input type="password" class="password" name="password" id="password" placeholder="Password" required onkeyup="validateForm(this)">
                 <div class="is-invalid"></div>
 
                 <p class="txt"><a href="#">Forgot Password?</a></p>
-                <button class="login-btn btn-" id="loginButton" type="submit" value="submit">Login</button>
+                <button class="login-btn btn-" id="loginButton" type="submit" value="submit" onclick="forLogin();">Login</button>
                 <p class="txt-t"><a href="#">Don't have an account? Create a New One!</a></p>
                 <p class="txt-t sign-up-with">Or Sign Up With</p>
             </form>
@@ -68,19 +68,19 @@
     <div class="footer-main-row-def">
         <div class="col-zero col-footer">
             <h3 class="footer-h3">Our Company</h3>
-            <h5><span class="fa fa-id-card-alt span-footer"></span> About Us</h5>
-            <h5><span class="fas fa-blog span-footer"></span> Blogs</h5>
+            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.html">About Us</a></h5>
+            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.html">Blogs</a></h5>
         </div>
         <div class="col-two col-footer">
             <h3 class="footer-h3">Follow Us</h3>
-            <h5><span class="fa fa-facebook-square span-footer"></span> Facebook</h5>
-            <h5><span class="fa fa-twitter-square span-footer"></span> Twitter</h5>
-            <h5><span class="fa fa-linkedin-square span-footer"></span> LinkedIn</h5>
+            <h5><span class="fa fa-facebook-square span-footer"></span> <a href="https://www.facebook.com/job.stash" target="_blank">Facebook</a></h5>
+            <h5><span class="fa fa-twitter-square span-footer"></span> <a href="https://twitter.com/JobStash?s=20" target="_blank">Twitter</a></h5>
+            <h5><span class="fa fa-linkedin-square span-footer"></span> <a href="https://www.linkedin.com/in/job-stash-55bb66201/" target="_blank">LinkedIn</a></h5>
         </div>
 
         <div class="col-two col-footer">
             <h3 class="footer-h3">Contact Us</h3>
-            <h5><span class="fa fa-envelope span-footer"></span> <span role="button">support@josbstash.com</span></h5>
+            <h5><span class="fa fa-envelope span-footer"></span> <span role="button" id="openMail">support@josbstash.com</span></h5>
             <h5><span class="fa fa-phone span-footer"></span> <span role="button">+923156180891</span></h5>
             <h5><span class="fab fa-telegram span-footer"></span> <span role="button">@jobstash</span></h5>
         </div>
@@ -101,6 +101,7 @@
     </div>
 </footer>
 <script src="login.script.js"></script>
+<script src="../common.script.js"></script>
 </body>
 
 </html>

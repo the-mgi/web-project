@@ -23,11 +23,11 @@
         <div class="main">
             <p>Forgot Your Password?</p>
             <hr>
-            <form action="" onsubmit="return false;">
+            <form action="" onsubmit="return false;" id="formSignUp">
                 <div class="select-box">
                     <select
                             required
-                            class="form-select p-3"
+                            class="form-select pl-3"
                             aria-label="Default select example"
                             style="width: 408px; height: 50px; border-radius: 10px; margin: 15px; transition: .3s"
                     >
@@ -37,13 +37,14 @@
                     </select>
                 </div>
                 <label for="email"></label>
-                <input type="email" class="email" id="email" placeholder="Email Address" required>
+                <input type="email" class="email" id="email" placeholder="Email Address" required onkeyup="validateForm(this)">
                 <div class="is-invalid"></div>
 
-                <button class="login-btn btn-" id="loginButton" type="submit" value="submit">Send Verification Email</button>
+                <button class="login-btn btn-" id="loginButton" type="submit" value="submit" onclick="forForgotPassword();">Send Verification Email</button>
             </form>
         </div>
     </div>
 </div>
+<script src="../common.script.js"></script>
 </body>
 </html>
