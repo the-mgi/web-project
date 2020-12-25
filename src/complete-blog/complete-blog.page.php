@@ -1,3 +1,8 @@
+<?php
+session_start();if (!isset($_REQUEST["id"])) {
+    header("location: ../blog-preview/blog-preview.page.php");
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,10 +17,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles.css">
-    <link rel="stylesheet" href="./blog-preview.styles.css">
+    <link rel="stylesheet" href="./complete-blog.styles.css">
     <title>Document</title>
 </head>
-<body onload="blogPreview();">
+<body>
 <header>
     <nav class="navbar navbar-expand-md navbar-dark">
         <a href="#" class="navbar-brand" style="color: black;"><img src="../assets/svgs/final.svg" alt="gg_image"
@@ -33,11 +38,65 @@
             </ul>
         </div>
     </nav>
+
 </header>
 <main>
-    <div class="sort-functionality" id="sortFunctionality">
-    </div>
-    <div class="m" id="main-container">
+    <div class="con" id="con">
+<!--        --><?php
+        include "../CRUD/server.php";
+        include "../CRUD/requiredFunctions.php";
+
+        $id = $_REQUEST['id'];
+        $singleBlog = searchForABlog($id);
+        while ($row = current($singleBlog)) {
+            $writtenBy = $row["writtenBy"];
+            $heading = $row["heading"];
+            $description = $row["description"];
+            $content = $row["content"];
+            $numberOfTimesRead = $row["numberOfTimesRead"];
+            $minsRead = $row["minsRead"];
+            $writtenDate = $row["writtenDate"];
+            echo "
+                <div class='main-seeker-container'>
+                    <div class='main-container'>
+                        <div class='need'>
+                            <div class='popup' id='bookmarkStatus'></div>
+                        </div>
+                        <div class='date-data'>
+                            <p class='add-margin'>
+                                <span>&#128339;</span>
+                                Reads:
+                                <span id='numberOfTimesRead'>$numberOfTimesRead</span>
+                            </p>
+                            <p class='add-margin'>
+                                <span>&#128214;</span>
+                                <span id='minRead'>$minsRead</span>
+                                mins read
+                            </p>
+                            <p class='add-margin' id='writtenDate'>$writtenDate</p>
+                        </div>
+                        <div class='heading-desc'>
+                            <h1 id='heading'>$heading</h1>
+                        </div>
+                        <div class='name-date' style='margin-top: 20px;'>
+                            <div class='name'>
+                                <h4>by: </h4>
+                                <div class='app-profile-title' style='background-color: ".randomColor()."'>
+                                    <p id='firstLetter'>".substr($writtenBy,0, 1)."</p>
+                                </div>
+                                <h4 id='writtenBy'>$writtenBy</h4>
+                            </div>
+                            <div class='content' style='margin-top: 20px;'>
+                                <h2 id='description' style='opacity: .7'></h2>
+                                <p id='content'>$content</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ";
+            next($singleBlog);
+        }
+        ?>
     </div>
 </main>
 <footer>
@@ -45,7 +104,7 @@
         <div class="col-zero col-footer">
             <h3 class="footer-h3">Our Company</h3>
             <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.html">About Us</a></h5>
-            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.html">Blogs</a></h5>
+            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.php">Blogs</a></h5>
         </div>
         <div class="col-two col-footer">
             <h3 class="footer-h3">Follow Us</h3>
@@ -76,7 +135,7 @@
         </div>
     </div>
 </footer>
-<script src="./blog-preview.js"></script>
+<script src="complete-blog.script.js"></script>
 <script src="../common.script.js"></script>
 </body>
 </html>
