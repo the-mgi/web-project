@@ -134,6 +134,5 @@ session_start();
         </div>
     </div>
 </footer>
-<script src="./blog-preview.js"></script>
 <script src="../common.script.js"></script>
 </html>

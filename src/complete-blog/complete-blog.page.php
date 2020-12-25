@@ -135,7 +135,6 @@ session_start();if (!isset($_REQUEST["id"])) {
         </div>
     </div>
 </footer>
-<script src="complete-blog.script.js"></script>
 <script src="../common.script.js"></script>
 </body>
 </html>
