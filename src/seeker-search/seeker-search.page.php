@@ -1,12 +1,3 @@
-<?php
-if ($_SESSION["type"] == "Employer") {
-    echo "<script>console.log('i received employer');</script>";
-} else if ($_SESSION["type"] == "Job Seeker") {
-    echo "<script>console.log('i received Job Seeker')</script>";
-} else {
-    header("location: ../login/login.page.html");
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +26,7 @@ if ($_SESSION["type"] == "Employer") {
             <ul class="navbar-nav">
                 <li class="nav-item"><a id="getStarted" href="../seeker-search/seeker-search.page.php" class="nav-link">Get Started</a></li>
                 <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>
-                <li class="nav-item"><a id="newJob" href="../create-job/create-job.page.html" class="nav-link">Create a new Job</a></li>
+                <li class="nav-item"><a id="newJob" href="../create-job/create-job.page.php" class="nav-link">Create a new Job</a></li>
                 <li class="nav-item"><a id="alreadyPostedJobs" href="../employer-jobs-status/employer-jobs-status.page.html" class="nav-link">My Jobs</a></li>
             </ul>
         </div>
@@ -114,9 +105,9 @@ if ($_SESSION["type"] == "Employer") {
     <div class="footer-main-row-def">
         <div class="col-zero col-footer">
             <h3 class="footer-h3">Our Company</h3>
-            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.html">About
+            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.php">About
                     Us</a></h5>
-            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.html">Blogs</a>
+            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.php">Blogs</a>
             </h5>
         </div>
         <div class="col-two col-footer">

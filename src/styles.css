@@ -182,7 +182,29 @@ hr {
     flex-direction: column;
 }
 
+textarea {
+    border: none;
+    border-radius: 10px;
+    background-color: #F5F5F5;
+    padding: 20px;
+    width: 100%;
+    transition: .3s;
+    margin: auto;
+    height: 200px;
+    position: relative;
+    top: -35px;
+}
+
+
+textarea:focus {
+    outline: none;
+}
+
 /*=========================FOOTER============================*/
+footer {
+    width: 100%;
+}
+
 .footer-main-row-def * {
     color: white;
 }
@@ -238,10 +260,12 @@ hr {
         flex-direction: column;
     }
 }
+
 /*=========================FOOTER============================*/
 
 /*=========================NAVBAR============================*/
 li {
+    margin-top: 5px;
     padding: 10px;
     border-radius: 8px;
     transition: .3s;
@@ -249,7 +273,7 @@ li {
     cursor: pointer;
 }
 
-#jobs, #getStarted, #resume {
+#jobs, #getStarted, #resume, #newJob, #alreadyPostedJobs, #userName, #logout {
     color: white;
 }
 
@@ -257,8 +281,17 @@ li:hover {
     background-color: white;
 }
 
-li:hover #getStarted, li:hover #jobs, li:hover #resume {
+#logoutLi {
+    margin-left: 10px;
+    background-color: #f17676;
+}
+
+li:hover #getStarted, li:hover #jobs, li:hover #resume, li:hover #newJob, li:hover #alreadyPostedJobs, li:hover #userName {
     color: black;
+}
+
+#logoutLi:hover {
+    background-color: #f65959;
 }
 
 .navbar {
@@ -280,4 +313,31 @@ li:hover #getStarted, li:hover #jobs, li:hover #resume {
     margin: 10px;
     padding: 0;
 }
+
+/*#userNameLi {*/
+/*    margin-left: 40%;*/
+/*}*/
+
+#logout {
+
+}
+
+@media screen and (min-width: 0) and (max-width: 899px) {
+    /*#userNameLi {*/
+    /*    margin-left: 0;*/
+    /*}*/
+}
+
 /*=========================NAVBAR============================*/
+.is-invalid {
+    height: 5px;
+    font-size: 12px;
+    width: fit-content;
+    color: red;
+    margin: 0 0 0 15px;
+    visibility: hidden;
+}
+
+.visibility {
+    visibility: visible;
+}

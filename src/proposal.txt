@@ -47,11 +47,13 @@ ERD Entities
         -> Last Name
         -> Email Address
         -> Contact Number
-        -> Skills
         -> Summary
     2) Employer
         -> username or EMPLOYER ID (will be encrypted) {PRIMARY KEY}
         -> password (will be encrypted)
+        -> First Name
+        -> Last Name
+        -> Email Address
         -> Company ID
     3) Company
         -> Company ID {PRIMARY KEY}
@@ -66,6 +68,9 @@ ERD Entities
         -> Responsibilities
         -> Pay Low
         -> Pay High
+        -> Job City
+        -> Company Id
+        -> Job Status
 
     5) Education serves as WEAK ENTITY
         -> username (will be encrypted) {FOREIGN KEY}

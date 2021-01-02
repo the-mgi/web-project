@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../external-lib-datepicker/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="../external-libraries/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="cv.styles.css">
     <title>CV</title>
@@ -27,7 +27,7 @@
                 <li class="nav-item"><a id="getStarted" href="../seeker-search/seeker-search.page.php" class="nav-link">Get
                     Started</a></li>
                 <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>
-                <li class="nav-item"><a id="newJob" href="../create-job/create-job.page.html" class="nav-link">Create a new Job</a></li>
+                <li class="nav-item"><a id="newJob" href="../create-job/create-job.page.php" class="nav-link">Create a new Job</a></li>
                 <li class="nav-item"><a id="alreadyPostedJobs"
                                         href="../employer-jobs-status/employer-jobs-status.page.html" class="nav-link">My
                     Jobs</a></li>
@@ -57,25 +57,21 @@
                             <option value="2">Job Seeker</option>
                         </select>
                         <label for="contact"></label>
-                        <input type="text" id="contact" pattern="[0-9]{3}" placeholder="Contact No." required
+                        <input type="text" id="contact" placeholder="Contact No." required
                                title="Contact No. +923xxxxxxxxx">
-                        <div class="is-invalid"></div>
                     </div>
 
                     <div class="row-o">
                         <label for="firstName"></label>
                         <input type="text" id="firstName" placeholder="First Name" required>
-                        <div class="is-invalid"></div>
 
                         <label for="lastName"></label>
                         <input type="text" id="lastName" placeholder="Last Name" required>
-                        <div class="is-invalid"></div>
                     </div>
 
                     <div class="row-o">
                         <label for="email"></label>
                         <input type="email" class="email" id="email" placeholder="Email Address" required>
-                        <div class="is-invalid"></div>
 
                         <label for="datePicker"></label>
                         <input type="text" id="datePicker" placeholder="Date Of Birth. Format: mm/dd/yyyy" required>
@@ -138,9 +134,9 @@
     <div class="footer-main-row-def">
         <div class="col-zero col-footer">
             <h3 class="footer-h3">Our Company</h3>
-            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.html">About
+            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.php">About
                 Us</a></h5>
-            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.html">Blogs</a>
+            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.php">Blogs</a>
             </h5>
         </div>
         <div class="col-two col-footer">
@@ -177,8 +173,8 @@
     </div>
 </footer>
 <script type="text/javascript"
-        src="../external-lib-datepicker/http_ajax.googleapis.com_ajax_libs_jquery_3.5.1_jquery.js"></script>
-<script type="text/javascript" src="../external-lib-datepicker/jquery-ui.min.js"></script>
+        src="../external-libraries/http_ajax.googleapis.com_ajax_libs_jquery_3.5.1_jquery.js"></script>
+<script type="text/javascript" src="../external-libraries/jquery-ui.min.js"></script>
 
 <script src="cv.script.js"></script>
 <script src="../common.script.js"></script>

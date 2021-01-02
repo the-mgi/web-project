@@ -1,15 +1,23 @@
+<?php
+session_start();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.1/uuid.min.js"
+            integrity="sha512-4JH7nC4nSqPixxbhZCLETJ+DUfHa+Ggk90LETm25fi/SitneSvtxkcWAUujvYrgKgvrvwv4NDAsFgdwCS79Dcw=="
+            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles.css">
-    <link rel="stylesheet" href="./about-us.styles.css">
+    <link rel="stylesheet" href="create-job.styles.css">
     <title>Title</title>
 </head>
 <body>
@@ -25,39 +33,48 @@
             <ul class="navbar-nav">
                 <li class="nav-item"><a id="getStarted" href="../seeker-search/seeker-search.page.php" class="nav-link">Get Started</a></li>
                 <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>
-                <li class="nav-item"><a id="newJob" href="../create-job/create-job.page.html" class="nav-link">Create a new Job</a></li>
+                <li class="nav-item"><a id="newJob" href="#" class="nav-link">Create a new Job</a></li>
                 <li class="nav-item"><a id="alreadyPostedJobs" href="../employer-jobs-status/employer-jobs-status.page.html" class="nav-link">My Jobs</a></li>
             </ul>
         </div>
     </nav>
-
 </header>
 <main>
-    <div class="main-housing">
-        <div class="col-o">
-            <img src="../assets/images/20190503_155533.jpg" alt="creator-one-image">
-            <div class="data">
-                <h3>Muhammad Usama</h3>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                    unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived
-                    not only five centuries, but also the leap into electronic typesetting, remaining essentially
-                    unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
-                    Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including
-                    versions of Lorem Ipsum.</p>
-            </div>
-        </div>
-        <div class="col-o">
-            <img src="../assets/images/20190503_155533.jpg" alt="creator-one-image">
-            <div class="data">
-                <h3>Ali Mujahid</h3>
-                <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                    unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived
-                    not only five centuries, but also the leap into electronic typesetting, remaining essentially
-                    unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
-                    Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including
-                    versions of Lorem Ipsum.</p>
+    <div class="main-container m-5">
+        <div class="login-container">
+            <div class="main">
+                <p>Create Job</p>
+                <hr>
+                <form action="" onsubmit="return false;">
+                    <div class="row-o">
+                        <label for="jobName"></label>
+                        <input type="text" id="jobName" placeholder="Job Post / Job Name" required>
+
+                        <label for="jobLocation"></label>
+                        <input type="text" id="jobLocation" placeholder="Job Location" required>
+                    </div>
+                    <div class="row-o">
+                        <label for="eligibilityCriteria"></label>
+                        <textarea class="text-area" id="eligibilityCriteria" placeholder="Eligibility Criteria" required></textarea>
+                    </div>
+                    <div class="row-o">
+                        <label for="jobDesc"></label>
+                        <textarea class="text-area" type="text" placeholder="Job Description" id="jobDesc" required></textarea>
+                    </div>
+                    <div class="row-o">
+                        <label for="jobResp"></label>
+                        <textarea class="text-area" type="text" placeholder="Job Responsibilities" id="jobResp" required></textarea>
+                    </div>
+                    <div class="row-o">
+                        <label for="offerLow"></label>
+                        <input type="number" id="offerLow" placeholder="Minimum Salary" required>
+                        <label for="offerHigh"></label>
+                        <input type="number" id="offerHigh" placeholder="Maximum Salary" required>
+                    </div>
+                    <button style="width: 100%; margin: 0" class="login-btn btn-" id="loginButton" type="submit"
+                            value="submit">Post Job
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -66,8 +83,8 @@
     <div class="footer-main-row-def">
         <div class="col-zero col-footer">
             <h3 class="footer-h3">Our Company</h3>
-            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="about-us.page.html">About Us</a></h5>
-            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.html">Blogs</a></h5>
+            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.php">About Us</a></h5>
+            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.php">Blogs</a></h5>
         </div>
         <div class="col-two col-footer">
             <h3 class="footer-h3">Follow Us</h3>
@@ -98,5 +115,7 @@
         </div>
     </div>
 </footer>
+<script src="create-job.script.js"></script>
+<script src="../common.script.js"></script>
 </body>
 </html>

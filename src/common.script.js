@@ -1,8 +1,3 @@
-document.getElementById('openMail').addEventListener('click', () => {
-    console.log('i am good');
-    window.open("mailto:" + 'job.stash.themgi@gmail.com' + '?cc=' + '' + '&subject=' + 'Need Support' + '&body=' + 'Type Your Query Message Here');
-
-});
 const array = [];
 const validateForm = (eventData) => {
     const allPatterns = {
@@ -10,7 +5,7 @@ const validateForm = (eventData) => {
         lastName: /[a-zA-Z]{5,10}/i,
         username: /^[a-z0-9]{5,12}$/i,
         email: /^([a-z0-9.-]+)@([a-z0-9-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/,
-        password: /((?=.*[0-9])+(?=.*[A-Z])+(?=.*[a-zA-Z]{6,})){8,20}/
+        password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/
     }
     const name = allPatterns[eventData.name];
     if (!name.test(eventData.value)) {
@@ -20,7 +15,7 @@ const validateForm = (eventData) => {
         return;
     }
     eventData.nextElementSibling.className = 'is-invalid';
-    array.indexOf(name) < 0 ? array.push(name) : undefined;
+    array.indexOf(name) < 0 ? array.push(eventData.name) : undefined;
 };
 
 const validateFirstName = () => {
@@ -42,13 +37,15 @@ const validateEmailAddress = () => {
 
 const common = () => {
     document.getElementById('formSignUp').onsubmit = () => {
+        console.log("hello dude in common if");
         return true;
     };
 };
 
 const validateAll = () => {
     if (validateFirstName() && validateLastName() && validateEmailAddress() && validatePassword() && validateUsername()) {
-       common();
+        console.log('validate all if block');
+        common();
     }
 };
 
@@ -59,7 +56,17 @@ const forForgotPassword = () => {
 };
 
 const forLogin = () => {
-  if (validateUsername() && validatePassword()) {
-      common();
-  }
+    console.log("i am called");
+    console.log(validateEmailAddress());
+    console.log(validatePassword());
+    if (validateEmailAddress() && validatePassword()) {
+        console.log("in if block");
+        common();
+    }
 };
+
+document.getElementById('openMail').addEventListener('click', () => {
+    console.log('i am good');
+    window.open("mailto:" + 'job.stash.themgi@gmail.com' + '?cc=' + '' + '&subject=' + 'Need Support' + '&body=' + 'Type Your Query Message Here');
+
+});

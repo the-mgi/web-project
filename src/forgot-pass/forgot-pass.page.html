@@ -37,8 +37,8 @@
                     </select>
                 </div>
                 <label for="email"></label>
-                <input type="email" class="email" id="email" placeholder="Email Address" required onkeyup="validateForm(this)">
-                <div class="is-invalid"></div>
+                <input type="email" class="email" id="email" name="email" placeholder="Email Address" required onkeyup="validateForm(this)">
+                <div class="is-invalid">Please provide a valid email address</div>
 
                 <button class="login-btn btn-" id="loginButton" type="submit" value="submit" onclick="forForgotPassword();">Send Verification Email</button>
             </form>

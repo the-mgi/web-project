@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,30 +28,31 @@
         <div class="main">
             <p>LOGIN</p>
             <hr>
-            <form action="" onsubmit="return false;" id="formSignUp">
+            <form action="../CRUD/functions.php?function=login" method="POST" onsubmit="return false;" id="formSignUp">
                 <div class="select-box">
                     <select
                             required
                             class="form-select pl-3"
                             aria-label="Default select example"
                             style="width: 408px; height: 50px; border-radius: 10px; margin: 15px; transition: .3s"
+                            name="personType"
                     >
                         <option value="" selected>You are...</option>
-                        <option value="1">Employer</option>
-                        <option value="2">Job Seeker</option>
+                        <option value="employer">Employer</option>
+                        <option value="job_seeker">Job Seeker</option>
                     </select>
                 </div>
                 <label for="email"></label>
                 <input type="email" class="email" name="email" id="email" placeholder="Email Address" required onkeyup="validateForm(this)">
-                <div class="is-invalid"></div>
+                <div class="is-invalid">Please Provide a valid email address</div>
 
                 <label for="password"></label>
                 <input type="password" class="password" name="password" id="password" placeholder="Password" required onkeyup="validateForm(this)">
-                <div class="is-invalid"></div>
+                <div class="is-invalid">Must be alphanumeric (@, _ and - are also allowed) of 8-20 characters</div>
 
-                <p class="txt"><a href="#">Forgot Password?</a></p>
+                <p class="txt"><a href="../forgot-pass/forgot-pass.page.html">Forgot Password?</a></p>
                 <button class="login-btn btn-" id="loginButton" type="submit" value="submit" onclick="forLogin();">Login</button>
-                <p class="txt-t"><a href="#">Don't have an account? Create a New One!</a></p>
+                <p class="txt-t"><a href="../sign-up/sign-up.page.php">Don't have an account? Create a New One!</a></p>
                 <p class="txt-t sign-up-with">Or Sign Up With</p>
             </form>
             <div class="o-auth-container">
@@ -68,8 +73,8 @@
     <div class="footer-main-row-def">
         <div class="col-zero col-footer">
             <h3 class="footer-h3">Our Company</h3>
-            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.html">About Us</a></h5>
-            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.html">Blogs</a></h5>
+            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.php">About Us</a></h5>
+            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.php">Blogs</a></h5>
         </div>
         <div class="col-two col-footer">
             <h3 class="footer-h3">Follow Us</h3>
@@ -100,7 +105,6 @@
         </div>
     </div>
 </footer>
-<script src="login.script.js"></script>
 <script src="../common.script.js"></script>
 </body>
 

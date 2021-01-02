@@ -25,7 +25,7 @@
             <div class="main">
                 <p>Sign Up</p>
                 <hr>
-                <form action="./sendSignUp.php" method="post" onsubmit="return false;" id="formSignUp">
+                <form action="add-user.sign-up.php" method="POST" onsubmit="return false;" id="formSignUp">
                     <div class="select-box">
                         <select
                                 required
@@ -35,32 +35,39 @@
                                 name="personType"
                         >
                             <option value="" selected>You are...</option>
-                            <option value="Employer">Employer</option>
-                            <option value="Job Seeker">Job Seeker</option>
+                            <option value="employer">Employer</option>
+                            <option value="job_seeker">Job Seeker</option>
                         </select>
                     </div>
 
                     <label for="firstName"></label>
-                    <input type="text" id="firstName" name="firstName" placeholder="First Name" required onkeyup="validateForm(this)">
+                    <input type="text" id="firstName" name="firstName" placeholder="First Name" required
+                           onkeyup="validateForm(this)">
                     <div class="is-invalid">Should be letters and 5-10 characters long</div>
 
                     <label for="lastName"></label>
-                    <input type="text" id="lastName" name="lastName" placeholder="Last Name" required onkeyup="validateForm(this)">
+                    <input type="text" id="lastName" name="lastName" placeholder="Last Name" required
+                           onkeyup="validateForm(this)">
                     <div class="is-invalid">Should be letters and 5-10 characters long</div>
 
                     <label for="username"></label>
-                    <input type="text" id="username" name="username" placeholder="Username" required onkeyup="validateForm(this)">
+                    <input type="text" id="username" name="username" placeholder="Username" required
+                           onkeyup="validateForm(this)">
                     <div class="is-invalid">Username must be alpha-numeric 5-12 characters long</div>
 
                     <label for="email"></label>
-                    <input type="email" id="email" name="email" placeholder="Email Address" required onkeyup="validateForm(this)">
+                    <input type="email" id="email" name="email" placeholder="Email Address" required
+                           onkeyup="validateForm(this)">
                     <div class="is-invalid">Please Provide a valid email address</div>
 
                     <label for="password"></label>
-                    <input type="password" id="password" name="password" placeholder="Password" required onkeyup="validateForm(this)">
-                    <div class="is-invalid">Password must alphanumeric (@, _ and - are also allowed) and be 8 - 20 characters</div>
+                    <input type="password" id="password" name="password" placeholder="Password" required
+                           onkeyup="validateForm(this)">
+                    <div class="is-invalid">Must be alphanumeric (@, _ and - are also allowed) of 8-20 characters</div>
 
-                    <button class="login-btn btn-" id="loginButton" type="submit" value="submit" onclick="validateAll();">Sign up</button>
+                    <button class="login-btn btn-" id="loginButton" type="submit" value="submit"
+                            onclick="validateAll();">Sign up
+                    </button>
                 </form>
             </div>
         </div>
@@ -70,19 +77,25 @@
     <div class="footer-main-row-def">
         <div class="col-zero col-footer">
             <h3 class="footer-h3">Our Company</h3>
-            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.html">About Us</a></h5>
-            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.html">Blogs</a></h5>
+            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.php">About
+                    Us</a></h5>
+            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.php">Blogs</a>
+            </h5>
         </div>
         <div class="col-two col-footer">
             <h3 class="footer-h3">Follow Us</h3>
-            <h5><span class="fa fa-facebook-square span-footer"></span> <a href="https://www.facebook.com/job.stash" target="_blank">Facebook</a></h5>
-            <h5><span class="fa fa-twitter-square span-footer"></span> <a href="https://twitter.com/JobStash?s=20" target="_blank">Twitter</a></h5>
-            <h5><span class="fa fa-linkedin-square span-footer"></span> <a href="https://www.linkedin.com/in/job-stash-55bb66201/" target="_blank">LinkedIn</a></h5>
+            <h5><span class="fa fa-facebook-square span-footer"></span> <a href="https://www.facebook.com/job.stash"
+                                                                           target="_blank">Facebook</a></h5>
+            <h5><span class="fa fa-twitter-square span-footer"></span> <a href="https://twitter.com/JobStash?s=20"
+                                                                          target="_blank">Twitter</a></h5>
+            <h5><span class="fa fa-linkedin-square span-footer"></span> <a
+                        href="https://www.linkedin.com/in/job-stash-55bb66201/" target="_blank">LinkedIn</a></h5>
         </div>
 
         <div class="col-two col-footer">
             <h3 class="footer-h3">Contact Us</h3>
-            <h5><span class="fa fa-envelope span-footer"></span> <span role="button" id="openMail">support@josbstash.com</span></h5>
+            <h5><span class="fa fa-envelope span-footer"></span> <span role="button"
+                                                                       id="openMail">support@josbstash.com</span></h5>
             <h5><span class="fa fa-phone span-footer"></span> <span role="button">+923156180891</span></h5>
             <h5><span class="fab fa-telegram span-footer"></span> <span role="button">@jobstash</span></h5>
         </div>

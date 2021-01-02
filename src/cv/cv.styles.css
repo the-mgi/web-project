@@ -1,11 +1,11 @@
 body {
-    /*width: 100%;*/
-    /*height: 100vh;*/
-    /*background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../assets/images/6671.jpg");*/
-    /*background-position: center;*/
-    /*background-repeat: no-repeat;*/
-    /*background-size: cover;*/
-    /*background-attachment: fixed;*/
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../assets/images/6671.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .main-container {
@@ -38,19 +38,6 @@ body {
 .text-area {
     margin: 10px;
     height: fit-content;
-}
-
-textarea {
-    border: none;
-    border-radius: 10px;
-    background-color: #F5F5F5;
-    padding: 20px;
-    width: 100%;
-    transition: .3s;
-    margin: auto;
-    height: 200px;
-    position: relative;
-    top: -35px;
 }
 
 .login-container {
