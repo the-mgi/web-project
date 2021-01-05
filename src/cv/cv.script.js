@@ -72,13 +72,13 @@ const emailAddress = document.getElementById('email');
 const actualSummary = document.getElementById('actualSummary');
 actualSummary.innerText = userData.summary;
 
-firstName.value = userData.firstName;
-lastName.value = userData.lastName;
-emailAddress.value = userData.emailAddress;
+// firstName.value = userData.firstName;
+// lastName.value = userData.lastName;
+// emailAddress.value = userData.emailAddress;
 
-firstName.disabled = true;
-lastName.disabled = true;
-emailAddress.disabled = true;
+// firstName.disabled = true;
+// lastName.disabled = true;
+// emailAddress.disabled = true;
 
 const selectBox = document.getElementById('select-box');
 const selectBoxOptions = selectBox.querySelectorAll('option');
@@ -204,7 +204,6 @@ const addSkill = () => {
     if (document.querySelector('.add-skill')) {
         return; // because the element is already on the DOM
     }
-    console.log('i am clicked..!');
     const editFields = document.createElement('div');
     editFields.className = 'add-skill';
     editFields.innerHTML = `<div class="fields">

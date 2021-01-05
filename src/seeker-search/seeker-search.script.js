@@ -1,28 +1,74 @@
+// $(document).ready(() => {
+//     $(window).scroll(() => {
+//         const scroll = $(window).scrollTop();
+//         const jobDetailsContainer = $("#jobDetails");
+//         if (scroll > 150) {
+//             jobDetailsContainer.css("position", "sticky");
+//             jobDetailsContainer.css("right", 0);
+//             jobDetailsContainer.css("z-index", "1");
+//         } else {
+//             console.log("less than 150");
+//             jobDetailsContainer.css("position", "none");
+//         }
+//     });
+// });
+
+let mainJobsContainer;
+let companiesSelectBox;
+const initializeAll = () => {
+    mainJobsContainer = document.getElementById('mainJobsContainer');
+    companiesSelectBox = document.getElementById('companies');
+    addAllJobsToPage();
+    addCompaniesToSelectBox();
+
+};
 // ==================================================================
-const companiesSelectBox = document.getElementById('companies');
-const getAllCompaniesFromDB = () => {
-    return [
-        {"companyName": 'Facebook', "companyID": 'comp01'},
-        {"companyName": 'Apple', "companyID": 'comp02'},
-        {"companyName": 'Netflix', "companyID": 'comp03'},
-        {"companyName": 'Google', "companyID": 'comp04'}
-    ];
-};
 const addCompaniesToSelectBox = () => {
-    const allCompanies = getAllCompaniesFromDB();
-    allCompanies.sort((a, b) => {
-        const first = a.companyName;
-        const second = b.companyName;
-        return (first > second) ? 1 : (first < second) ? -1 : 0;
-    });
-    console.log('i am good');
-    allCompanies.forEach(singleCompany => {
-        const newOption = document.createElement('option');
-        newOption.value = singleCompany.companyID;
-        newOption.innerText = singleCompany.companyName;
-        companiesSelectBox.appendChild(newOption);
-    });
+    const ajaxRequest = new XMLHttpRequest();
+    ajaxRequest.open("GET", "../CRUD/functions.php?function=populateCompaniesSelectBox", true);
+    ajaxRequest.send();
+    ajaxRequest.onreadystatechange = () => {
+        if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
+            console.log(companiesSelectBox);
+            companiesSelectBox.innerHTML = ajaxRequest.responseText;
+        }
+    };
 };
-addCompaniesToSelectBox();
+const addAllJobsToPage = () => {
+    const ajaxRequest = new XMLHttpRequest();
+    ajaxRequest.open("GET", '../CRUD/functions.php?function=addJobsToPage', true);
+    ajaxRequest.send();
+    ajaxRequest.onreadystatechange = () => {
+        if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
+            console.log(mainJobsContainer);
+            mainJobsContainer.innerHTML = ajaxRequest.responseText;
+        }
+    };
+};
+
+const openJobDetails = (eventData) => {
+
+    const ajaxRequest = new XMLHttpRequest();
+    ajaxRequest.open("GET", `../CRUD/functions.php?function=particularJob&jobId=${eventData.id}`, true);
+    ajaxRequest.send();
+    ajaxRequest.onreadystatechange = () => {
+        if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
+            const jobDetails = document.getElementById('jobDetails');
+            jobDetails.innerHTML = ajaxRequest.responseText;
+        }
+    }
+};  // it is used dude
+
+function makeAjaxCall(eventData, functionString) {
+    const string = eventData.value;
+    const ajaxRequest = new XMLHttpRequest();
+    ajaxRequest.open("GET", `../CRUD/functions.php?function=${functionString}&searchString=${string}`, true);
+    ajaxRequest.send();
+    ajaxRequest.onreadystatechange = () => {
+        if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
+            mainJobsContainer.innerHTML = ajaxRequest.responseText;
+        }
+    };
+}
 
 

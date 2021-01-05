@@ -12,7 +12,7 @@
     --color-primary: #5890FF;
     --color-secondary: #a5c3ff;
     --color-hover: #BFDBFE;
-
+    --color-disabled: #9cbbfa;
     font-family: Product-Sans-Regular, sans-serif;
 }
 
@@ -83,6 +83,11 @@ button:focus {
     outline: none;
 }
 
+button:disabled {
+    color: white;
+    background-color: var(--color-disabled);
+}
+
 input {
     height: 50px;
     width: 408px;
@@ -93,7 +98,6 @@ input {
     transition: 0.5s;
     margin: 10px;
     border-radius: 10px;
-    font-size: 15px;
 }
 
 input:focus, textarea:focus {
@@ -282,7 +286,7 @@ li:hover {
 }
 
 #logoutLi {
-    margin-left: 10px;
+    margin-left: 3px;
     background-color: #f17676;
 }
 

@@ -25,7 +25,7 @@
             <div class="main">
                 <p>Sign Up</p>
                 <hr>
-                <form action="add-user.sign-up.php" method="POST" onsubmit="return false;" id="formSignUp">
+                <form action="../CRUD/functions.php?function=signUp" method="POST" onsubmit="return false;" id="formSignUp">
                     <div class="select-box">
                         <select
                                 required

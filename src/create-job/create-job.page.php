@@ -1,6 +1,12 @@
 <?php
 session_start();
-
+if (!isset($_SESSION["personType"])) {
+    header("location: ../index.php");
+}
+$peronType = $_SESSION["personType"];
+if (!$peronType == 'employer') {
+    header("location: ../index.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -31,11 +37,32 @@ session_start();
 
         <div id="navbar" class="navbar-collapse">
             <ul class="navbar-nav">
-                <li class="nav-item"><a id="getStarted" href="../seeker-search/seeker-search.page.php" class="nav-link">Get Started</a></li>
-                <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>
-                <li class="nav-item"><a id="newJob" href="#" class="nav-link">Create a new Job</a></li>
-                <li class="nav-item"><a id="alreadyPostedJobs" href="../employer-jobs-status/employer-jobs-status.page.html" class="nav-link">My Jobs</a></li>
-            </ul>
+                <?php
+                if (isset($_SESSION["personType"])) {
+                    if ($_SESSION['personType'] == 'job_seeker') {
+                        echo '<li class="nav-item"><a id="getStarted" href="../seeker-search/seeker-search.page.php" class="nav-link">Get Started</a></li>
+                <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>';
+                    } else if ($_SESSION['personType'] == 'employer') {
+                        echo '<li class="nav-item"><a id="newJob" href="../create-job/create-job.page.php" class="nav-link">Create a
+                        new Job</a></li>
+                <li class="nav-item">
+                    <a id="alreadyPostedJobs" href="../employer-jobs-status/employer-jobs-status.page.php" class="nav-link">My Jobs</a>
+                </li>';
+                    }
+                } else {
+                    echo '<li class="nav-item"><a id="getStarted" href="../seeker-search/seeker-search.page.php" class="nav-link">Get Started</a></li>';
+                }
+
+                if (isset($_SESSION['firstName'])) {
+                    echo "<li class='nav-item' id='userNameLi'><a id='userName' href='#' class='nav-link'>" . $_SESSION["firstName"] . "<span
+                                class='fas fa-user ml-1'></span></a></li>
+                          <li class='nav-item' id='logoutLi'><a href='../CRUD/functions.php?function=logout' id='logout' class='nav-link'>Logout</a></li>
+";
+                } else {
+                    echo "<li class='nav-item' id='userNameLi'><a id='userName' href='../login/login.page.php' class='nav-link'>Sign In<span
+                                class='fas fa-user ml-1'></span></a></li>";
+                }
+                ?></ul>
         </div>
     </nav>
 </header>
@@ -45,35 +72,61 @@ session_start();
             <div class="main">
                 <p>Create Job</p>
                 <hr>
-                <form action="" onsubmit="return false;">
+                <form action="../CRUD/functions.php?function=addJob" id="jobCreateForm" method="POST" onsubmit="return false;">
                     <div class="row-o">
-                        <label for="jobName"></label>
-                        <input type="text" id="jobName" placeholder="Job Post / Job Name" required>
+                        <div class="col-o" style="width: fit-content;">
+                            <label for="jobName"></label>
+                            <input type="text" id="jobName" name="jobName" placeholder="Job Post / Job Name" required onkeyup="makeVisible(this);">
+                            <div class="is-invalid">Must be letters and 20-100 chars MAX</div>
+                        </div>
 
-                        <label for="jobLocation"></label>
-                        <input type="text" id="jobLocation" placeholder="Job Location" required>
+                        <select
+                                required
+                                class="form-select pl-3"
+                                aria-label="Default select example"
+                                style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                                name="jobType"
+                        >
+                            <option value="" selected>Job Type</option>
+                            <option value="Contract">Contract</option>
+                            <option value="Part Time">Part Time</option>
+                            <option value="Full Time">Full Time</option>
+                        </select>
                     </div>
                     <div class="row-o">
-                        <label for="eligibilityCriteria"></label>
-                        <textarea class="text-area" id="eligibilityCriteria" placeholder="Eligibility Criteria" required></textarea>
+                        <div class="col-o">
+                            <label for="eligibilityCriteria"></label>
+                            <textarea class="text-area" id="eligibilityCriteria" name="eligibilityCriteria" placeholder="Eligibility Criteria" required onkeyup="makeVisible(this);"></textarea>
+                            <div class="is-invalid">Must be letters and 100-1000 chars MAX</div>
+                        </div>
                     </div>
                     <div class="row-o">
-                        <label for="jobDesc"></label>
-                        <textarea class="text-area" type="text" placeholder="Job Description" id="jobDesc" required></textarea>
+                        <div class="col-o">
+                            <label for="jobDesc"></label>
+                            <textarea class="text-area" type="text" placeholder="Job Description" id="jobDesc" name="jobDesc" required onkeyup="makeVisible(this);"></textarea>
+                            <div class="is-invalid">Must be letters and 500-2000 chars MAX</div>
+                        </div>
                     </div>
                     <div class="row-o">
-                        <label for="jobResp"></label>
-                        <textarea class="text-area" type="text" placeholder="Job Responsibilities" id="jobResp" required></textarea>
+                        <div class="col-o">
+                            <label for="jobResp"></label>
+                            <textarea class="text-area" type="text" placeholder="Job Responsibilities" id="jobResp" name="jobResp" required onkeyup="makeVisible(this);"></textarea>
+                            <div class="is-invalid">Must be letters and 200-500 chars MAX</div>
+                        </div>
                     </div>
                     <div class="row-o">
-                        <label for="offerLow"></label>
-                        <input type="number" id="offerLow" placeholder="Minimum Salary" required>
-                        <label for="offerHigh"></label>
-                        <input type="number" id="offerHigh" placeholder="Maximum Salary" required>
+                        <div class="col-o">
+                            <label for="offerLow"></label>
+                            <input type="number" id="offerLow" name="offerLow" placeholder="Minimum Salary" required>
+                            <div class="is-invalid">Must be a number greater than 1</div>
+                        </div>
+                        <div class="col-o">
+                            <label for="offerHigh"></label>
+                            <input type="number" id="offerHigh" name="offerHigh" placeholder="Maximum Salary" required min=1000>
+                            <div class="is-invalid" style="margin-bottom: 5px;">Must be a number and greater than 1</div>
+                        </div>
                     </div>
-                    <button style="width: 100%; margin: 0" class="login-btn btn-" id="loginButton" type="submit"
-                            value="submit">Post Job
-                    </button>
+                    <button style="width: 100%; margin: 0" class="login-btn btn-" id="loginButton" type="submit" value="submit" onclick="forward();">Post Job</button>
                 </form>
             </div>
         </div>
@@ -83,19 +136,25 @@ session_start();
     <div class="footer-main-row-def">
         <div class="col-zero col-footer">
             <h3 class="footer-h3">Our Company</h3>
-            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.php">About Us</a></h5>
-            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.php">Blogs</a></h5>
+            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.php">About Us</a>
+            </h5>
+            <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.php">Blogs</a>
+            </h5>
         </div>
         <div class="col-two col-footer">
             <h3 class="footer-h3">Follow Us</h3>
-            <h5><span class="fa fa-facebook-square span-footer"></span> <a href="https://www.facebook.com/job.stash" target="_blank">Facebook</a></h5>
-            <h5><span class="fa fa-twitter-square span-footer"></span> <a href="https://twitter.com/JobStash?s=20" target="_blank">Twitter</a></h5>
-            <h5><span class="fa fa-linkedin-square span-footer"></span> <a href="https://www.linkedin.com/in/job-stash-55bb66201/" target="_blank">LinkedIn</a></h5>
+            <h5><span class="fa fa-facebook-square span-footer"></span> <a href="https://www.facebook.com/job.stash"
+                                                                           target="_blank">Facebook</a></h5>
+            <h5><span class="fa fa-twitter-square span-footer"></span> <a href="https://twitter.com/JobStash?s=20"
+                                                                          target="_blank">Twitter</a></h5>
+            <h5><span class="fa fa-linkedin-square span-footer"></span> <a
+                        href="https://www.linkedin.com/in/job-stash-55bb66201/" target="_blank">LinkedIn</a></h5>
         </div>
 
         <div class="col-two col-footer">
             <h3 class="footer-h3">Contact Us</h3>
-            <h5><span class="fa fa-envelope span-footer"></span> <span role="button" id="openMail">support@josbstash.com</span></h5>
+            <h5><span class="fa fa-envelope span-footer"></span> <span role="button"
+                                                                       id="openMail">support@josbstash.com</span></h5>
             <h5><span class="fa fa-phone span-footer"></span> <span role="button">+923156180891</span></h5>
             <h5><span class="fab fa-telegram span-footer"></span> <span role="button">@jobstash</span></h5>
         </div>
@@ -115,7 +174,7 @@ session_start();
         </div>
     </div>
 </footer>
-<script src="create-job.script.js"></script>
 <script src="../common.script.js"></script>
+<script src="./create-job.script.js"></script>
 </body>
 </html>

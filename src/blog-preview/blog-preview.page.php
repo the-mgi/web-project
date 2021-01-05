@@ -40,7 +40,7 @@ session_start();
                         echo '<li class="nav-item"><a id="newJob" href="../create-job/create-job.page.php" class="nav-link">Create a
                         new Job</a></li>
                 <li class="nav-item">
-                    <a id="alreadyPostedJobs" href="../employer-jobs-status/employer-jobs-status.page.html" class="nav-link">My Jobs</a>
+                    <a id="alreadyPostedJobs" href="../employer-jobs-status/employer-jobs-status.page.php" class="nav-link">My Jobs</a>
                 </li>';
                     }
                 } else {

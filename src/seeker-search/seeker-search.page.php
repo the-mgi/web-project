@@ -1,4 +1,11 @@
-
+<?php
+session_start();
+if (isset($_SESSION["personType"])) {
+    if ($_SESSION["personType"] == 'employer') {
+        header("location: ../employer-jobs-status/employer-jobs-status.page.php");
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,10 +17,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles.css">
-    <link rel="stylesheet" href="seeker-search.styles.css">
+    <link rel="stylesheet" href="./seeker-search.styles.css">
     <title>Title</title>
 </head>
-<body>
+<body onload="initializeAll();">
 <header>
     <nav class="navbar navbar-expand-md navbar-dark">
         <a href="#" class="navbar-brand" style="color: black;"><img src="../assets/svgs/final.svg" alt="gg_image"
@@ -24,10 +31,32 @@
 
         <div id="navbar" class="navbar-collapse">
             <ul class="navbar-nav">
-                <li class="nav-item"><a id="getStarted" href="../seeker-search/seeker-search.page.php" class="nav-link">Get Started</a></li>
-                <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>
-                <li class="nav-item"><a id="newJob" href="../create-job/create-job.page.php" class="nav-link">Create a new Job</a></li>
-                <li class="nav-item"><a id="alreadyPostedJobs" href="../employer-jobs-status/employer-jobs-status.page.html" class="nav-link">My Jobs</a></li>
+                <?php
+                if (isset($_SESSION["personType"])) {
+                    if ($_SESSION['personType'] == 'job_seeker') {
+                        echo '<li class="nav-item"><a id="getStarted" href="../seeker-search/seeker-search.page.php" class="nav-link">Get Started</a></li>
+                <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>';
+                    } else if ($_SESSION['personType'] == 'employer') {
+                        echo '<li class="nav-item"><a id="newJob" href="../create-job/create-job.page.php" class="nav-link">Create a
+                        new Job</a></li>
+                <li class="nav-item">
+                    <a id="alreadyPostedJobs" href="../employer-jobs-status/employer-jobs-status.page.php" class="nav-link">My Jobs</a>
+                </li>';
+                    }
+                } else {
+                    echo '<li class="nav-item"><a id="getStarted" href="../seeker-search/seeker-search.page.php" class="nav-link">Get Started</a></li>';
+                }
+
+                if (isset($_SESSION['firstName'])) {
+                    echo "<li class='nav-item' id='userNameLi'><a id='userName' href='#' class='nav-link'>" . $_SESSION["firstName"] . "<span
+                                class='fas fa-user ml-1'></span></a></li>
+                          <li class='nav-item' id='logoutLi'><a href='../CRUD/functions.php?function=logout' id='logout' class='nav-link'>Logout</a></li>
+";
+                } else {
+                    echo "<li class='nav-item' id='userNameLi'><a id='userName' href='../login/login.page.php' class='nav-link'>Sign In<span
+                                class='fas fa-user ml-1'></span></a></li>";
+                }
+                ?>
             </ul>
         </div>
     </nav>
@@ -38,10 +67,12 @@
         <div class="top-search-criteria mx-auto my-3">
             <div class="make-row">
                 <label for="keyword"></label>
-                <input type="text" id="keyword" placeholder="Keywords">
+                <input type="text" id="keyword" placeholder="Keywords"
+                       onkeyup="makeAjaxCall(this, 'searchSuggestionKeyword');">
 
                 <label for="jobPostName"></label>
-                <input type="text" id="jobPostName" placeholder="Job Post / Job Name">
+                <input type="text" id="jobPostName" placeholder="Job Post / Job Name"
+                       onkeyup="makeAjaxCall(this, 'searchSuggestionJobName')">
             </div>
             <div class="make-row">
                 <select
@@ -50,54 +81,32 @@
                         aria-label="Default select example"
                         style="height: 50px; border-radius: 10px; transition: .3s;"
                         id="partFull"
+                        name="partFull"
+                        onchange="makeAjaxCall(this, 'searchSuggestionJobType')"
                 >
-                    <option value="fullTime" selected>Full Time</option>
-                    <option value="partTime">Part Time</option>
+                    <option value="">Job Type</option>
+                    <option value="Full Time">Full Time</option>
+                    <option value="Part Time">Part Time</option>
+                    <option value="Contract">Contract</option>
                 </select>
                 <select
                         required
                         class="form-select pl-1"
                         aria-label="Default select example"
-                        style="height: 50px; border-radius: 10px; transition: .3s;"
+                        style="height: 50px; border-radius: 10px; transition: .3s; overflow-y: scroll;"
+                        name="companies"
                         id="companies"
+                        onchange="makeAjaxCall(this, 'searchSuggestionCompany')"
                 >
-                    <option value="" selected>Select Company</option>
                 </select>
             </div>
             <div class="make-row">
                 <button type="button">Save</button>
             </div>
         </div>
-        <div class="jobs-area m-auto">
+        <div class="jobs-area">
             <div class="all-housing mx-auto" id="mainJobsContainer"></div>
-            <div class="job-details mx-auto">
-                <h3 id="postName">Customer Sales Representative</h3>
-                <h5><span>by:</span> <strong id="company">Google Inc.</strong></h5>
-                <h5><span>Company Ratings:</span> <strong id="obtainedRating">4.8</strong> out of <strong>5</strong>
-                </h5>
-                <h5><span>Location:</span> <strong id="jobLocation">Islamabad</strong></h5>
-                <h5><strong>Job Status: </strong> <span class="badge rounded-pill bg-primary"
-                                                        style="color: white; font-size: 18px;">Open</span>
-                </h5>
-                <hr style="width: 100%; border-color: #cdc9c9;">
-                <p><strong>Job Description</strong><br> <span id="description">Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                    unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived
-                    not only five centuries, but also the leap into electronic typesetting, remaining essentially
-                    unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
-                    Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including
-                    versions of Lorem Ipsum.</span></p>
-                <p><strong>Responsibilities</strong><br><span id="responsibilities">Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                    unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived
-                    not only five centuries, but also the leap into electronic typesetting, remaining essentially
-                    unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem
-                    Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including
-                    versions of Lorem Ipsum.</span></p>
-                <p><strong>Salary</strong><br><strong>PKR</strong> <span id="minSalary">10000</span> - <span
-                            id="maxSalary">20000</span></p>
-                <button><span class="fa fa-check"></span> Apply Now</button>
-            </div>
+            <div class="job-details mx-auto" id="jobDetails">Select a Job to View details and APPLY!</div>
         </div>
     </div>
 </main>
@@ -144,7 +153,6 @@
     </div>
 </footer>
 <script src="./seeker-search.script.js"></script>
-<script src="../employer-jobs-status/employer-job-status-COMMON.script.js"></script>
 <script src="../common.script.js"></script>
 </body>
 </html>

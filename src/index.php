@@ -1,11 +1,5 @@
 <?php
 session_start();
-
-//if (isset($_SESSION["personType"])) {
-//    $personType = $_SESSION["personType"];
-//} else {
-//    header("location: ./login/login.page.php");
-//}
 ?>
 
 <!doctype html>
@@ -43,7 +37,7 @@ session_start();
                         echo '<li class="nav-item"><a id="newJob" href="./create-job/create-job.page.php" class="nav-link">Create a
                         new Job</a></li>
                 <li class="nav-item">
-                    <a id="alreadyPostedJobs" href="./employer-jobs-status/employer-jobs-status.page.html" class="nav-link">My Jobs</a>
+                    <a id="alreadyPostedJobs" href="employer-jobs-status/employer-jobs-status.page.php" class="nav-link">My Jobs</a>
                 </li>';
                     }
                 } else {
@@ -97,7 +91,7 @@ session_start();
             <p style="color: black;">Definitely you would need an industry standard professional RESUME to showcase
                 yourself better than ever,
                 to fascinate you employer. We got your back! Create your RESUME with our Resume Builder.</p>
-            <button class="white-on-blue button-300 m-0">Create Your Resume</button>
+            <a href="./cv/cv.page.php"><button class="white-on-blue button-300 m-0">Create Your Resume</button></a>
         </div>
     </div>
 </main>
@@ -146,3 +140,6 @@ session_start();
 <script src="common.script.js"></script>
 </body>
 </html>
+
+<?php
+print_r($_SESSION["row"]);

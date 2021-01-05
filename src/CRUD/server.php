@@ -6,7 +6,6 @@ $password = "ayanali78941";
 $dbName = "job_portal";
 $connection = mysqli_connect($hostName, $username, $password, $dbName);
 if (mysqli_connect_error()) {
-    echo "I encountered an error";
     die ("i am dead");
 }
 $connection->set_charset("utf8mb4");
@@ -31,10 +30,25 @@ function verifyUser($email, $password, $personType): mysqli_result|bool {
 function checkIfUsernameOrEmailExists(string $username, string $emailAddress, string $personType): bool {
     global $connection;
     $query = "SELECT username, emailAddress FROM $personType WHERE username='$username' or emailAddress='$emailAddress'";
-    if ($connection->query($query)->num_rows > 0) {
-        return true;
+    $result = $connection->query($query);
+    if (!is_bool($result)) {
+        if ($result->num_rows > 0) {
+            return true;
+        }
     }
     return false;
+}
+
+function addAddressOfUser(string $username, string $country, string $state, string $city, string $area, string $streetAddress): mysqli_result|bool {
+    global $connection;
+    $username = getEscapedString($username);
+    $country == getEscapedString($country);
+    $state = getEscapedString($state);
+    $city = getEscapedString($city);
+    $area = getEscapedString($area);
+    $streetAddress = getEscapedString($streetAddress);
+    $query = "INSERT INTO address VALUES ('$username', '$country', '$state', '$city', '$area', '$streetAddress')";
+    return $connection->query($query);
 }
 
 // =======================Blogs========================
@@ -106,7 +120,17 @@ function commonGetJobs($query): ?array {
             $finalJobsData = array();
             while ($row = $results->fetch_assoc()) {
                 $finalJobsData[$row["jobID"]] =
-                    [$row["name"], $row["desc"], $row["eligibilityCriteria"], $row["responsibilities"], $row["minPay"], $row["maxPay"], $row["fk_companyID"]];
+                    [
+                        "name" => $row["name"],
+                        "desc" => $row["desc"],
+                        "eligibilityCriteria" => $row["eligibilityCriteria"],
+                        "responsibilities" => $row["responsibilities"],
+                        "minPay" => $row["minPay"],
+                        "maxPay" => $row["maxPay"],
+                        "fk_companyID" => $row["fk_companyId"],
+                        "jobType" => $row["jobType"],
+                        "jobStatus" => $row["jobStatus"]
+                    ];
             }
             return $finalJobsData;
         }
@@ -115,14 +139,32 @@ function commonGetJobs($query): ?array {
 }
 
 function getAllOpenJobs($count = 20): ?array {
-    $query = "SELECT * FROM job WHERE jobStatus = 'open' LIMIT $count";
+    $query = "SELECT * FROM job WHERE job.jobStatus = 'open' LIMIT $count";
     return commonGetJobs($query);
 }
 
-function searchForAnOpenJobById($id): array {
-    $query = "SELECT * FROM job WHERE jobStatus = 'open' AND jobID = '$id'";
+function searchForAnOpenJobById(string $id): array {
+    $query = "SELECT * FROM job WHERE jobID = '$id';";
     return commonGetJobs($query);
 }
+
+function searchForAJobWith(string $columnToSearch, string $keyword): ?array {
+    $query = "SELECT * FROM job WHERE job.jobStatus = 'Open' AND job.$columnToSearch LIKE '%$keyword%'";
+    return commonGetJobs($query);
+}
+
+function getJobsOfAnEmployer(string $employerUsername): ?array {
+    $query = "SELECT * FROM job WHERE fk_employerID='$employerUsername';";
+    return commonGetJobs($query);
+}
+
+function getPeopleWhoAppliedFor(string $jobId): mysqli_result|bool {
+
+
+    return false;
+}
+
+getJobsOfAnEmployer('usama78941');
 
 function addJob(
     string $fk_employerID,
@@ -141,8 +183,14 @@ function addJob(
     $desc = getEscapedString($desc);
     $eligibilityCriteria = getEscapedString($eligibilityCriteria);
     $responsibilities = getEscapedString($responsibilities);
-    $query = "INSERT INTO job VALUES ('$jobID', '$fk_employerID', '$name', '$desc', '$eligibilityCriteria', '$responsibilities', $minPay, $maxPay, 'Open', '$fk_companyID', '$job_type');";
+    $query = "INSERT INTO job VALUES ('$jobID', '$fk_employerID', '$name', '$desc', '$eligibilityCriteria', '$responsibilities', $minPay, $maxPay, 'Open', '$job_type', '$fk_companyID');";
+    echo $query;
     return $connection->query($query);
+}
+
+function getCompanyIdFromCompanyUsingEmployerId(string $employerId): string {
+
+    return "themgi78941";
 }
 
 function deleteJob(string $id): bool {
@@ -151,12 +199,24 @@ function deleteJob(string $id): bool {
     return $connection->query($query);
 }
 
+function getAllCompaniesData(): bool|mysqli_result {
+    global $connection;
+    $query = "SELECT companyName, companyID FROM company ORDER BY companyName;";
+    return $connection->query($query);
+}
+
+function getCompanyData(string $id): bool|mysqli_result {
+    global $connection;
+    $query = "SELECT companyName, rating, location FROM company WHERE companyID='$id';";
+    return $connection->query($query);
+}
+
 // =======================Developer Information========================
 function addDeveloperInformation(string $developerName, string $developerInformation, string $imagePath): mysqli_result|bool {
     global $connection;
-    $id = md5(uniqid(microtime().rand()));
+    $id = md5(uniqid(microtime() . rand()));
     $developerInformation = $connection->real_escape_string($developerInformation);
-    $imagePath = $connection -> real_escape_string($imagePath);
+    $imagePath = $connection->real_escape_string($imagePath);
     $query = "INSERT INTO developer_information VALUES ('$id', '$developerName', '$developerInformation', '$imagePath');";
     return $connection->query($query);
 }
