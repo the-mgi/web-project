@@ -51,6 +51,47 @@ function addAddressOfUser(string $username, string $country, string $state, stri
     return $connection->query($query);
 }
 
+function getSummary(string $userId): mysqli_result|bool {
+    global $connection;
+    $query = "SELECT summary from job_seeker WHERE username='$userId'";
+    return $connection->query($query);
+
+}
+
+function getAllSkills(string $userId): mysqli_result|bool {
+    global $connection;
+    $query = "SELECT skillName, skillDurationYears, id FROM skills WHERE f_user='$userId'";
+    return $connection->query($query);
+}
+
+function addNewSkill(string $skillName, string $skillYears, string $userId): string|null {
+    global $connection;
+    $id = md5(uniqid(microtime() . rand()));
+    $query = "INSERT INTO skills (f_user, skillName, skillDurationYears, id) VALUES ('$userId', '$skillName', '$skillYears', '$id');";
+    if ($connection->query($query)) {
+        return $id;
+    }
+    return null;
+}
+
+function getAllEducation(string $userId): mysqli_result|bool {
+    global $connection;
+    $query = "SELECT courseTitle, instituteName, instituteCity, startYear, startMonth, endYear, endMonth,  isOngoing, id FROM education WHERE username='$userId';";
+    return $connection->query($query);
+}
+
+function getAllExperience(string $userId): mysqli_result|bool {
+    global $connection;
+    $query = "SELECT organizationName, organizationCity, startYear, startMonth, endYear, endMonth, isOngoing, id, post FROM experience WHERE fk_username='$userId';";
+    return $connection->query($query);
+}
+
+function removeData(string $table, string $id): mysqli_result|bool {
+    global $connection;
+    $query = "DELETE FROM $table WHERE id='$id'";
+    return $connection->query($query);
+}
+
 // =======================Blogs========================
 function commonGetBlog($query): ?array {
     global $connection;
@@ -127,8 +168,8 @@ function commonGetJobs($query): ?array {
                         "responsibilities" => $row["responsibilities"],
                         "minPay" => $row["minPay"],
                         "maxPay" => $row["maxPay"],
-                        "fk_companyID" => $row["fk_companyId"],
                         "jobType" => $row["jobType"],
+                        "fk_employer" => $row["fk_employer"],
                         "jobStatus" => $row["jobStatus"]
                     ];
             }
@@ -153,8 +194,13 @@ function searchForAJobWith(string $columnToSearch, string $keyword): ?array {
     return commonGetJobs($query);
 }
 
+function getJobWithCompanyId(string $companyId): ?array {
+    $query = "select * from job where fk_employer = (select employerId from company where companyID='$companyId');";
+    return commonGetJobs($query);
+}
+
 function getJobsOfAnEmployer(string $employerUsername): ?array {
-    $query = "SELECT * FROM job WHERE fk_employerID='$employerUsername';";
+    $query = "SELECT * FROM job WHERE fk_employer='$employerUsername';";
     return commonGetJobs($query);
 }
 
@@ -164,8 +210,6 @@ function getPeopleWhoAppliedFor(string $jobId): mysqli_result|bool {
     return false;
 }
 
-getJobsOfAnEmployer('usama78941');
-
 function addJob(
     string $fk_employerID,
     string $name,
@@ -174,7 +218,6 @@ function addJob(
     string $responsibilities,
     int $minPay,
     int $maxPay,
-    string $fk_companyID,
     string $job_type
 ): bool {
     global $connection;
@@ -183,14 +226,25 @@ function addJob(
     $desc = getEscapedString($desc);
     $eligibilityCriteria = getEscapedString($eligibilityCriteria);
     $responsibilities = getEscapedString($responsibilities);
-    $query = "INSERT INTO job VALUES ('$jobID', '$fk_employerID', '$name', '$desc', '$eligibilityCriteria', '$responsibilities', $minPay, $maxPay, 'Open', '$job_type', '$fk_companyID');";
+    $query = "INSERT INTO job VALUES ('$jobID', '$name', '$desc', '$eligibilityCriteria', '$responsibilities', $minPay, $maxPay, 'Open', '$job_type', '$fk_employerID');";
     echo $query;
     return $connection->query($query);
 }
 
-function getCompanyIdFromCompanyUsingEmployerId(string $employerId): string {
+/**
+ * get employerID as input, and returns the company Name as output string
+ * @param string $employerId
+ * @return array|string|null
+ */
+function getCompanyName(string $employerId): array|string|null {
+    global $connection;
+    $query = "SELECT companyName FROM company WHERE companyID = (SELECT companyID FROM company WHERE employerId='$employerId');";
 
-    return "themgi78941";
+    $result = $connection->query($query);
+    if (!is_bool($result)) {
+        return $result->fetch_assoc();
+    }
+    return "";
 }
 
 function deleteJob(string $id): bool {
@@ -207,7 +261,7 @@ function getAllCompaniesData(): bool|mysqli_result {
 
 function getCompanyData(string $id): bool|mysqli_result {
     global $connection;
-    $query = "SELECT companyName, rating, location FROM company WHERE companyID='$id';";
+    $query = "SELECT companyName, rating, location FROM company WHERE employerId='$id';";
     return $connection->query($query);
 }
 
@@ -246,3 +300,6 @@ function getAllDeveloperDetails(): ?array {
     }
     return null;
 }
+
+getCompanyName("mishaarsalan");
+

@@ -18,17 +18,18 @@ if (!isset($_SESSION["personType"])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
+<!--    <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>-->
     <link rel="stylesheet" href="../external-libraries/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="cv.styles.css">
     <title>CV</title>
 </head>
-<body>
+<body onload="initializeAll();">
 <header>
     <nav class="navbar navbar-expand-md navbar-dark">
-        <a href="../index.php" class="navbar-brand" style="color: black;"><img src="../assets/svgs/final.svg" alt="gg_image"
-                                                                    width="50" height="50"> Job Stash</a>
+        <a href="../index.php" class="navbar-brand" style="color: black;"><img src="../assets/svgs/final.svg"
+                                                                               alt="gg_image"
+                                                                               width="50" height="50"> Job Stash</a>
         <button style="width: 60px" class="navbar-toggler" data-toggle="collapse" data-target="#navbar">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -73,7 +74,7 @@ if (!isset($_SESSION["personType"])) {
             <div class="main">
                 <p>Create Resume</p>
                 <hr>
-                <form action="" onsubmit="return false;">
+                <form action="" method="POST" onsubmit="return false;" id="cvForm">
                     <div class="select-box row-o">
                         <select
                                 required
@@ -81,56 +82,65 @@ if (!isset($_SESSION["personType"])) {
                                 aria-label="Default select example"
                                 style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
                                 id="select-box"
+                                disabled
                         >
-                            <option selected>You are...</option>
+                            <option>You are...</option>
                             <option value="employer">Employer</option>
-                            <option value="job_seeker">Job Seeker</option>
+                            <option value="job_seeker" selected>Job Seeker</option>
                         </select>
                         <label for="contact"></label>
-                        <input type="text" id="contact" placeholder="Contact No." required title="Contact No. +923xxxxxxxxx">
+                        <input type="text" id="contact" name="contact" placeholder="Contact No." required
+                               title="Contact No. +923xxxxxxxxx" onkeyup="makeVisibleDiv(this);">
                     </div>
 
                     <div class="row-o">
                         <label for="firstName"></label>
                         <?php
-                        echo "<input type='text' id='firstName' name='firstName' value='".$_SESSION["firstName"]."' placeholder='First Name' required disabled>"
+                        echo "<input type='text' id='firstName' name='firstName' value='" . $_SESSION["firstName"] . "' placeholder='First Name' required disabled>"
                         ?>
 
                         <label for="lastName"></label>
                         <?php
-                        echo "<input type='text' id='lastName' value='".$_SESSION["lastName"]."' placeholder='Last Name' required disabled>"
+                        echo "<input type='text' id='lastName' value='" . $_SESSION["lastName"] . "' placeholder='Last Name' required disabled>"
                         ?>
                     </div>
 
                     <div class="row-o">
                         <label for="email"></label>
                         <?php
-                        echo "<input type='email' class='email' id='email' value='".$_SESSION["emailAddress"]."' placeholder='Email Address' required disabled>"
+                        echo "<input type='email' class='email' id='email' value='" . $_SESSION["emailAddress"] . "' placeholder='Email Address' required disabled>"
                         ?>
 
                         <label for="datePicker"></label>
-                        <input type="text" id="datePicker" placeholder="Date Of Birth. Format: mm/dd/yyyy" required autocomplete="off">
+                        <input type="text" id="datePicker" name="datePicker"
+                               placeholder="Date Of Birth. Format: yy-mm-dd" required
+                               autocomplete="off">
                     </div>
 
                     <div class="row-o">
                         <label for="streetAddress"></label>
-                        <input type="text" id="streetAddress" name="streetAddress" placeholder="Street Address" required>
-
+                        <input type="text" id="streetAddress" name="streetAddress" placeholder="Street Address"
                         <label for="area"></label>
-                        <input type="text" placeholder="Area" id="area" name="area" required>
+                        <input type="text" placeholder="Area" id="area" name="area" required
+                        >
                     </div>
 
                     <div class="row-o">
                         <label for="city"></label>
-                        <input type="text" id="city" name="city" placeholder="City" required>
+                        <input type="text" id="city" name="city" placeholder="City" required
+                        >
+
 
                         <label for="state"></label>
-                        <input type="text" placeholder="state" id="state" name="state" required>
+                        <input type="text" placeholder="state" id="state" name="state" required
+                        >
+
                     </div>
 
                     <div class="row-o">
                         <label for="country"></label>
-                        <input type="text" id="country" placeholder="Country" required>
+                        <input type="text" id="country" name="country" placeholder="Country" required
+                        >
                     </div>
 
                     <div class="summary-pencil-col" id="topCon">
@@ -144,7 +154,7 @@ if (!isset($_SESSION["personType"])) {
                     <div class="summary-pencil-col" id="skillDisplayCon">
                         <div id="skillsPencil" class="summary-pencil" role="button">
                             Skills
-                            <span id="pencil-skills" style="font-size: 25px">&#8853;</span>
+                            <span id="pencil-skills" style="font-size: 25px">&#x2b;</span>
                         </div>
                         <div class="all-skills-display" id="skillsContainer"></div>
                     </div>
@@ -152,7 +162,7 @@ if (!isset($_SESSION["personType"])) {
                     <div class="summary-pencil-col" id="educationDisplayCon">
                         <div id="educationPlus" class="summary-pencil" role="button">
                             Education
-                            <span id="educationPlusSymbol" style="font-size: 25px">&#8853;</span>
+                            <span id="educationPlusSymbol" style="font-size: 25px">&#x2b;</span>
                         </div>
                         <div class="all-skills-display" id="educationContainer"></div>
                     </div>
@@ -160,7 +170,7 @@ if (!isset($_SESSION["personType"])) {
                     <div class="summary-pencil-col" id="experienceContainerCon">
                         <div id="experiencePlus" class="summary-pencil" role="button">
                             Experience
-                            <span id="experiencePlusSymbol" style="font-size: 25px">&#8853;</span>
+                            <span id="experiencePlusSymbol" style="font-size: 25px">&#x2b;</span>
                         </div>
                         <div class="all-skills-display" id="experienceContainer"></div>
                     </div>
@@ -170,9 +180,28 @@ if (!isset($_SESSION["personType"])) {
                     <div class="experience" id="experience"></div>
 
                     <button style="width: 100%; margin: 0" class="login-btn btn-" id="loginButton" type="submit"
-                            value="submit">Save
+                            value="submit" onclick="forwardO();">Save
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="width: 60px;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="content">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;">Close
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -182,7 +211,7 @@ if (!isset($_SESSION["personType"])) {
         <div class="col-zero col-footer">
             <h3 class="footer-h3">Our Company</h3>
             <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="../about-us/about-us.page.php">About
-                Us</a></h5>
+                    Us</a></h5>
             <h5><span class="fas fa-blog span-footer"></span> <a href="../blog-preview/blog-preview.page.php">Blogs</a>
             </h5>
         </div>
@@ -193,7 +222,7 @@ if (!isset($_SESSION["personType"])) {
             <h5><span class="fa fa-twitter-square span-footer"></span> <a href="https://twitter.com/JobStash?s=20"
                                                                           target="_blank">Twitter</a></h5>
             <h5><span class="fa fa-linkedin-square span-footer"></span> <a
-                    href="https://www.linkedin.com/in/job-stash-55bb66201/" target="_blank">LinkedIn</a></h5>
+                        href="https://www.linkedin.com/in/job-stash-55bb66201/" target="_blank">LinkedIn</a></h5>
         </div>
 
         <div class="col-two col-footer">
@@ -223,7 +252,8 @@ if (!isset($_SESSION["personType"])) {
         src="../external-libraries/http_ajax.googleapis.com_ajax_libs_jquery_3.5.1_jquery.js"></script>
 <script type="text/javascript" src="../external-libraries/jquery-ui.min.js"></script>
 
-<script src="cv.script.js"></script>
+<script src="./cv.script.js"></script>
+<script src="./form-validation.script.js"></script>
 <script src="../common.script.js"></script>
 </body>
 </html>

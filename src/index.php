@@ -140,6 +140,3 @@ session_start();
 <script src="common.script.js"></script>
 </body>
 </html>
-
-<?php
-print_r($_SESSION["row"]);

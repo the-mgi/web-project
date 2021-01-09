@@ -122,3 +122,11 @@ BUGS TO BE CORRECTED
     -> again clicking on summary pencil again adds the edit container on the CV PAGE
     -> add education button, delete education
     -> add experience button, delete education
+
+
+CV create
+job apply
+company create
+news letter script likhni hai
+index.php content change
+show job details as modal

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "./server.php";
+$columnName = "";
 function displayAllJobs(?array $result, string $string = 'No Job Found'): void {
     if ($result != null) {
         while ($row = current($result)) {
@@ -9,7 +10,7 @@ function displayAllJobs(?array $result, string $string = 'No Job Found'): void {
             $desc = $row["desc"];
             $eligibilityCriteria = $row["eligibilityCriteria"];
             $responsibilities = $row["responsibilities"];
-            $companyName = getCompanyData($row["fk_companyID"])->fetch_assoc()["companyName"];
+            $companyName = getCompanyName($row["fk_employer"]);
             $status = $row["jobStatus"];
             $class = 'badge rounded-pill bg-primary p-2';
             if ($status != 'Open') {
@@ -18,7 +19,7 @@ function displayAllJobs(?array $result, string $string = 'No Job Found'): void {
             echo "
                     <div class='single-container mb-3' id='$jobId' onclick='openJobDetails(this)'>
                         <h3>$name</h3>
-                        <h5>by: <strong>$companyName</strong></h5>
+                        <h5>by: <strong>" . $companyName['companyName'] . "</strong></h5>
                         <p>
                             <span><strong>Summary</strong></span>
                             <br>
@@ -36,7 +37,7 @@ function displayAllJobs(?array $result, string $string = 'No Job Found'): void {
 
 function writeJobDetails($result): void {
     $key = key($result);
-    $companyData = getCompanyData($result[$key]["fk_companyID"])->fetch_assoc();
+    $companyData = getCompanyData($result[$key]["fk_employer"])->fetch_assoc();
     $status = $result[$key]["jobStatus"];
     $class = 'badge rounded-pill bg-primary p-2';
     if ($status != 'Open') {
@@ -199,8 +200,8 @@ if (isset($_REQUEST['function'])) {
              */
             function searchSuggestionCompany() {
                 $company = $_REQUEST["searchString"];
-                $result = searchForAJobWith('fk_companyId', $company);
-                displayAllJobs($result);
+                $r = getJobWithCompanyId($company);
+                displayAllJobs($r);
             }
 
             searchSuggestionCompany();
@@ -231,7 +232,6 @@ if (isset($_REQUEST['function'])) {
              */
             function createJob() {
                 $jobName = $_REQUEST["jobName"];
-                $jobType = $_REQUEST["jobType"];
                 $eligibility = $_REQUEST["eligibilityCriteria"];
                 $description = $_REQUEST["jobDesc"];
                 $responsibilities = $_REQUEST["jobResp"];
@@ -240,9 +240,8 @@ if (isset($_REQUEST['function'])) {
                 $jobType = $_REQUEST["jobType"];
 
                 $employerId = $_SESSION["username"];
-                $companyId = getCompanyIdFromCompanyUsingEmployerId($employerId);
 
-                $result = addJob($employerId, $jobName, $description, $eligibility, $responsibilities, $offerLow, $offerMax, '06b73ae0e09eee55712e094721dc5b97', $jobType);
+                $result = addJob($employerId, $jobName, $description, $eligibility, $responsibilities, $offerLow, $offerMax, $jobType);
                 if ($result) {
                     header("location: ../employer-jobs-status/employer-jobs-status.page.php");
                 } else {
@@ -287,6 +286,154 @@ if (isset($_REQUEST['function'])) {
             $country = $_REQUEST["country"];
             addAddressOfUser($_SESSION["username"], $country, $state, $city, $area, $street);
             break;
+        case 'updateCV': // un-complete
+            $contact = $_REQUEST["contact"];
+            $date = $_REQUEST["datePicker"];
+            $streetAddress = $_REQUEST["streetAddress"];
+            $area = $_REQUEST["area"];
+            $city = $_REQUEST["city"];
+            $country = $_REQUEST["country"];
+            break;
+        case 'getSummary':
+            function obtainSummary() {
+                $resultGetSummary = getSummary($_SESSION["username"]);
+                if (!is_bool($resultGetSummary)) {
+                    if ($resultGetSummary->num_rows > 0) {
+                        $row = $resultGetSummary->fetch_assoc();
+                        $summary = $row["summary"];
+                        if (strlen($summary) > 0) {
+                            echo $summary;
+                            return;
+                        }
+                    }
+
+                }
+                echo "No Summary Present. Click the edit icon to add one.";
+            }
+
+            obtainSummary();
+            break;
+        case 'getSkillsAll':
+            function obtainAllSkills() {
+                $resultGetAllSkills = getAllSkills($_SESSION["username"]);
+                if (!is_bool($resultGetAllSkills)) {
+                    if ($resultGetAllSkills->num_rows > 0) {
+                        while ($row = $resultGetAllSkills->fetch_assoc()) {
+                            $id = $row["id"];
+                            echo "<h5 class='space-between' id='$id'>
+                                    <span class='badge rounded-pill span-tag'>" . $row['skillName'] . " -- " . $row['skillDurationYears'] . " Years</span>
+                                    <span class='cross' role='button' onclick='removeCurrentSkill($id)'>&#10006;</span>
+                                  </h5>";
+                        }
+                        return;
+                    }
+                }
+                echo "<p id='noSkillPresent'>You have not added any skill yet. Press Add ICON to Add one.</p>";
+            }
+
+            obtainAllSkills();
+            break;
+        case 'getEducationsAll':
+            function obtainAllData() {
+                $result = getAllEducation($_SESSION["username"]);
+                if (!is_bool($result)) {
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $id = $row["id"];
+                            echo "
+                        <div class='first' id='$id'>
+                            <p class='add-margin-5 space-between'>
+                                <strong><span>" . $row["courseTitle"] . "</span>
+                                </strong><span role='button' onclick='removeCurrentEducation($id)'>&#10006;</span></p>
+                            <p class='add-margin-5'><span>" . $row["instituteName"] . "</span> - <span>" . $row["instituteCity"] . "</span></p>
+                            <p class='add-margin-5'>
+                                <span>" . $row["startMonth"] . "</span>
+                                <span>" . $row["startYear"] . "</span>
+                                to
+                                <span>" . $row["endMonth"] . "</span>
+                                <span>" . $row["endYear"] . "</span>
+                            </p>
+                            <hr>     
+                        </div>
+                        ";
+                        }
+                        return;
+                    }
+                    echo "<div class='first' id='noEducationalRecordPresent'>You have not added any educational background yet. Press ADD icon to Add one.</div>";
+                }
+            }
+
+            obtainAllData();
+            break;
+        case 'getExperienceAll':
+            function obtainAllDataExperience() {
+                $result = getAllExperience($_SESSION["username"]);
+                if (!is_bool($result)) {
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $id = $row["id"];
+                            echo "
+                        <div class='first' id='$id'>
+                            <p class='add-margin-5 space-between'>
+                                <strong><span>" . $row["post"] . "</span>
+                                </strong><span role='button' onclick='removeCurrentExperience($id)'>&#10006;</span></p>
+                            <p class='add-margin-5'><span>" . $row["organizationName"] . "</span> - <span>" . $row["organizationCity"] . "</span></p>
+                            <p class='add-margin-5'>
+                                <span>" . $row["startMonth"] . "</span>
+                                <span>" . $row["startYear"] . "</span>
+                                to
+                                <span>" . $row["endMonth"] . "</span>
+                                <span>" . $row["endYear"] . "</span>
+                            </p>
+                            <hr>     
+                        </div>
+                        ";
+                        }
+                        return;
+                    }
+                    echo "<div class='first' id='noEducationalRecordPresent'>You have not added any educational background yet. Press ADD icon to Add one.</div>";
+                }
+            }
+
+            obtainAllDataExperience();
+            break;
+        case 'addNewSkill':
+            function addNewSkillD() {
+                $skillName = $_REQUEST["skillName"];
+                $skillYears = $_REQUEST["skillYears"];
+                $result = addNewSkill($skillName, $skillYears, $_SESSION["username"]);
+                if ($result != null) {
+                    echo "
+                <h5 class='space-between' id='$result'>
+                <span class='badge rounded-pill span-tag'>" . ucwords($skillName) . " -- " . $skillYears . " Years</span>
+                <span class='cross' role='button' onclick='removeCurrentSkill($result)'>&#10006;</span>           
+                </h5>";
+                    return;
+                }
+            }
+
+            addNewSkillD();
+            break;
+        case 'removeSkill':
+            $columnName = 'skill';
+            $id = $_REQUEST["id"];
+            $result = removeData(table: $columnName, id: $id);
+            echo $result;
+            break;
+        case 'removeEducation':
+            $columnName = 'education';
+            $id = $_REQUEST["id"];
+            $result = removeData(table: $columnName, id: $id);
+            echo $result;
+            break;
+        case 'removeExperience':
+            $columnName = 'experience';
+            $id = $_REQUEST["id"];
+            $result = removeData(table: $columnName, id: $id);
+            echo $result;
+            break;
+        default:
+            print_r("I got nothing to do for you!!");
     }
 }
 
