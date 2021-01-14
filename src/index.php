@@ -1,5 +1,6 @@
 <?php
 session_start();
+include "./CRUD/server.php";
 ?>
 
 <!doctype html>
@@ -9,7 +10,7 @@ session_start();
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/1umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
     <script src="main-seeker.script.js"></script>
@@ -17,7 +18,7 @@ session_start();
     <link rel="stylesheet" href="main-seeker.styles.css">
     <title>Title</title>
 </head>
-<body>
+<body onload="afterOnload('./about-us/about-us.page.php', './blog-preview/blog-preview.page.php')">
 <header>
     <nav class="navbar navbar-expand-md navbar-dark">
         <a href="#" class="navbar-brand" style="color: black;"><img src="assets/svgs/final.svg" alt="gg_image"
@@ -95,48 +96,7 @@ session_start();
         </div>
     </div>
 </main>
-<footer>
-    <div class="footer-main-row-def">
-        <div class="col-zero col-footer">
-            <h3 class="footer-h3">Our Company</h3>
-            <h5><span class="fa fa-id-card-alt span-footer"></span> <a href="about-us/about-us.page.php">About
-                    Us</a></h5>
-            <h5><span class="fas fa-blog span-footer"></span> <a href="blog-preview/blog-preview.page.php">Blogs</a>
-            </h5>
-        </div>
-        <div class="col-two col-footer">
-            <h3 class="footer-h3">Follow Us</h3>
-            <h5><span class="fa fa-facebook-square span-footer"></span> <a href="https://www.facebook.com/job.stash"
-                                                                           target="_blank">Facebook</a></h5>
-            <h5><span class="fa fa-twitter-square span-footer"></span> <a href="https://twitter.com/JobStash?s=20"
-                                                                          target="_blank">Twitter</a></h5>
-            <h5><span class="fa fa-linkedin-square span-footer"></span> <a
-                        href="https://www.linkedin.com/in/job-stash-55bb66201/" target="_blank">LinkedIn</a></h5>
-        </div>
-
-        <div class="col-two col-footer">
-            <h3 class="footer-h3">Contact Us</h3>
-            <h5><span class="fa fa-envelope span-footer"></span> <span role="button"
-                                                                       id="openMail">support@josbstash.com</span></h5>
-            <h5><span class="fa fa-phone span-footer"></span> <span role="button">+923156180891</span></h5>
-            <h5><span class="fab fa-telegram span-footer"></span> <span role="button">@jobstash</span></h5>
-        </div>
-
-        <div class="col-one col-footer">
-            <h3 class="footer-h3">Newsletter</h3>
-            <label for="letter-email" id=""></label>
-            <input class="news-e" type="email" placeholder="Email Address" id="letter-email">
-            <button class="blue-on-white button-300">Sign Up For News Letter</button>
-        </div>
-    </div>
-    <div class="outer">
-        <div class="bottom-rights">
-            <span class="fa fa-copyright"></span>
-            <span>themgi inc. </span>
-            <span>2020 All Right Reserved</span>
-        </div>
-    </div>
-</footer>
 <script src="common.script.js"></script>
+<script src="./add-footer.script.js"></script>
 </body>
 </html>

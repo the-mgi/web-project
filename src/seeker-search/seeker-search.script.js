@@ -59,7 +59,7 @@ const openJobDetails = (eventData) => {
     }
 };  // it is used dude
 
-function makeAjaxCall(eventData, functionString) {
+const makeAjaxCall = (eventData, functionString) => {
     const string = eventData.value;
     const ajaxRequest = new XMLHttpRequest();
     ajaxRequest.open("GET", `../CRUD/functions.php?function=${functionString}&searchString=${string}`, true);
@@ -69,6 +69,32 @@ function makeAjaxCall(eventData, functionString) {
             mainJobsContainer.innerHTML = ajaxRequest.responseText;
         }
     };
-}
+};
+
+const applyForJob = (eventData) => {
+    const jobId = eventData.id;
+    const ajaxRequest = new XMLHttpRequest();
+    ajaxRequest.open("GET", `../CRUD/functions.php?function=applyForJob&jobId=${jobId}`);
+    ajaxRequest.send();
+    ajaxRequest.onreadystatechange = () => {
+        if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
+            const result = ajaxRequest.responseText;
+            if (result === 'true') {
+                toggleModal("Successfully Applied For Job");
+                eventData.disabled = true;
+                eventData.innerHTML = `<span class="fa fa-check"></span> Already Applied`
+            }
+        }
+    };
+}; // it is used dude
+
+const toggleModal = (string) => {
+    const content = document.getElementById("content");
+    content.innerText = string;
+    let myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
+        keyboard: false
+    });
+    myModal.toggle();
+};
 
 

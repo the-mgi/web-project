@@ -64,9 +64,3 @@ const forLogin = () => {
         common();
     }
 };
-
-document.getElementById('openMail').addEventListener('click', () => {
-    console.log('i am good');
-    window.open("mailto:" + 'job.stash.themgi@gmail.com' + '?cc=' + '' + '&subject=' + 'Need Support' + '&body=' + 'Type Your Query Message Here');
-
-});

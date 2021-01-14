@@ -125,7 +125,6 @@ BUGS TO BE CORRECTED
 
 
 CV create
-job apply
 company create
 news letter script likhni hai
 index.php content change

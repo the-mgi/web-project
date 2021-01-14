@@ -12,6 +12,7 @@ function displayAllJobs(?array $result, string $string = 'No Job Found'): void {
             $responsibilities = $row["responsibilities"];
             $companyName = getCompanyName($row["fk_employer"]);
             $status = $row["jobStatus"];
+            echo "job status is: ".$row["jobStatus"];
             $class = 'badge rounded-pill bg-primary p-2';
             if ($status != 'Open') {
                 $class = 'badge rounded-pill bg-danger p-2';
@@ -84,7 +85,7 @@ if (isset($_REQUEST['function'])) {
                     $row = $result->fetch_assoc();
                     $_SESSION["row"] = $row;
                     $_SESSION["personType"] = $personType;
-                    $_SESSION["firstName"] = $row["firstName"];
+                    $_SESSION["firstName"] = ucfirst($row["firstName"]);
                     $_SESSION["username"] = $row["username"];
                     $_SESSION["emailAddress"] = $emailAddress;
                     $_SESSION["lastName"] = $row["lastName"];
@@ -95,7 +96,13 @@ if (isset($_REQUEST['function'])) {
             }
             break;
         case 'subscribeToNewsletter':
-
+            $emailNewsletter = $_REQUEST["emailNewsLetter"];
+            $result = addEmailInNewsletter($emailNewsletter);
+            if ($result) {
+                echo "<script>alert('Email accepted for newsletter')</script>";
+            } else {
+                echo "<script>alert('Email already present for newsletter!')</script>";
+            }
             break;
         case 'signUp':
             /**
@@ -151,11 +158,38 @@ if (isset($_REQUEST['function'])) {
                         $disabled = '';
                     }
                 }
+                $result = checkIf($_SESSION["username"], $jobId);
+                $stringOnButton = "Apply Now";
+                if (!is_bool($result)) {
+                    if ($result->num_rows > 0) {
+                        $stringOnButton = "Already Applied";
+                        $disabled = 'disabled';
+                    }
+                }
                 echo "
-            <button " . $disabled . ">
+            <button " . $disabled . " id='$jobId' onclick='applyForJob(this)'>
                 <span class='fa fa-check'></span>
-                Apply Now
+               $stringOnButton
             </button>";
+            }
+            break;
+        case 'applyForJob':
+            $jobId = $_REQUEST['jobId'];
+            $result = addInApplyFor($_SESSION["username"], $jobId);
+            if ($result) {
+                echo "true";
+            } else {
+                echo "false";
+            }
+            break;
+        case 'jobsIApplied':
+            $result = getAppliedJobs($_SESSION["username"]);
+            if (!is_bool($result)) {
+                if ($result->num_rows > 0) {
+
+                } else {
+
+                }
             }
             break;
         case 'searchSuggestionKeyword':
@@ -271,28 +305,47 @@ if (isset($_REQUEST['function'])) {
                 $result = searchForAnOpenJobById($jobId);
                 if ($result != null) {
                     writeJobDetails($result);
-                    $peopleWhoApplied = getPeopleWhoAppliedFor($jobId);
-                    echo "<p><span><strong>People who applied for this job.</strong></span><br><ol><li class='li'>Muhammad Usama</li><li class='li'>Rohaan Ali</li><li class='li'>Muhammad Ayan Ali</li></ol></p>";
+                    $getAll = getPeopleWhoAppliedFor($jobId);
+                    if (!is_bool($getAll)) {
+                        if ($getAll->num_rows > 0) {
+                            echo "<p><span><strong>People who applied for this job.</strong></span><br><ol>";
+                            while ($row = $getAll->fetch_assoc()) {
+                                $usernameGot = $row["user_key"];
+                                $fullName = getUserFirstName($usernameGot);
+                                while ($userFullName = $fullName->fetch_assoc()) {
+                                    echo "<li class='m-1 p-0'><a target='_blank' href='../seeker-details/seeker-details.page.php?userDetails=" . $usernameGot . "&jobId=" . $jobId . "'>" . ucfirst($userFullName["firstName"]) . " " . ucfirst($userFullName["lastName"]) . "</a></li>";
+                                }
+                            }
+                            echo "</ol></p>";
+                        } else {
+                            echo "<p><strong>No one has yet applied for the job</strong></p>";
+                        }
+                    }
                 }
             }
 
             displayJobDetails();
             break;
-        case 'saveAddress':
-            $street = $_REQUEST["streetAddress"];
-            $area = $_REQUEST["area"];
-            $city = $_REQUEST["city"];
-            $state = $_REQUEST["state"];
-            $country = $_REQUEST["country"];
-            addAddressOfUser($_SESSION["username"], $country, $state, $city, $area, $street);
-            break;
         case 'updateCV': // un-complete
             $contact = $_REQUEST["contact"];
             $date = $_REQUEST["datePicker"];
+            $countrySelected = $_POST["countrySelected"];
+            $citySelected = $_POST["citySelected"];
             $streetAddress = $_REQUEST["streetAddress"];
+            $state = $_REQUEST["state"];
             $area = $_REQUEST["area"];
-            $city = $_REQUEST["city"];
-            $country = $_REQUEST["country"];
+            function checkIfAddressExists(): bool {
+                $result = checkIfAddressPresent($_SESSION["username"]);
+                if (!is_bool($result)) {
+                    if ($result->num_rows > 0) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            $result = updateUserData($_SESSION["username"], $countrySelected, $state, $citySelected, $area, $streetAddress, $contact, $date, type: checkIfAddressExists());
+            header("location: ../seeker-search/seeker-search.page.php");
             break;
         case 'getSummary':
             function obtainSummary() {
@@ -313,6 +366,10 @@ if (isset($_REQUEST['function'])) {
 
             obtainSummary();
             break;
+        case 'updateSummary':
+            $actualSummary = $_REQUEST["actualSummary"];
+            updateSummary($_SESSION["username"], $actualSummary);
+            break;
         case 'getSkillsAll':
             function obtainAllSkills() {
                 $resultGetAllSkills = getAllSkills($_SESSION["username"]);
@@ -320,9 +377,11 @@ if (isset($_REQUEST['function'])) {
                     if ($resultGetAllSkills->num_rows > 0) {
                         while ($row = $resultGetAllSkills->fetch_assoc()) {
                             $id = $row["id"];
+                            $id = strval($id);
+                            $functionString = strval("onclick='removeCurrentSkill(this)'");
                             echo "<h5 class='space-between' id='$id'>
                                     <span class='badge rounded-pill span-tag'>" . $row['skillName'] . " -- " . $row['skillDurationYears'] . " Years</span>
-                                    <span class='cross' role='button' onclick='removeCurrentSkill($id)'>&#10006;</span>
+                                    <span class='cross' role='button' $functionString>&#10006;</span>
                                   </h5>";
                         }
                         return;
@@ -341,10 +400,10 @@ if (isset($_REQUEST['function'])) {
                         while ($row = $result->fetch_assoc()) {
                             $id = $row["id"];
                             echo "
-                        <div class='first' id='$id'>
+                        <div class='first'>
                             <p class='add-margin-5 space-between'>
                                 <strong><span>" . $row["courseTitle"] . "</span>
-                                </strong><span role='button' onclick='removeCurrentEducation($id)'>&#10006;</span></p>
+                                </strong><span role='button' id='$id' onclick='removeCurrentEducation(this)'>&#10006;</span></p>
                             <p class='add-margin-5'><span>" . $row["instituteName"] . "</span> - <span>" . $row["instituteCity"] . "</span></p>
                             <p class='add-margin-5'>
                                 <span>" . $row["startMonth"] . "</span>
@@ -373,10 +432,10 @@ if (isset($_REQUEST['function'])) {
                         while ($row = $result->fetch_assoc()) {
                             $id = $row["id"];
                             echo "
-                        <div class='first' id='$id'>
+                        <div class='first' >
                             <p class='add-margin-5 space-between'>
                                 <strong><span>" . $row["post"] . "</span>
-                                </strong><span role='button' onclick='removeCurrentExperience($id)'>&#10006;</span></p>
+                                </strong><span role='button' id='$id' onclick='removeCurrentExperience(this)'>&#10006;</span></p>
                             <p class='add-margin-5'><span>" . $row["organizationName"] . "</span> - <span>" . $row["organizationCity"] . "</span></p>
                             <p class='add-margin-5'>
                                 <span>" . $row["startMonth"] . "</span>
@@ -432,253 +491,121 @@ if (isset($_REQUEST['function'])) {
             $result = removeData(table: $columnName, id: $id);
             echo $result;
             break;
+        case 'getCities':
+            $countryCode = $_REQUEST["country_code"];
+            $citiesForCountry = getCitiesOfSelectedCountry($countryCode);
+            echo "<option value='' selected>Select Your City</option>";
+            if (!is_bool($citiesForCountry)) {
+                if ($citiesForCountry->num_rows > 0) {
+                    while ($row = $citiesForCountry->fetch_assoc()) {
+                        $cityName = $row["city_name"];
+                        $city_id = $row["city_id"];
+                        echo "<option value='$city_id'>$cityName</option>";
+                    }
+                }
+            }
+            break;
+        case 'writeSkillsEmployer':
+            function obtainAllSkills() {
+                $userId = $_REQUEST["userID"];
+                $resultGetAllSkills = getAllSkills($userId);
+                if (!is_bool($resultGetAllSkills)) {
+                    if ($resultGetAllSkills->num_rows > 0) {
+                        while ($row = $resultGetAllSkills->fetch_assoc()) {
+                            $id = $row["id"];
+                            $id = strval($id);
+                            echo "<h5 class='space-between' id='$id'>
+                                    <span class='badge rounded-pill span-tag'>" . $row['skillName'] . " -- " . $row['skillDurationYears'] . " Years</span>
+                                  </h5>";
+                        }
+                        return;
+                    }
+                }
+                echo "<p id='noSkillPresent'>User has not added any skills</p>";
+            }
+
+            obtainAllSkills();
+            break;
+        case 'addEducationDataEmployer':
+            function obtainAllData() {
+                $userId = $_REQUEST["userID"];
+                $result = getAllEducation($userId);
+                if (!is_bool($result)) {
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $id = $row["id"];
+                            echo "
+                        <div class='first'>
+                            <p><strong>Education</strong></p>
+                            <p class='add-margin-5 space-between'>
+                                <strong><span>" . $row["courseTitle"] . "</span></p>
+                            <p class='add-margin-5'><span>" . $row["instituteName"] . "</span> - <span>" . $row["instituteCity"] . "</span></p>
+                            <p class='add-margin-5'>
+                                <span>" . $row["startMonth"] . "</span>
+                                <span>" . $row["startYear"] . "</span>
+                                to
+                                <span>" . $row["endMonth"] . "</span>
+                                <span>" . $row["endYear"] . "</span>
+                            </p>
+                            <hr>     
+                        </div>
+                        ";
+                        }
+                        return;
+                    }
+                    echo "<div class='first' id='noEducationalRecordPresent'><span><strong>Education</strong></span><br>No educational record present for this user.</div>";
+                }
+            }
+
+            obtainAllData();
+            break;
+        case 'addExperienceDataEmployer':
+            function obtainAllDataExperience() {
+                $userId = $_REQUEST["userID"];
+                $result = getAllExperience($userId);
+                if (!is_bool($result)) {
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $id = $row["id"];
+                            echo "
+                        <div class='first' >
+                            <p><strong>Experience</strong></p>
+                            <p class='add-margin-5 space-between'>
+                                <strong><span>" . $row["post"] . "</span></p>
+                            <p class='add-margin-5'><span>" . $row["organizationName"] . "</span> - <span>" . $row["organizationCity"] . "</span></p>
+                            <p class='add-margin-5'>
+                                <span>" . $row["startMonth"] . "</span>
+                                <span>" . $row["startYear"] . "</span>
+                                to
+                                <span>" . $row["endMonth"] . "</span>
+                                <span>" . $row["endYear"] . "</span>
+                            </p>
+                            <hr>     
+                        </div>
+                        ";
+                        }
+                        return;
+                    }
+                    echo "<div class='first' id='noEducationalRecordPresent'><span><strong>Education</strong></span><br>No experience record present for this user.</div>";
+                }
+            }
+
+            obtainAllDataExperience();
+            break;
+        case 'hireSeeker':
+            $job = $_REQUEST["jobId"];
+            $seekerId = $_REQUEST["seekerId"];
+            $salaryOffered = $_REQUEST["salaryOffered"];
+            $result = hireSeeker($job, $seekerId, $salaryOffered);
+            echo $result;
+            break;
+        case 'deleteJobApplication':
+            $job = $_REQUEST["jobId"];
+            $seekerId = $_REQUEST["seekerId"];
+            $result = deleteJobApplication($job, $seekerId);
+            echo "$result";
+            break;
         default:
             print_r("I got nothing to do for you!!");
     }
-}
-
-function countries(): array {
-    return [
-        'AF' => 'Afghanistan',
-        'AL' => 'Albania',
-        'DZ' => 'Algeria',
-        'AS' => 'American Samoa',
-        'AD' => 'Andorra',
-        'AO' => 'Angola',
-        'AI' => 'Anguilla',
-        'AQ' => 'Antarctica',
-        'AG' => 'Antigua And Barbuda',
-        'AR' => 'Argentina',
-        'AM' => 'Armenia',
-        'AW' => 'Aruba',
-        'AU' => 'Australia',
-        'AT' => 'Austria',
-        'AZ' => 'Azerbaijan',
-        'BS' => 'Bahamas',
-        'BH' => 'Bahrain',
-        'BD' => 'Bangladesh',
-        'BB' => 'Barbados',
-        'BY' => 'Belarus',
-        'BE' => 'Belgium',
-        'BZ' => 'Belize',
-        'BJ' => 'Benin',
-        'BM' => 'Bermuda',
-        'BT' => 'Bhutan',
-        'BO' => 'Bolivia',
-        'BA' => 'Bosnia And Herzegovina',
-        'BW' => 'Botswana',
-        'BV' => 'Bouvet Island',
-        'BR' => 'Brazil',
-        'IO' => 'British Indian Ocean Territory',
-        'BN' => 'Brunei Darussalam',
-        'BG' => 'Bulgaria',
-        'BF' => 'Burkina Faso',
-        'BI' => 'Burundi',
-        'KH' => 'Cambodia',
-        'CM' => 'Cameroon',
-        'CA' => 'Canada',
-        'CV' => 'Cape Verde',
-        'KY' => 'Cayman Islands',
-        'CF' => 'Central African Republic',
-        'TD' => 'Chad',
-        'CL' => 'Chile',
-        'CN' => 'China',
-        'CX' => 'Christmas Island',
-        'CC' => 'Cocos (keeling) Islands',
-        'CO' => 'Colombia',
-        'KM' => 'Comoros',
-        'CG' => 'Congo',
-        'CD' => 'Congo, The Democratic Republic Of The',
-        'CK' => 'Cook Islands',
-        'CR' => 'Costa Rica',
-        'CI' => 'Cote D\'ivoire',
-        'HR' => 'Croatia',
-        'CU' => 'Cuba',
-        'CY' => 'Cyprus',
-        'CZ' => 'Czech Republic',
-        'DK' => 'Denmark',
-        'DJ' => 'Djibouti',
-        'DM' => 'Dominica',
-        'DO' => 'Dominican Republic',
-        'TP' => 'East Timor',
-        'EC' => 'Ecuador',
-        'EG' => 'Egypt',
-        'SV' => 'El Salvador',
-        'GQ' => 'Equatorial Guinea',
-        'ER' => 'Eritrea',
-        'EE' => 'Estonia',
-        'ET' => 'Ethiopia',
-        'FK' => 'Falkland Islands (malvinas)',
-        'FO' => 'Faroe Islands',
-        'FJ' => 'Fiji',
-        'FI' => 'Finland',
-        'FR' => 'France',
-        'GF' => 'French Guiana',
-        'PF' => 'French Polynesia',
-        'TF' => 'French Southern Territories',
-        'GA' => 'Gabon',
-        'GM' => 'Gambia',
-        'GE' => 'Georgia',
-        'DE' => 'Germany',
-        'GH' => 'Ghana',
-        'GI' => 'Gibraltar',
-        'GR' => 'Greece',
-        'GL' => 'Greenland',
-        'GD' => 'Grenada',
-        'GP' => 'Guadeloupe',
-        'GU' => 'Guam',
-        'GT' => 'Guatemala',
-        'GN' => 'Guinea',
-        'GW' => 'Guinea-bissau',
-        'GY' => 'Guyana',
-        'HT' => 'Haiti',
-        'HM' => 'Heard Island And Mcdonald Islands',
-        'VA' => 'Holy See (vatican City State)',
-        'HN' => 'Honduras',
-        'HK' => 'Hong Kong',
-        'HU' => 'Hungary',
-        'IS' => 'Iceland',
-        'IN' => 'India',
-        'ID' => 'Indonesia',
-        'IR' => 'Iran, Islamic Republic Of',
-        'IQ' => 'Iraq',
-        'IE' => 'Ireland',
-        'IL' => 'Israel',
-        'IT' => 'Italy',
-        'JM' => 'Jamaica',
-        'JP' => 'Japan',
-        'JO' => 'Jordan',
-        'KZ' => 'Kazakstan',
-        'KE' => 'Kenya',
-        'KI' => 'Kiribati',
-        'KP' => 'Korea, Democratic People\'s Republic Of',
-        'KR' => 'Korea, Republic Of',
-        'KV' => 'Kosovo',
-        'KW' => 'Kuwait',
-        'KG' => 'Kyrgyzstan',
-        'LA' => 'Lao People\'s Democratic Republic',
-        'LV' => 'Latvia',
-        'LB' => 'Lebanon',
-        'LS' => 'Lesotho',
-        'LR' => 'Liberia',
-        'LY' => 'Libyan Arab Jamahiriya',
-        'LI' => 'Liechtenstein',
-        'LT' => 'Lithuania',
-        'LU' => 'Luxembourg',
-        'MO' => 'Macau',
-        'MK' => 'Macedonia, The Former Yugoslav Republic Of',
-        'MG' => 'Madagascar',
-        'MW' => 'Malawi',
-        'MY' => 'Malaysia',
-        'MV' => 'Maldives',
-        'ML' => 'Mali',
-        'MT' => 'Malta',
-        'MH' => 'Marshall Islands',
-        'MQ' => 'Martinique',
-        'MR' => 'Mauritania',
-        'MU' => 'Mauritius',
-        'YT' => 'Mayotte',
-        'MX' => 'Mexico',
-        'FM' => 'Micronesia, Federated States Of',
-        'MD' => 'Moldova, Republic Of',
-        'MC' => 'Monaco',
-        'MN' => 'Mongolia',
-        'MS' => 'Montserrat',
-        'ME' => 'Montenegro',
-        'MA' => 'Morocco',
-        'MZ' => 'Mozambique',
-        'MM' => 'Myanmar',
-        'NA' => 'Namibia',
-        'NR' => 'Nauru',
-        'NP' => 'Nepal',
-        'NL' => 'Netherlands',
-        'AN' => 'Netherlands Antilles',
-        'NC' => 'New Caledonia',
-        'NZ' => 'New Zealand',
-        'NI' => 'Nicaragua',
-        'NE' => 'Niger',
-        'NG' => 'Nigeria',
-        'NU' => 'Niue',
-        'NF' => 'Norfolk Island',
-        'MP' => 'Northern Mariana Islands',
-        'NO' => 'Norway',
-        'OM' => 'Oman',
-        'PK' => 'Pakistan',
-        'PW' => 'Palau',
-        'PS' => 'Palestinian Territory, Occupied',
-        'PA' => 'Panama',
-        'PG' => 'Papua New Guinea',
-        'PY' => 'Paraguay',
-        'PE' => 'Peru',
-        'PH' => 'Philippines',
-        'PN' => 'Pitcairn',
-        'PL' => 'Poland',
-        'PT' => 'Portugal',
-        'PR' => 'Puerto Rico',
-        'QA' => 'Qatar',
-        'RE' => 'Reunion',
-        'RO' => 'Romania',
-        'RU' => 'Russian Federation',
-        'RW' => 'Rwanda',
-        'SH' => 'Saint Helena',
-        'KN' => 'Saint Kitts And Nevis',
-        'LC' => 'Saint Lucia',
-        'PM' => 'Saint Pierre And Miquelon',
-        'VC' => 'Saint Vincent And The Grenadines',
-        'WS' => 'Samoa',
-        'SM' => 'San Marino',
-        'ST' => 'Sao Tome And Principe',
-        'SA' => 'Saudi Arabia',
-        'SN' => 'Senegal',
-        'RS' => 'Serbia',
-        'SC' => 'Seychelles',
-        'SL' => 'Sierra Leone',
-        'SG' => 'Singapore',
-        'SK' => 'Slovakia',
-        'SI' => 'Slovenia',
-        'SB' => 'Solomon Islands',
-        'SO' => 'Somalia',
-        'ZA' => 'South Africa',
-        'GS' => 'South Georgia And The South Sandwich Islands',
-        'ES' => 'Spain',
-        'LK' => 'Sri Lanka',
-        'SD' => 'Sudan',
-        'SR' => 'Suriname',
-        'SJ' => 'Svalbard And Jan Mayen',
-        'SZ' => 'Swaziland',
-        'SE' => 'Sweden',
-        'CH' => 'Switzerland',
-        'SY' => 'Syrian Arab Republic',
-        'TW' => 'Taiwan, Province Of China',
-        'TJ' => 'Tajikistan',
-        'TZ' => 'Tanzania, United Republic Of',
-        'TH' => 'Thailand',
-        'TG' => 'Togo',
-        'TK' => 'Tokelau',
-        'TO' => 'Tonga',
-        'TT' => 'Trinidad And Tobago',
-        'TN' => 'Tunisia',
-        'TR' => 'Turkey',
-        'TM' => 'Turkmenistan',
-        'TC' => 'Turks And Caicos Islands',
-        'TV' => 'Tuvalu',
-        'UG' => 'Uganda',
-        'UA' => 'Ukraine',
-        'AE' => 'United Arab Emirates',
-        'GB' => 'United Kingdom',
-        'US' => 'United States',
-        'UM' => 'United States Minor Outlying Islands',
-        'UY' => 'Uruguay',
-        'UZ' => 'Uzbekistan',
-        'VU' => 'Vanuatu',
-        'VE' => 'Venezuela',
-        'VN' => 'Viet Nam',
-        'VG' => 'Virgin Islands, British',
-        'VI' => 'Virgin Islands, U.s.',
-        'WF' => 'Wallis And Futuna',
-        'EH' => 'Western Sahara',
-        'YE' => 'Yemen',
-        'ZM' => 'Zambia',
-        'ZW' => 'Zimbabwe',
-    ];
 }

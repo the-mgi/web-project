@@ -39,15 +39,25 @@ function checkIfUsernameOrEmailExists(string $username, string $emailAddress, st
     return false;
 }
 
-function addAddressOfUser(string $username, string $country, string $state, string $city, string $area, string $streetAddress): mysqli_result|bool {
+function updateUserData(string $username, string $country, string $state, string $city, string $area, string $streetAddress, string $contact, string $date, bool $type): mysqli_result|bool {
     global $connection;
+
+    $contact = getEscapedString($contact);
+    $querySeeker = "UPDATE job_seeker SET contactNumber='$contact', dateOfBirth='$date' where username='$username'";
+    $connection->query($querySeeker);
+
     $username = getEscapedString($username);
     $country == getEscapedString($country);
     $state = getEscapedString($state);
     $city = getEscapedString($city);
     $area = getEscapedString($area);
     $streetAddress = getEscapedString($streetAddress);
-    $query = "INSERT INTO address VALUES ('$username', '$country', '$state', '$city', '$area', '$streetAddress')";
+    if ($type) {
+        $query = "INSERT INTO address VALUES ('$username', '$country', '$state', '$city', '$area',  '$streetAddress')";
+    } else {
+        $query = "UPDATE address SET country='$country', state='$state', city='$city', area='$area', streetAddress='$streetAddress' WHERE fk_user='$username'";
+    }
+    echo $query;
     return $connection->query($query);
 }
 
@@ -55,7 +65,13 @@ function getSummary(string $userId): mysqli_result|bool {
     global $connection;
     $query = "SELECT summary from job_seeker WHERE username='$userId'";
     return $connection->query($query);
+}
 
+function updateSummary(string $username, string $actualSummary): mysqli_result|bool {
+    global $connection;
+    $actualSummary = getEscapedString($actualSummary);
+    $query = "UPDATE job_seeker SET summary='$actualSummary' WHERE username='$username'";
+    return $connection->query($query);
 }
 
 function getAllSkills(string $userId): mysqli_result|bool {
@@ -89,6 +105,24 @@ function getAllExperience(string $userId): mysqli_result|bool {
 function removeData(string $table, string $id): mysqli_result|bool {
     global $connection;
     $query = "DELETE FROM $table WHERE id='$id'";
+    return $connection->query($query);
+}
+
+function checkIfAddressPresent(string $userId): mysqli_result|bool {
+    global $connection;
+    $query = "SELECT fk_user FROM address WHERE fk_user='$userId'";
+    return $connection->query($query);
+}
+
+function getUserFirstName(string $username): mysqli_result|bool {
+    global $connection;
+    $query = "SELECT firstName, lastName FROM job_seeker WHERE username='$username'";
+    return $connection->query($query);
+}
+
+function getUserCompleteData(string $username): mysqli_result|bool {
+    global $connection;
+    $query = "SELECT * FROM job_seeker WHERE username='$username'";
     return $connection->query($query);
 }
 
@@ -205,9 +239,9 @@ function getJobsOfAnEmployer(string $employerUsername): ?array {
 }
 
 function getPeopleWhoAppliedFor(string $jobId): mysqli_result|bool {
-
-
-    return false;
+    global $connection;
+    $query = "SELECT user_key FROM apply_for WHERE job_key='$jobId' AND pay_offered is null";
+    return $connection->query($query);
 }
 
 function addJob(
@@ -301,5 +335,65 @@ function getAllDeveloperDetails(): ?array {
     return null;
 }
 
-getCompanyName("mishaarsalan");
+// =======================Countries Cities========================
+function getAllCountries(): mysqli_result|bool {
+    global $connection;
+    $query = "SELECT * FROM countries";
+    return $connection->query($query);
+}
 
+function getCitiesOfSelectedCountry(string $countryCode): mysqli_result|bool {
+    global $connection;
+    $query = "SELECT city_name, city_id FROM cities WHERE country_code='$countryCode'";
+    echo $query;
+    return $connection->query($query);
+
+}
+
+// =======================apply for========================
+/**
+ * search in the apply for table, for a certain match of jobId and userID, to check
+ * if the user already has applied for the job or not
+ * @param string $username
+ * @param string $id
+ * @return mysqli_result|bool
+ */
+function checkIf(string $username, string $id): mysqli_result|bool {
+    global $connection;
+    $query = "SELECT id FROM apply_for WHERE user_key='$username' AND job_key='$id'";
+    return $connection->query($query);
+}
+
+function addInApplyFor(string $username, string $jobID): mysqli_result|bool {
+    global $connection;
+    $id = md5(uniqid(microtime() . rand()));
+    $query = "INSERT INTO apply_for (id, job_key, user_key) VALUES ('$id', '$jobID', '$username')";
+    return $connection->query($query);
+}
+
+function getAppliedJobs(string $username): mysqli_result|bool {
+    global $connection;
+    $query = "SELECT job_key, pay_offered FROM apply_for WHERE user_key='$username'";
+    return $connection->query($query);
+}
+
+function hireSeeker(string $jobId, string $seekerID, int $salaryOffered): bool|mysqli_result {
+    global $connection;
+    $query = "UPDATE apply_for SET pay_offered=$salaryOffered WHERE user_key='$seekerID' AND job_key='$jobId'";
+    $connection->query($query);
+    $query = "UPDATE job SET jobStatus='Hired' WHERE jobID='$jobId'";
+    return $connection->query($query);
+}
+
+function deleteJobApplication(string $jobId, string $seekerId): mysqli_result|bool {
+    global $connection;
+    $query = "DELETE FROM apply_for WHERE job_key='$jobId' AND user_key='$seekerId'";
+    return $connection->query($query);
+}
+
+// =======================newsletter========================
+function addEmailInNewsletter(string $emailAddress): mysqli_result|bool {
+    global $connection;
+    $query = "INSERT INTO newsletter VALUES ('$emailAddress')";
+    return $connection->query($query);
+}
