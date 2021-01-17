@@ -38,7 +38,7 @@ const afterOnload = (aboutPath = '../about-us/about-us.page.php', blogsPreview =
             <h3 class="footer-h3">Newsletter</h3>
             <label for="letter-email" id=""></label>
             <input class="news-e" type="email" placeholder="Email Address" id="letter-email">
-            <button class="blue-on-white button-300">Sign Up For News Letter</button>
+            <button class="blue-on-white button-300" onclick="addEmailToTable()">Sign Up For News Letter</button>
         </div>
     </div>
     <div class="outer">
@@ -53,35 +53,63 @@ const afterOnload = (aboutPath = '../about-us/about-us.page.php', blogsPreview =
         window.open("mailto:" + 'job.stash.themgi@gmail.com' + '?cc=' + '' + '&subject=' + 'Need Support' + '&body=' + 'Type Your Query Message Here');
     });
 
-};
-
-const toggleModalGeneric = (modalTitle, modalBody) => {
-const main = document.querySelector("main");
-    const mainDiv = document.createElement("div");
-    mainDiv.innerHTML = `
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    const addModal = () => {
+        const main = document.querySelector("main");
+        const divContainer = document.createElement("div");
+        divContainer.className = 'modal fade';
+        divContainer.id = "exampleModal";
+        divContainer.tabIndex = -1;
+        divContainer.setAttribute("aria-labelledby", "exampleModalLabel");
+        divContainer.setAttribute("aria-hidden", "true");
+        divContainer.innerHTML = `
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">${modalTitle}</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="width: 60px;">
-                        <span aria-hidden="true" onclick="removeFromDOM()">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="content">
-                    ${modalBody}
-                </div>
+                <div class="modal-body" id="content"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;" onclick="removeFromDOM();">Close
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;">Close
                     </button>
                 </div>
             </div>
-        </div>
-    </div>`;
+        </div>`;
+        main.appendChild(divContainer);
+    };
+    addModal();
+};
 
-    main.appendChild(mainDiv);
+const toggleModalGeneric = (modalTitle, modalBody) => {
+    const content = document.getElementById("content");
+    const title = document.getElementById("exampleModalLabel");
+    content.innerText = modalBody;
+    title.innerText = modalTitle;
     let myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
         keyboard: false
     });
     myModal.toggle();
+};
+
+const addEmailToTable = () => {
+    console.log("i am called");
+    let value = document.getElementById("letter-email");
+    value = value.value;
+    if (value.length === 0) {
+        toggleModalGeneric("Error", "Email not valid");
+        return;
+    }
+    const ajaxCall = new XMLHttpRequest();
+    ajaxCall.open("GET", `./CRUD/functions.php?function=subscribeToNewsletter&emailNewsLetter=${value}`);
+    ajaxCall.send();
+    ajaxCall.onreadystatechange = () => {
+        if (ajaxCall.readyState === 4 && ajaxCall.status === 200) {
+            const text = ajaxCall.responseText;
+            if (text === '1') {
+                toggleModalGeneric("Success", "Email Added to newsletter");
+            }
+        }
+    };
 };
