@@ -21,7 +21,7 @@ if (!isset($_REQUEST["id"])) {
     <link rel="stylesheet" href="./complete-blog.styles.css">
     <title>Document</title>
 </head>
-<body>
+<body onload="afterOnload();">
 <header>
     <nav class="navbar navbar-expand-md navbar-dark">
         <a href="../index.php" class="navbar-brand" style="color: black;"><img src="../assets/svgs/final.svg" alt="gg_image"
