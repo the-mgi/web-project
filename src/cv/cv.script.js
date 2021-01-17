@@ -1,4 +1,8 @@
 $('#datePicker').datepicker({maxDate: "-18y", minDate: new Date(1970, 1, 1), dateFormat: "yy-mm-dd"});
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
 
 const PENCIL_HTML_ENTITY = "&#128393;";
 let summaryContainer;
@@ -19,7 +23,7 @@ const initializeAll = () => {
     addSkillsToPageOnLoad();
     addEducationToPageOnLoad();
     addExperienceToPageOnLoad();
-    };
+};
 
 const addSummaryToPage = () => {
     const ajaxCall = new XMLHttpRequest();
@@ -104,7 +108,7 @@ const removeCurrentEducation = (idElement) => {
     const id = idElement.id;
     removeData('removeEducation', id).then(value => {
         if (value === true) {
-            idElement.parentElement.parentElement.parentElement.remove();
+            idElement.parentElement.parentElement.remove();
         } else {
             toggleModal("Education Data Not Updated");
         }
@@ -115,10 +119,8 @@ const removeCurrentEducation = (idElement) => {
 const removeCurrentExperience = (idElement) => {
     const id = idElement.id;
     removeData('removeExperience', id).then(value => {
-        console.log("the value is: ");
-        console.log(value);
         if (value === true) {
-            idElement.parentElement.parentElement.parentElement.remove();
+            idElement.parentElement.parentElement.remove();
         } else {
             toggleModal("Education Data Not Updated");
         }
@@ -135,10 +137,7 @@ const removeData = async (functionValue, id) => {
             ajaxCall.onreadystatechange = () => {
                 if (ajaxCall.readyState === 4 && ajaxCall.status === 200) {
                     const responseText = ajaxCall.responseText;
-                    console.log("my re");
-                    console.log(responseText);
                     if (responseText === '1') {
-                        console.log("all true");
                         resolve(true);
                     } else {
                         resolve(false);
@@ -198,24 +197,218 @@ const removeButtonSkill = () => {
     document.querySelector('.add-skill').remove();
 }
 
-const addEducationContainer = () => {
+const ajaxCallUpdateEducationExperience = (functionName = "education", type = "ed") => {
+    let crsName = document.getElementById(`course${type}`);
+    let insName = document.getElementById(`instituteName${type}`);
+    let insCity = document.getElementById(`instituteCity${type}`);
+    let fromYear = document.getElementById(`fromYear${type}`);
+    let fromMonth = document.getElementById(`fromMonth${type}`);
+    let toYear = document.getElementById(`toYear${type}`);
+    let toMonth = document.getElementById(`toMonth${type}`);
 
+    crsName = crsName.value;
+    crsName = escape(crsName);
+
+    insName = insName.value;
+    insName = escape(insName);
+
+    insCity = insCity.value;
+    insCity = escape(insCity);
+
+    fromYear = fromYear.value;
+    fromMonth = fromMonth.value;
+    toYear = toYear.value;
+    toMonth = toMonth.value;
+
+    const checkValidityAll = () => {
+        return crsName.length <= 0 || insName.length <= 0 ||
+            insCity.length <= 0 || fromYear.length <= 0 ||
+            toYear.length <= 0 || fromMonth.length <= 0 || toMonth.length <= 0;
+    };
+
+    if (checkValidityAll()) {
+        toggleModalGeneric("Error", "Field(s) cannot be empty");
+        return;
+    }
+
+    const ajaxCall = new XMLHttpRequest();
+    ajaxCall.open("GET", `../CRUD/functions.php?function=${functionName}&crsName=${crsName}&insName=${insName}&insCity=${insCity}&fromYear=${fromYear}&fromMonth=${fromMonth}&toYear=${toYear}&toMonth=${toMonth}`);
+    ajaxCall.send();
+    ajaxCall.onreadystatechange = () => {
+        if (ajaxCall.readyState === 4 && ajaxCall.status === 200) {
+            const responseText = ajaxCall.responseText;
+            console.log(responseText);
+            if (responseText === '1') {
+                toggleModalGeneric("Success", `${functionName.capitalize()} added Successfully`);
+            }
+        }
+    };
+};
+
+const addEducationContainer = () => {
+    const container = addEducationExperienceContainer();
+    educationContainer.insertAdjacentElement("afterend", container);
+
+    const saveButton = document.getElementById("saveEducationed");
+    saveButton.onclick = () => {
+        ajaxCallUpdateEducationExperience();
+    };
+
+    const removeButton = document.getElementById("removeEducationContainered");
+    removeButton.onclick = () => {
+        container.remove();
+    };
+
+    addMonth();
 };
 
 const addExperienceContainer = () => {
+    const container = addEducationExperienceContainer(
+        "newExperienceContainer",
+        "Post",
+        "Organization Name",
+        "Organization City",
+        "ex"
+    );
+    experienceContainer.insertAdjacentElement("afterend", container);
 
+    const saveButton = document.getElementById("saveEducationex");
+    saveButton.onclick = () => {
+        ajaxCallUpdateEducationExperience("experience", "ex");
+    };
+
+    const removeButton = document.getElementById("removeEducationContainerex");
+    removeButton.onclick = () => {
+        container.remove();
+    };
+
+    addMonth("ex");
 };
 
-const toggleModal = (string) => {
-    const content = document.getElementById("content");
-    content.innerText = string;
-    let myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
-        keyboard: false
+const addMonth = (type = "ed") => {
+    const listMonths = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+    const selectFromMonth = document.getElementById(`fromMonth${type}`);
+    const selectToMonth = document.getElementById(`toMonth${type}`);
+
+    listMonths.forEach(singleMonth => {
+
+        const element = document.createElement("option");
+        element.value = singleMonth;
+        element.innerHTML = singleMonth;
+
+        const element02 = document.createElement("option");
+        element02.value = singleMonth;
+        element02.innerHTML = singleMonth;
+
+        selectFromMonth.appendChild(element);
+        selectToMonth.appendChild(element02);
     });
-    myModal.toggle();
+
+    const START_YEAR = 1970;
+    const arrayOfYears = Array.from(Array(50).keys()).map(value => {
+        return value + START_YEAR
+    });
+
+    const selectFromYear = document.getElementById(`fromYear${type}`);
+    const selectToYear = document.getElementById(`toYear${type}`);
+
+    arrayOfYears.forEach(singleYear => {
+        const element = document.createElement("option");
+        element.value = singleYear.toString();
+        element.innerHTML = singleYear.toString();
+
+        const element02 = document.createElement("option");
+        element02.value = singleYear.toString();
+        element02.innerHTML = singleYear.toString();
+
+        selectFromYear.appendChild(element);
+        selectToYear.appendChild(element02);
+    });
 };
 
-const addEducationExperienceContainer = () =>  {
+const addEducationExperienceContainer = (
+    containerId = "newEducationContainer",
+    courseName = "Course Name",
+    instituteName = "Institute Name",
+    instituteCity = "Institute City",
+    type = "ed"
+) => {
+    const mainContainer = document.createElement("div");
+    mainContainer.id = containerId;
+    mainContainer.innerHTML = `
+        <div class="row-name full-width">
+            <label for="course" class="zero"></label>
+            <input type="text" id="course${type}" placeholder="${courseName}">
+        </div>
+        <div class="row-name">
+            <label for="instituteName" class="zero"></label>
+            <input type="text" id="instituteName${type}" placeholder="${instituteName}">
+
+            <label for="instituteCity" class="zero"></label>
+            <input type="text" id="instituteCity${type}" placeholder="${instituteCity}">
+        </div>
+        <div class="row-name">
+            <select
+                    required
+                    class="form-select px-2"
+                    aria-label="Default select example"
+                    style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                    id="fromYear${type}"
+                    name="citySelected"
+            >
+                <option value="" selected>Select Start Year</option>
+            </select>
+            <select
+                    required
+                    class="form-select px-2"
+                    aria-label="Default select example"
+                    style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                    id="fromMonth${type}"
+                    name="citySelected"
+            >
+                <option value="" selected>Select Start Month</option>
+            </select>
+        </div>
+        <div class="row-name">
+            <select
+                    required
+                    class="form-select px-2"
+                    aria-label="Default select example"
+                    style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                    id="toYear${type}"
+                    name="citySelected"
+            >
+                <option value="" selected>Select End Year</option>
+            </select>
+            <select
+                    required
+                    class="form-select px-2"
+                    aria-label="Default select example"
+                    style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                    id="toMonth${type}"
+                    name="citySelected"
+            >
+                <option value="" selected>Select End Month</option>
+            </select>
+        </div>
+        <div class="row-name">
+            <button id="saveEducation${type}">Save</button>
+            <button id="removeEducationContainer${type}">Remove</button>
+        </div>`;
+    return mainContainer;
 };
 
 const updateCitiesSelectBox = () => {
@@ -225,12 +418,9 @@ const updateCitiesSelectBox = () => {
     const ajaxCall = new XMLHttpRequest();
     ajaxCall.open("GET", `../CRUD/functions.php?function=getCities&country_code=${countryCode}`, true);
     ajaxCall.send();
-    console.log("above");
     ajaxCall.onreadystatechange = () => {
         if (ajaxCall.readyState === 4 && ajaxCall.status === 200) {
-            console.log("i came in here");
             const text = ajaxCall.responseText;
-            console.log(text);
             cities.innerHTML = text;
             cities.disabled = false;
         }

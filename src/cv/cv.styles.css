@@ -1,12 +1,12 @@
-/*body {*/
-/*    width: 100%;*/
-/*    height: 100vh;*/
-/*    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../assets/images/6671.jpg");*/
-/*    background-position: center;*/
-/*    background-repeat: no-repeat;*/
-/*    background-size: cover;*/
-/*    background-attachment: fixed;*/
-/*}*/
+body {
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), url("../assets/images/6671.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
 
 .main-container {
     display: grid;
@@ -92,15 +92,15 @@ button[id=skillAddBtn], button[id=skillAddRemove] {
     width: 100px;
 }
 
-button[id=skillAddRemove] {
+button[id=skillAddRemove], button[id=removeEducationContainerex], button[id=removeEducationContainered] {
     background-color: #f18383;
 }
 
-button[id=skillAddRemove]:active {
+button[id=skillAddRemove]:active, button[id=removeEducationContainerex]:active, button[id=removeEducationContainered]:active {
     color: #fcd9d9;
 }
 
-button[id=skillAddRemove]:hover {
+button[id=skillAddRemove]:hover, button[id=removeEducationContainerex]:hover, button[id=removeEducationContainered]:hover {
     box-shadow: 0 0 0 5px #fcd9d9;
 }
 
@@ -125,6 +125,30 @@ hr {
 .navbar {
     background-color: var(--color-primary);
     position: relative;
+}
+
+#newEducationContainer, #newExperienceContainer {
+    width: 500px;
+}
+
+.zero {
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.row-name {
+    display: flex;
+    flex-direction: row;
+}
+
+.row-name input, .row-name button {
+    width: 50%;
+}
+
+.full-width input{
+    width: 100%;
 }
 
 @media screen and (min-width: 0) and (max-width: 899px) {

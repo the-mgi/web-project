@@ -19,7 +19,7 @@ if (!isset($_SESSION["personType"])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!--    <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>-->
+    <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../external-libraries/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="cv.styles.css">
@@ -97,12 +97,12 @@ if (!isset($_SESSION["personType"])) {
                     <div class="row-o">
                         <label for="firstName"></label>
                         <?php
-                        echo "<input type='text' id='firstName' name='firstName' value='" . $_SESSION["firstName"] . "' placeholder='First Name' required disabled>"
+                        echo "<input type='text' id='firstName' name='firstName' value='" . ucfirst($_SESSION["firstName"]) . "' placeholder='First Name' required disabled>"
                         ?>
 
                         <label for="lastName"></label>
                         <?php
-                        echo "<input type='text' id='lastName' value='" . $_SESSION["lastName"] . "' placeholder='Last Name' required disabled>"
+                        echo "<input type='text' id='lastName' value='" . ucfirst($_SESSION["lastName"]) . "' placeholder='Last Name' required disabled>"
                         ?>
                     </div>
 
@@ -155,13 +155,15 @@ if (!isset($_SESSION["personType"])) {
                                 name="citySelected"
                                 disabled
                         >
-                            <option value="" selected>Select Your City</option>'
+                            <option value="" selected>Select Your City</option>
+                            '
                         </select>
                     </div>
 
                     <div class="row-o">
                         <label for="streetAddress"></label>
-                        <input type="text" id="streetAddress" name="streetAddress" placeholder="Street Address" required>
+                        <input type="text" id="streetAddress" name="streetAddress" placeholder="Street Address"
+                               required>
                         <label for="state"></label>
                         <input type="text" placeholder="state" id="state" name="state" required>
                     </div>
@@ -201,32 +203,13 @@ if (!isset($_SESSION["personType"])) {
                             Experience
                             <span id="experiencePlusSymbol" style="font-size: 25px" onclick="addExperienceContainer()">&#x2b;</span>
                         </div>
-                        <div class="all-skills-display" id="experienceContainer"></div>
+                           <div class="all-skills-display" id="experienceContainer"></div>
                     </div>
 
                     <button style="width: 100%; margin: 0" class="login-btn btn-" id="loginButton" type="submit"
                             value="submit" onclick="forwardO();">Save
                     </button>
                 </form>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="width: 60px;">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="content">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;">Close
-                    </button>
-                </div>
             </div>
         </div>
     </div>
