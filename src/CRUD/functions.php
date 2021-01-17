@@ -12,7 +12,6 @@ function displayAllJobs(?array $result, string $string = 'No Job Found'): void {
             $responsibilities = $row["responsibilities"];
             $companyName = getCompanyName($row["fk_employer"]);
             $status = $row["jobStatus"];
-            echo "job status is: ".$row["jobStatus"];
             $class = 'badge rounded-pill bg-primary p-2';
             if ($status != 'Open') {
                 $class = 'badge rounded-pill bg-danger p-2';
@@ -67,6 +66,19 @@ function writeJobDetails($result): void {
                 </p>";
 }
 
+function educationExperience(string $table = "education"): mysqli_result|bool {
+    $dataArray = array();
+    $dataArray["crsName"] = $_REQUEST["crsName"];
+    $dataArray["insName"] = $_REQUEST["insName"];
+    $dataArray["insCity"] = $_REQUEST["insCity"];
+    $dataArray["fromYear"] = $_REQUEST["fromYear"];
+    $dataArray["fromMonth"] = $_REQUEST["fromMonth"];
+    $dataArray["toYear"] = $_REQUEST["toYear"];
+    $dataArray["toMonth"] = $_REQUEST["toMonth"];
+    $dataArray["username"] = $_SESSION["username"];
+    return addEducationExperience($table, $dataArray);
+}
+
 if (isset($_REQUEST['function'])) {
     $function = $_REQUEST['function']; // logout
     switch ($function) {
@@ -98,11 +110,7 @@ if (isset($_REQUEST['function'])) {
         case 'subscribeToNewsletter':
             $emailNewsletter = $_REQUEST["emailNewsLetter"];
             $result = addEmailInNewsletter($emailNewsletter);
-            if ($result) {
-                echo "<script>alert('Email accepted for newsletter')</script>";
-            } else {
-                echo "<script>alert('Email already present for newsletter!')</script>";
-            }
+            echo $result;
             break;
         case 'signUp':
             /**
@@ -604,6 +612,12 @@ if (isset($_REQUEST['function'])) {
             $seekerId = $_REQUEST["seekerId"];
             $result = deleteJobApplication($job, $seekerId);
             echo "$result";
+            break;
+        case 'education':
+            echo educationExperience();
+            break;
+        case 'experience':
+            echo educationExperience("experience");
             break;
         default:
             print_r("I got nothing to do for you!!");

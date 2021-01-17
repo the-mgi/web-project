@@ -126,6 +126,21 @@ function getUserCompleteData(string $username): mysqli_result|bool {
     return $connection->query($query);
 }
 
+function addEducationExperience(string $table, array $allVariables): mysqli_result|bool {
+    global $connection;
+    $id = md5(uniqid(microtime().rand()));
+    $crsName = getEscapedString($allVariables["crsName"]);
+    $insName = getEscapedString($allVariables["insName"]);
+    $insCity = getEscapedString($allVariables["insCity"]);
+    $fromYear = getEscapedString($allVariables["fromYear"]);
+    $fromMonth = getEscapedString($allVariables["fromMonth"]);
+    $toYear = getEscapedString($allVariables["toYear"]);
+    $toMonth = getEscapedString($allVariables["toMonth"]);
+    $username = $allVariables["username"];
+    $query = "INSERT INTO $table VALUES ('$username', '$crsName', '$insName', '$insCity', '$fromYear', '$fromMonth', '$toYear', '$toMonth', 0, '$id')";
+    return $connection->query($query);
+}
+
 // =======================Blogs========================
 function commonGetBlog($query): ?array {
     global $connection;
