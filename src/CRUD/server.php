@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 //include "./dbConnection.php";
+use JetBrains\PhpStorm\Pure;
+
 $hostName = "localhost";
 $username = "root";
 $password = "ayanali78941";
@@ -13,21 +15,27 @@ function getEscapedString(string $string): string {
     global $connection;
     return $connection->real_escape_string($string);
 }
+#[Pure] function getHashedString(string $string): string {return hash("sha256", $string);}
 
 // =======================Users========================
 function addUserWhileSigningUp(string $firstName, string $lastName, string $username, string $emailAddress, string $password, string $personType): bool {
+    $emailAddress = getHashedString($emailAddress);
+    $password = getHashedString($password);
     global $connection;
     $query = "INSERT INTO $personType (username, password, firstName, lastName, emailAddress) values ('$username', '$password', '$firstName', '$lastName', '$emailAddress')";
     return $connection->query($query);
 }
 
 function verifyUser($email, $password, $personType): mysqli_result|bool {
+    $email = getHashedString($email);
+    $password = getHashedString($password);
     global $connection;
     $query = "SELECT * FROM $personType WHERE emailAddress='$email' and password='$password'";
     return $connection->query($query);
 }
 
 function checkIfUsernameOrEmailExists(string $username, string $emailAddress, string $personType): bool {
+    $emailAddress = getHashedString($emailAddress);
     global $connection;
     $query = "SELECT username, emailAddress FROM $personType WHERE username='$username' or emailAddress='$emailAddress'";
     $result = $connection->query($query);
@@ -408,6 +416,7 @@ function deleteJobApplication(string $jobId, string $seekerId): mysqli_result|bo
 
 // =======================newsletter========================
 function addEmailInNewsletter(string $emailAddress): mysqli_result|bool {
+    $emailAddress = getHashedString($emailAddress);
     global $connection;
     $query = "INSERT INTO newsletter VALUES ('$emailAddress')";
     return $connection->query($query);
