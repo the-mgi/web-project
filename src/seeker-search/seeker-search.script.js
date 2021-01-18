@@ -53,8 +53,13 @@ const openJobDetails = (eventData) => {
     ajaxRequest.send();
     ajaxRequest.onreadystatechange = () => {
         if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
+            const text = ajaxRequest.responseText;
             const jobDetails = document.getElementById('jobDetails');
-            jobDetails.innerHTML = ajaxRequest.responseText;
+            if (window.innerWidth >= 900) {
+                jobDetails.innerHTML = text;
+            } else {
+                toggleModalGeneric("Job Details", text);
+            }
         }
     }
 };  // it is used dude
@@ -80,21 +85,11 @@ const applyForJob = (eventData) => {
         if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
             const result = ajaxRequest.responseText;
             if (result === 'true') {
-                toggleModal("Successfully Applied For Job");
+                toggleModalGeneric("Success", "Successfully Applied For Job");
                 eventData.disabled = true;
                 eventData.innerHTML = `<span class="fa fa-check"></span> Already Applied`
             }
         }
     };
 }; // it is used dude
-
-const toggleModal = (string) => {
-    const content = document.getElementById("content");
-    content.innerText = string;
-    let myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
-        keyboard: false
-    });
-    myModal.toggle();
-};
-
 

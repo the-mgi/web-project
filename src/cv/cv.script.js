@@ -49,7 +49,7 @@ const summaryToTextareaContainer = () => {
 const saveSummary = () => {
     const text = textArea.firstElementChild.value;
     if (text.length < 100) {
-        toggleModal("Summary must contain at least 100 characters.");
+        toggleModalGeneric("Error", "Summary must contain at least 100 characters.");
         return;
     }
     const ajaxCall = new XMLHttpRequest();
@@ -110,7 +110,7 @@ const removeCurrentEducation = (idElement) => {
         if (value === true) {
             idElement.parentElement.parentElement.remove();
         } else {
-            toggleModal("Education Data Not Updated");
+            toggleModalGeneric("Error", "Education Data Not Updated");
         }
     });
 
@@ -122,7 +122,7 @@ const removeCurrentExperience = (idElement) => {
         if (value === true) {
             idElement.parentElement.parentElement.remove();
         } else {
-            toggleModal("Education Data Not Updated");
+            toggleModalGeneric("Error", "Education Data Not Updated");
         }
     });
 }; // it is used dude
@@ -179,7 +179,7 @@ const addNewSkill = () => {
     const skillName = document.getElementById("skillTitle");
     const skillYears = document.getElementById("skillExperience");
     if (skillName.value.length <= 0 || skillYears.value.length <= 0) {
-        toggleModal("Fields Must not be empty");
+        toggleModalGeneric("Error", "Fields Must not be empty");
         return;
     }
     const name = escape(skillName.value);

@@ -73,25 +73,6 @@ include "../nav-bar/nav-bar.php";
             <div class="job-details mx-auto" id="jobDetails">Select a Job to View details and APPLY!</div>
         </div>
     </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="width: 60px;">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="content">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100px;">Close
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 </main>
 <script src="./seeker-search.script.js"></script>
 <script src="../common.script.js"></script>
