@@ -42,7 +42,7 @@ const summaryToTextareaContainer = () => {
     textArea.innerHTML = `
     <textarea name="summary" id="summary" placeholder="Summary About Yourself" onkeyup="makeVisibleDiv(this);">${actualSummary.innerText}</textarea><div class="is-invalid m-0">Summary must contain letters and 100-500 chars</div>`
     mainSkillsContainer.insertAdjacentElement('afterend', textArea);
-    pencilSkills.innerHTML = `<button class="m-0" style="width: 80px;">Save</button>`;
+    pencilSkills.innerHTML = `<button class="m-0" style="width: 80px;" type="button">Save</button>`;
     pencilSkills.onclick = saveSummary;
     actualSummary.remove();
 };
@@ -405,8 +405,8 @@ const addEducationExperienceContainer = (
             </select>
         </div>
         <div class="row-name">
-            <button id="saveEducation${type}">Save</button>
-            <button id="removeEducationContainer${type}">Remove</button>
+            <button id="saveEducation${type}" type="button">Save</button>
+            <button id="removeEducationContainer${type}" type="button">Remove</button>
         </div>`;
     return mainContainer;
 };
