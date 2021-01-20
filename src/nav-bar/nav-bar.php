@@ -13,7 +13,8 @@ if (isset($_SESSION["personType"])) {
     if ($_SESSION['personType'] == 'job_seeker') {
         echo '
                             <li class="nav-item"><a id="getStarted" href="../seeker-search/seeker-search.page.php" class="nav-link">Get Started</a></li>
-                            <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>';
+                            <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>
+                            <li class="nav-item"><a id="resumeLink" href="../cv/cv.page.php" class="nav-link">Create Resume</a></li>';
     } else if ($_SESSION['personType'] == 'employer') {
         echo '<li class="nav-item"><a id="newJob" href="../create-job/create-job.page.php" class="nav-link">Create a
                         new Job</a></li>
