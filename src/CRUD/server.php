@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 //include "./dbConnection.php";
 use JetBrains\PhpStorm\Pure;
 
@@ -15,14 +16,19 @@ function getEscapedString(string $string): string {
     global $connection;
     return $connection->real_escape_string($string);
 }
-#[Pure] function getHashedString(string $string): string {return hash("sha256", $string);}
+
+#[Pure] function getHashedString(string $string): string {
+    return hash("sha256", $string);
+}
 
 // =======================Users========================
 function addUserWhileSigningUp(string $firstName, string $lastName, string $username, string $emailAddress, string $password, string $personType): bool {
+    global $connection;
     $emailAddress = getHashedString($emailAddress);
     $password = getHashedString($password);
-    global $connection;
-    $query = "INSERT INTO $personType (username, password, firstName, lastName, emailAddress) values ('$username', '$password', '$firstName', '$lastName', '$emailAddress')";
+    $query = "INSERT INTO $personType (username_fk) VALUES ('$username');";
+    $connection->query($query);
+    $query = "INSERT INTO person (username, password, firstName, lastName, emailAddress, personType) values ('$username', '$password', '$firstName', '$lastName', '$emailAddress', '$personType')";
     return $connection->query($query);
 }
 
@@ -30,14 +36,14 @@ function verifyUser($email, $password, $personType): mysqli_result|bool {
     $email = getHashedString($email);
     $password = getHashedString($password);
     global $connection;
-    $query = "SELECT * FROM $personType WHERE emailAddress='$email' and password='$password'";
+    $query = "SELECT * FROM person WHERE emailAddress='$email' and password='$password' AND personType='$personType';";
     return $connection->query($query);
 }
 
 function checkIfUsernameOrEmailExists(string $username, string $emailAddress, string $personType): bool {
     $emailAddress = getHashedString($emailAddress);
     global $connection;
-    $query = "SELECT username, emailAddress FROM $personType WHERE username='$username' or emailAddress='$emailAddress'";
+    $query = "SELECT username, emailAddress FROM person WHERE (username='$username' or emailAddress='$emailAddress') AND personType='$personType';";
     $result = $connection->query($query);
     if (!is_bool($result)) {
         if ($result->num_rows > 0) {
@@ -51,7 +57,7 @@ function updateUserData(string $username, string $country, string $state, string
     global $connection;
 
     $contact = getEscapedString($contact);
-    $querySeeker = "UPDATE job_seeker SET contactNumber='$contact', dateOfBirth='$date' where username='$username'";
+    $querySeeker = "UPDATE job_seeker SET contactNumber='$contact', dateOfBirth='$date' where username_fk='$username'";
     $connection->query($querySeeker);
 
     $username = getEscapedString($username);
@@ -60,25 +66,22 @@ function updateUserData(string $username, string $country, string $state, string
     $city = getEscapedString($city);
     $area = getEscapedString($area);
     $streetAddress = getEscapedString($streetAddress);
-    if ($type) {
-        $query = "INSERT INTO address VALUES ('$username', '$country', '$state', '$city', '$area',  '$streetAddress')";
-    } else {
+    $type ?
+        $query = "INSERT INTO address VALUES ('$username', '$country', '$state', '$city', '$area',  '$streetAddress')" :
         $query = "UPDATE address SET country='$country', state='$state', city='$city', area='$area', streetAddress='$streetAddress' WHERE fk_user='$username'";
-    }
-    echo $query;
     return $connection->query($query);
 }
 
 function getSummary(string $userId): mysqli_result|bool {
     global $connection;
-    $query = "SELECT summary from job_seeker WHERE username='$userId'";
+    $query = "SELECT summary from job_seeker WHERE username_fk='$userId'";
     return $connection->query($query);
 }
 
 function updateSummary(string $username, string $actualSummary): mysqli_result|bool {
     global $connection;
     $actualSummary = getEscapedString($actualSummary);
-    $query = "UPDATE job_seeker SET summary='$actualSummary' WHERE username='$username'";
+    $query = "UPDATE job_seeker SET summary='$actualSummary' WHERE username_fk='$username'";
     return $connection->query($query);
 }
 
@@ -124,19 +127,19 @@ function checkIfAddressPresent(string $userId): mysqli_result|bool {
 
 function getUserFirstName(string $username): mysqli_result|bool {
     global $connection;
-    $query = "SELECT firstName, lastName FROM job_seeker WHERE username='$username'";
+    $query = "SELECT firstName, lastName FROM person WHERE username='$username'";
     return $connection->query($query);
 }
 
 function getUserCompleteData(string $username): mysqli_result|bool {
     global $connection;
-    $query = "SELECT * FROM job_seeker WHERE username='$username'";
+    $query = "SELECT person.*, job_seeker.* FROM person, job_seeker WHERE person.username='$username' AND job_seeker.username_fk='$username'";
     return $connection->query($query);
 }
 
 function addEducationExperience(string $table, array $allVariables): mysqli_result|bool {
     global $connection;
-    $id = md5(uniqid(microtime().rand()));
+    $id = md5(uniqid(microtime() . rand()));
     $crsName = getEscapedString($allVariables["crsName"]);
     $insName = getEscapedString($allVariables["insName"]);
     $insCity = getEscapedString($allVariables["insCity"]);
