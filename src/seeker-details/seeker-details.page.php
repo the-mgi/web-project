@@ -28,7 +28,8 @@ if (!isset($_REQUEST["userDetails"])) {
     <link rel="stylesheet" href="../cv/cv.styles.css">
     <link rel="stylesheet" href="../seeker-search/seeker-search.styles.css">
     <link rel="stylesheet" href="./seeker-details.styles.css">
-    <title>Seeker Details</title>
+    <link rel="icon" href="../assets/svgs/final.svg">
+    <title>Details</title>
 </head>
 <body onload="{initializeVariables();afterOnload();}">
 <?php

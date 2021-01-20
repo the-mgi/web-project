@@ -20,7 +20,8 @@ if (isset($_SESSION["personType"])) {
     <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="./seeker-search.styles.css">
-    <title>Title</title>
+    <link rel="icon" href="../assets/svgs/final.svg">
+    <title>Search For a Job</title>
 </head>
 <body onload="{initializeAll();afterOnload();}">
 <?php
@@ -63,9 +64,6 @@ include "../nav-bar/nav-bar.php";
                         onchange="makeAjaxCall(this, 'searchSuggestionCompany')"
                 >
                 </select>
-            </div>
-            <div class="make-row">
-                <button type="button">Save</button>
             </div>
         </div>
         <div class="jobs-area">

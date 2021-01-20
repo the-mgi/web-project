@@ -24,7 +24,8 @@ if (isset($_SESSION["personType"])) {
     <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../seeker-search/seeker-search.styles.css">
-    <title>Jobs I applied</title>
+    <link rel="icon" href="../assets/svgs/final.svg">
+    <title>Jobs Applied</title>
 </head>
 <body onload="afterOnload();">
 <?php

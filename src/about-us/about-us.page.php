@@ -14,8 +14,8 @@ session_start();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="./about-us.styles.css">
-    <title>Title</title>
-</head>
+    <link rel="icon" href="../assets/svgs/final.svg">
+    <title>About Us</title></head>
 <body onload="afterOnload();">
 <?php
 include "../nav-bar/nav-bar.php";

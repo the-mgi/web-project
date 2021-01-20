@@ -16,7 +16,8 @@ include "./CRUD/server.php";
     <script src="main-seeker.script.js"></script>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="main-seeker.styles.css">
-    <title>Title</title>
+    <link rel="icon" href="./assets/svgs/final.svg">
+    <title>Job Stash Home</title>
 </head>
 <body onload="afterOnload('./about-us/about-us.page.php', './blog-preview/blog-preview.page.php')">
 <header>
@@ -33,7 +34,8 @@ include "./CRUD/server.php";
                 if (isset($_SESSION["personType"])) {
                     if ($_SESSION['personType'] == 'job_seeker') {
                         echo '<li class="nav-item"><a id="getStarted" href="./seeker-search/seeker-search.page.php" class="nav-link">Get Started</a></li>
-                <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>';
+                <li class="nav-item"><a id="jobs" href="#" class="nav-link">Jobs I Applied</a></li>
+                <li class="nav-item"><a id="resumeLink" href="./cv/cv.page.php" class="nav-link">Create Resume</a></li>';
                     } else if ($_SESSION['personType'] == 'employer') {
                         echo '<li class="nav-item"><a id="newJob" href="./create-job/create-job.page.php" class="nav-link">Create a
                         new Job</a></li>

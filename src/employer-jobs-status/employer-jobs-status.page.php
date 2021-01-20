@@ -30,7 +30,8 @@ if (isset($_SESSION["personType"])) {
         }
     </style>
 
-    <title>Title</title>
+    <link rel="icon" href="../assets/svgs/final.svg">
+    <title>Jobs Posted</title>
 </head>
 <body onload="{initializeAll();afterOnload();}">
 <?php

@@ -17,8 +17,8 @@ session_start();
     <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="./blog-preview.styles.css">
-    </body>
-    <title>Document</title>
+    <link rel="icon" href="../assets/svgs/final.svg">
+    <title>Blogs</title>
 </head>
 <body onload="afterOnload();">
 <?php

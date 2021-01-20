@@ -16,6 +16,8 @@ session_start();
     <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="login.styles.css">
+    <link rel="icon" href="../assets/svgs/final.svg">
+    <title>Jobs Applied</title>
 </head>
 
 <body class="body-back-image" onload="afterOnload();">

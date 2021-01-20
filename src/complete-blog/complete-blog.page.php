@@ -19,7 +19,8 @@ if (!isset($_REQUEST["id"])) {
     <script src="https://kit.fontawesome.com/43c8618748.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="./complete-blog.styles.css">
-    <title>Document</title>
+    <link rel="icon" href="../assets/svgs/final.svg">
+    <title>Read Blog</title>
 </head>
 <body onload="afterOnload();">
 <?php

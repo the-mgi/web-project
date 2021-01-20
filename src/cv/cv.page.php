@@ -23,7 +23,8 @@ if (!isset($_SESSION["personType"])) {
     <link rel="stylesheet" href="../external-libraries/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="cv.styles.css">
-    <title>CV</title>
+    <link rel="icon" href="../assets/svgs/final.svg">
+    <title>Create CV</title>
 </head>
 <body onload="{initializeAll();afterOnload();}">
 <?php

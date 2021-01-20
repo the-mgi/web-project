@@ -24,7 +24,8 @@ if (!$peronType == 'employer') {
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="create-job.styles.css">
-    <title>Title</title>
+    <link rel="icon" href="../assets/svgs/final.svg">
+    <title>Create Job</title>
 </head>
 <body onload="afterOnload();">
 <?php
