@@ -85,7 +85,7 @@ const afterOnload = (aboutPath = '../about-us/about-us.page.php', blogsPreview =
 const toggleModalGeneric = (modalTitle, modalBody) => {
     const content = document.getElementById("content");
     const title = document.getElementById("exampleModalLabel");
-    content.innerText = modalBody;
+    content.innerHTML = modalBody;
     title.innerText = modalTitle;
     let myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
         keyboard: false
