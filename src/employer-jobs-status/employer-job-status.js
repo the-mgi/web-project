@@ -23,7 +23,12 @@ const openJobDetails = (eventData) => {
     ajaxRequest.send();
     ajaxRequest.onreadystatechange = () => {
         if (ajaxRequest.readyState === 4 && ajaxRequest.status === 200) {
-            jobDetails.innerHTML = ajaxRequest.responseText;
+            const text = ajaxRequest.responseText;
+            if (window.innerWidth >= 900) {
+                jobDetails.innerHTML = text;
+            } else {
+                toggleModalGeneric("Job Details", text);
+            }
         }
     }
 };  // it is used dude
