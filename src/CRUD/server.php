@@ -5,7 +5,7 @@ use JetBrains\PhpStorm\Pure;
 
 $hostName = "localhost";
 $username = "root";
-$password = "ayanali78941";
+$password = "";
 $dbName = "job_portal";
 $connection = mysqli_connect($hostName, $username, $password, $dbName);
 if (mysqli_connect_error()) {
