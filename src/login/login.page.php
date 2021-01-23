@@ -36,7 +36,7 @@ session_start();
                             required
                             class="form-select pl-3"
                             aria-label="Default select example"
-                            style="width: 408px; height: 50px; border-radius: 10px; margin: 15px; transition: .3s"
+                            style="width: 408px; height: 50px; border-radius: 5px; margin: 15px; transition: .3s"
                             name="personType"
                     >
                         <option value="" selected>You are...</option>

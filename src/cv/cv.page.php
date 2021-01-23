@@ -43,7 +43,7 @@ include "../nav-bar/nav-bar.php";
                                 required
                                 class="form-select px-2"
                                 aria-label="Default select example"
-                                style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                                style="width: 408px; height: 50px; border-radius: 5px; margin: 10px; transition: .3s"
                                 id="select-box"
                                 disabled
                         >
@@ -89,7 +89,7 @@ include "../nav-bar/nav-bar.php";
                                 required
                                 class="form-select px-2"
                                 aria-label="Default select example"
-                                style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                                style="width: 408px; height: 50px; border-radius: 5px; margin: 10px; transition: .3s"
                                 id="countries"
                                 onchange="updateCitiesSelectBox()"
                                 name="countrySelected"
@@ -112,7 +112,7 @@ include "../nav-bar/nav-bar.php";
                                 required
                                 class="form-select px-2"
                                 aria-label="Default select example"
-                                style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                                style="width: 408px; height: 50px; border-radius: 5px; margin: 10px; transition: .3s"
                                 id="cities"
                                 name="citySelected"
                                 disabled

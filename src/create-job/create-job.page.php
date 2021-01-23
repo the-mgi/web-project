@@ -49,7 +49,7 @@ include "../nav-bar/nav-bar.php";
                                 required
                                 class="form-select pl-3"
                                 aria-label="Default select example"
-                                style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                                style="width: 408px; height: 50px; border-radius: 5px; margin: 10px; transition: .3s"
                                 name="jobType"
                         >
                             <option value="" selected>Job Type</option>

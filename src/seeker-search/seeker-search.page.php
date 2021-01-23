@@ -44,7 +44,7 @@ include "../nav-bar/nav-bar.php";
                         required
                         class="form-select pl-1"
                         aria-label="Default select example"
-                        style="height: 50px; border-radius: 10px; transition: .3s;"
+                        style="height: 50px; border-radius: 5px; transition: .3s;"
                         id="partFull"
                         name="partFull"
                         onchange="makeAjaxCall(this, 'searchSuggestionJobType')"
@@ -58,7 +58,7 @@ include "../nav-bar/nav-bar.php";
                         required
                         class="form-select pl-1"
                         aria-label="Default select example"
-                        style="height: 50px; border-radius: 10px; transition: .3s; overflow-y: scroll;"
+                        style="height: 50px; border-radius: 5px; transition: .3s; overflow-y: scroll;"
                         name="companies"
                         id="companies"
                         onchange="makeAjaxCall(this, 'searchSuggestionCompany')"
