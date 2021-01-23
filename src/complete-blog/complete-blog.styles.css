@@ -34,15 +34,25 @@
     align-items: center;
 }
 
+.popup-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
 .popup {
-    background-color: gray;
-    width: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000000;
+    width: fit-content;
     height: 25px;
-    padding: 5px;
+    padding: 10px;
     color: white;
     border-radius: 3px;
     text-align: center;
     margin-bottom: 10px;
+    opacity: 0.6;
     visibility: hidden;
 }
 
@@ -60,11 +70,6 @@
     font-size: 30px;
     color: white;
     margin: 0;
-}
-
-mark {
-    padding: 0.2em;
-    background-color: #fcf8e3
 }
 
 .navbar {

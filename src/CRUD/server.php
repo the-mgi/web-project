@@ -5,7 +5,8 @@ use JetBrains\PhpStorm\Pure;
 
 $hostName = "localhost";
 $username = "root";
-$password = "";
+$password = "ayanali78941";
+/// TODO right now don't know how to deal with password, will check for the environment variables option
 $dbName = "job_portal";
 $connection = mysqli_connect($hostName, $username, $password, $dbName);
 if (mysqli_connect_error()) {
@@ -160,7 +161,7 @@ function commonGetBlog($query): ?array {
         $finalArrayOfBlogs = array();
         if ($results->num_rows > 0) {
             while ($row = $results->fetch_assoc()) {
-                $finalArrayOfBlogs[$row['blogID']] =
+                array_push($finalArrayOfBlogs,
                     [
                         "writtenBy" => $row["writtenBy"],
                         "heading" => $row["heading"],
@@ -168,8 +169,11 @@ function commonGetBlog($query): ?array {
                         "content" => $row["content"],
                         "numberOfTimesRead" => $row["numberOfTimesRead"],
                         "minsRead" => $row["minsRead"],
-                        "writtenDate" => $row["writtenDate"]
-                    ];
+                        "writtenDate" => $row["writtenDate"],
+                        "isBookmarked" => $row["isBookmarked"],
+                        "blogID" => $row["blogID"]
+                    ]
+                );
             }
         }
         return $finalArrayOfBlogs;
@@ -177,13 +181,23 @@ function commonGetBlog($query): ?array {
     return null;
 }
 
-function getAllBlogsData($count = 20): ?array {
-    $query = "SELECT * FROM blogs LIMIT $count;";
+function getAllBlogsData(string $username = "", int $count = 20): ?array {
+    $query = "
+        SELECT blogs.*,
+               IF(blogs.blogID IN
+                  (SELECT bookmarked_blogs.blog_id from bookmarked_blogs WHERE bookmarked_blogs.user_id_fk = '$username'), 'TRUE', 'FALSE') AS isBookmarked
+        FROM blogs;";
     return commonGetBlog($query);
 }
 
-function searchForABlog(string $id): ?array {
-    $query = "SELECT * FROM blogs WHERE blogID = '$id';";
+function searchForABlog(string $blogID, string $username = ""): ?array {
+    $query = "
+        SELECT blogs.*,
+               IF(blogs.blogID IN
+                  (SELECT bookmarked_blogs.blog_id from bookmarked_blogs WHERE bookmarked_blogs.user_id_fk = '$username'), 'TRUE',
+                  'FALSE') AS isBookmarked
+        FROM blogs
+        WHERE blogID = '$blogID';";
     return commonGetBlog($query);
 }
 
@@ -209,6 +223,19 @@ function addBlog(
 function deleteBlog(string $id): bool {
     global $connection;
     $query = "DELETE FROM blogs WHERE blogID = '$id'";
+    return $connection->query($query);
+}
+
+function bookmarkBlog(string $username, string $blogId): mysqli_result|bool {
+    global $connection;
+    $query = "INSERT INTO bookmarked_blogs VALUES ('$blogId', '$username')";
+    echo $query. "<br>";
+    return $connection->query($query);
+}
+
+function removeBookmark(string $username, string $blogId): mysqli_result|bool {
+    global $connection;
+    $query = "DELETE FROM bookmarked_blogs WHERE blog_id='$blogId' AND user_id_fk='$username'";
     return $connection->query($query);
 }
 

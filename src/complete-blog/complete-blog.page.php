@@ -22,7 +22,7 @@ if (!isset($_REQUEST["id"])) {
     <link rel="icon" href="../assets/svgs/final.svg">
     <title>Read Blog</title>
 </head>
-<body onload="afterOnload();">
+<body onload="{afterOnload(); initializationsVars();}">
 <?php
 include "../nav-bar/nav-bar.php";
 ?>
@@ -33,8 +33,14 @@ include "../nav-bar/nav-bar.php";
         include "../CRUD/requiredFunctions.php";
 
         $id = $_REQUEST['id'];
-        $singleBlog = searchForABlog($id);
+        if (isset($_SESSION["username"])) {
+            $username = $_SESSION["username"];
+        } else {
+            $username = "";
+        }
+        $singleBlog = searchForABlog($id, $username);
         while ($row = current($singleBlog)) {
+            $imageSource = "";
             $writtenBy = $row["writtenBy"];
             $heading = $row["heading"];
             $description = $row["description"];
@@ -42,11 +48,15 @@ include "../nav-bar/nav-bar.php";
             $numberOfTimesRead = $row["numberOfTimesRead"];
             $minsRead = $row["minsRead"];
             $writtenDate = $row["writtenDate"];
+            $isBookmarked = $row["isBookmarked"];
+            $isBookmarked == 'TRUE' ?
+                $imageSource = "../assets/svgs/bookmarkFilled.svg" :
+                $imageSource = "../assets/svgs/bookmark.svg";
             echo "
                 <div class='main-seeker-container'>
                     <div class='main-container'>
-                        <div class='need'>
-                            <div class='popup' id='bookmarkStatus'></div>
+                        <div class='popup-container'>
+                            <div class='popup' id='popup'>Bookmark Removed</div>
                         </div>
                         <div class='date-data'>
                             <p class='add-margin'>
@@ -59,7 +69,13 @@ include "../nav-bar/nav-bar.php";
                                 <span id='minRead'>$minsRead</span>
                                 mins read
                             </p>
-                            <p class='add-margin' id='writtenDate'>$writtenDate</p>
+                            <p class='add-margin' id='writtenDate'>
+                                <span>&#128198;</span>
+                                <span>$writtenDate</span>
+                            </p>
+                            <p>
+                                <span role='button' onclick='bookmarkAddOrRemove(this)'><img src='$imageSource' alt='bookmark-icon' style='width: 18px;opacity: .6;'></span>
+                            </p>
                         </div>
                         <div class='heading-desc'>
                             <h1 id='heading'>$heading</h1>
@@ -74,7 +90,7 @@ include "../nav-bar/nav-bar.php";
                             </div>
                             <div class='content' style='margin-top: 20px;'>
                                 <h2 id='description' style='opacity: .7'></h2>
-                                <p id='content'>$content</p>
+                                <p id='contentBlog'>$content</p>
                             </div>
                         </div>
                     </div>
@@ -87,5 +103,6 @@ include "../nav-bar/nav-bar.php";
 </main>
 <script src="../common.script.js"></script>
 <script src="../add-footer.script.js"></script>
+<script src="./complete-blog.script.js"></script>
 </body>
 </html>

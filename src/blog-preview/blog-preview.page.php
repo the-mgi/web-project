@@ -20,60 +20,34 @@ session_start();
     <link rel="icon" href="../assets/svgs/final.svg">
     <title>Blogs</title>
 </head>
-<body onload="afterOnload();">
+<body onload="{afterOnload(); allInitializations();}">
 <?php
 include "../nav-bar/nav-bar.php";
 ?>
 <main>
-    <div class="sort-functionality" id="sortFunctionality">
-    </div>
     <div class="m" id="main-container">
-        <?php
-        include "../CRUD/server.php";
-        $allBlogs = getAllBlogsData();
-        while ($row = current($allBlogs)) {
-            $idBlog = key($allBlogs);
-            $writtenBy = $row["writtenBy"];
-            $heading = $row["heading"];
-            $description = $row["description"];
-            $numberOfTimesRead = $row["numberOfTimesRead"];
-            $minsRead = $row["minsRead"];
-            $writtenDate = $row["writtenDate"];
-            echo "
-            <div class='container-o'>
-                <a href='../complete-blog/complete-blog.page.php?id=$idBlog' style='text-decoration: none; color: inherit;'>
-                    <div class='blog-preview' id=$idBlog>
-                    <div class='hover-written-by'>$writtenBy</div>
-                    <div class='con'>
-                        <div class='col'>
-                            <h2>$heading</h2>
-                            <h3>$description</h3>
-                        </div>
-                        <div class='row'>
-                            <div class='right row'>
-                                <p class='for-margin' style='margin-right: 30px'>
-                                    <span>&#128339;</span>
-                                    Reads:
-                                    <span>$numberOfTimesRead</span>
-                                </p>
-                                <p class='for-margin'>
-                                    <span>&#128214;</span>
-                                    <span>$minsRead</span>
-                                    mins read
-                                </p>
-                                <p class='for-margin'>$writtenDate</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </a>
+        <div class="sort-functionality" id="sortFunctionality">
+            <label for="selectBox" style="width: 0; height: 0"></label>
+            <select
+                    required
+                    class="form-select pl-3"
+                    aria-label="Default select example"
+                    style="width: 200px; height: 50px; border-radius: 5px; margin-bottom: 15px; transition: .3s"
+                    name="personType"
+                    onchange="sortBlogs(this)"
+            >
+                <option value="" selected>Sort by</option>
+                <option value="date">Date</option>
+                <option value="numberOfReads">Popularity</option>
+                <option value="readingTime">Reading Time</option>
+                <option value="showBookmarked">Bookmarked</option>
+            </select>
         </div>
-            ";
-            next($allBlogs);
-        }
-        ?>
+        <div class="h" id="allPreviews"></div>
     </div>
 </main>
 <script src="../common.script.js"></script>
 <script src="../add-footer.script.js"></script>
+<script src="./blog-preview.script.js" type="text/javascript"></script>
+</body>
 </html>

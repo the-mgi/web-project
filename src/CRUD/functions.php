@@ -619,6 +619,32 @@ if (isset($_REQUEST['function'])) {
         case 'experience':
             echo educationExperience("experience");
             break;
+        case 'addBlogPreview':
+            if (!isset($_SESSION["username"])) {
+                $username = "";
+            } else {
+                $username = $_SESSION["username"];
+            }
+            $allBlogs = getAllBlogsData($username);
+            print_r(json_encode($allBlogs));
+            break;
+        case 'addOrRemoveBookmark':
+            function func() {
+                if (!isset($_SESSION["username"])) {
+                    echo "FALSE";
+                    return;
+                }
+                $username = $_SESSION["username"];
+                $choice = $_REQUEST["choice"];
+                $blogID = $_REQUEST["blogID"];
+                $choice == 'remove' ?
+                    $r = (removeBookmark($username, $blogID) == '1' ? 'TRUE' : 'FALSE') :
+                    $r = (bookmarkBlog($username, $blogID) == '1' ? 'TRUE' : 'FALSE');
+                echo $r;
+            }
+
+            func();
+            break;
         default:
             print_r("I got nothing to do for you!!");
     }

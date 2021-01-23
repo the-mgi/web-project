@@ -7,7 +7,6 @@
     flex-direction: row-reverse;
     margin: auto;
     width: 70%;
-    padding-right: 15px;
 }
 
 .container-o {
@@ -77,6 +76,14 @@ h3 {
 
 a {
     text-decoration: none;
+}
+
+.empty-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    width: 100%;
 }
 
 @media screen and (min-width: 0) and (max-width: 1000px) {
