@@ -365,7 +365,7 @@ const addEducationExperienceContainer = (
                     required
                     class="form-select px-2"
                     aria-label="Default select example"
-                    style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                    style="width: 408px; height: 50px; border-radius: 5px; margin: 10px; transition: .3s"
                     id="fromYear${type}"
                     name="citySelected"
             >
@@ -375,7 +375,7 @@ const addEducationExperienceContainer = (
                     required
                     class="form-select px-2"
                     aria-label="Default select example"
-                    style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                    style="width: 408px; height: 50px; border-radius: 5px; margin: 10px; transition: .3s"
                     id="fromMonth${type}"
                     name="citySelected"
             >
@@ -387,7 +387,7 @@ const addEducationExperienceContainer = (
                     required
                     class="form-select px-2"
                     aria-label="Default select example"
-                    style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                    style="width: 408px; height: 50px; border-radius: 5px; margin: 10px; transition: .3s"
                     id="toYear${type}"
                     name="citySelected"
             >
@@ -397,7 +397,7 @@ const addEducationExperienceContainer = (
                     required
                     class="form-select px-2"
                     aria-label="Default select example"
-                    style="width: 408px; height: 50px; border-radius: 10px; margin: 10px; transition: .3s"
+                    style="width: 408px; height: 50px; border-radius: 5px; margin: 10px; transition: .3s"
                     id="toMonth${type}"
                     name="citySelected"
             >
