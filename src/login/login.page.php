@@ -1,5 +1,14 @@
 <?php
 session_start();
+if (isset($_SESSION["username"])) {
+    print_r($_SESSION);
+    $personType = $_SESSION["personType"];
+    if ($personType == 'job_seeker') {
+        header("location: ../seeker-search/seeker-search.page.php");
+    } else {
+        header("location: ../employer-jobs-status/employer-jobs-status.page.php");
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +61,7 @@ session_start();
                 <input type="password" class="password" name="password" id="password" placeholder="Password" required onkeyup="validateForm(this)">
                 <div class="is-invalid">Must be alphanumeric (@, _ and - are also allowed) of 8-20 characters</div>
 
-                <p class="txt"><a href="../forgot-pass/forgot-pass.page.html">Forgot Password?</a></p>
+                <p class="txt"><a href="../forgot-pass/forgot-pass.page.php">Forgot Password?</a></p>
                 <button class="login-btn btn-" id="loginButton" type="submit" value="submit" onclick="forLogin();">Login</button>
                 <p class="txt-t"><a href="../sign-up/sign-up.page.php">Don't have an account? Create a New One!</a></p>
                 <p class="txt-t sign-up-with">Or Sign Up With</p>

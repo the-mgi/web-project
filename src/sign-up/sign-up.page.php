@@ -1,3 +1,15 @@
+<?php
+session_start();
+if (isset($_SESSION["username"])) {
+    print_r($_SESSION);
+    $personType = $_SESSION["personType"];
+    if ($personType == 'job_seeker') {
+        header("location: ../seeker-search/seeker-search.page.php");
+    } else {
+        header("location: ../employer-jobs-status/employer-jobs-status.page.php");
+    }
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>

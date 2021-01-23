@@ -1,3 +1,15 @@
+<?php
+session_start();
+if (isset($_SESSION["username"])) {
+    print_r($_SESSION);
+    $personType = $_SESSION["personType"];
+    if ($personType == 'job_seeker') {
+        header("location: ../seeker-search/seeker-search.page.php");
+    } else {
+        header("location: ../employer-jobs-status/employer-jobs-status.page.php");
+    }
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -38,10 +50,13 @@
                     </select>
                 </div>
                 <label for="email"></label>
-                <input type="email" class="email" id="email" name="email" placeholder="Email Address" required onkeyup="validateForm(this)">
+                <input type="email" class="email" id="email" name="email" placeholder="Email Address" required
+                       onkeyup="validateForm(this)">
                 <div class="is-invalid">Please provide a valid email address</div>
 
-                <button class="login-btn btn-" id="loginButton" type="submit" value="submit" onclick="forForgotPassword();">Send Verification Email</button>
+                <button class="login-btn btn-" id="loginButton" type="submit" value="submit"
+                        onclick="forForgotPassword();">Send Verification Email
+                </button>
             </form>
         </div>
     </div>
