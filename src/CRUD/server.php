@@ -229,7 +229,7 @@ function deleteBlog(string $id): bool {
 function bookmarkBlog(string $username, string $blogId): mysqli_result|bool {
     global $connection;
     $query = "INSERT INTO bookmarked_blogs VALUES ('$blogId', '$username')";
-    echo $query. "<br>";
+    echo $query . "<br>";
     return $connection->query($query);
 }
 
@@ -391,13 +391,13 @@ function getAllDeveloperDetails(): ?array {
 // =======================Countries Cities========================
 function getAllCountries(): mysqli_result|bool {
     global $connection;
-    $query = "SELECT * FROM countries";
+    $query = "SELECT * FROM countries ORDER BY country_name";
     return $connection->query($query);
 }
 
 function getCitiesOfSelectedCountry(string $countryCode): mysqli_result|bool {
     global $connection;
-    $query = "SELECT city_name, city_id FROM cities WHERE country_code='$countryCode'";
+    $query = "SELECT city_name, city_id FROM cities WHERE country_code='$countryCode' ORDER BY city_name";
     echo $query;
     return $connection->query($query);
 
@@ -450,4 +450,57 @@ function addEmailInNewsletter(string $emailAddress): mysqli_result|bool {
     global $connection;
     $query = "INSERT INTO newsletter VALUES ('$emailAddress')";
     return $connection->query($query);
+}
+
+// =======================messages========================
+/**
+ * @param string $conversationIdEmployerSide
+ * @return mysqli_result|bool
+ * @meta  the query used here, will give all the specific conversations between the employer and the job_seekers;
+ *        also will include the last message sent or received by the signed in user, {MOST RECENT ONE}, and its metadata
+ */
+function loadAllConversations(string $conversationIdEmployerSide): mysqli_result|bool {
+    global $connection;
+    $query = "
+        SELECT *
+        FROM (SELECT person.username                                AS USERNAME,
+                     person.image_src                               AS IMAGE_BLOB,
+                     person.image_name                              AS IMAGE_NAME, 
+                     CONCAT(person.firstName, ' ', person.lastName) AS FULL_NAME,
+                     messages.MESSAGE_FLOW                          AS FLOW,
+                     messages.conversation_id_fk                    AS CONVERSATION_ID_FK,
+                    CONCAT(EXTRACT(MONTH FROM messages.sending_time), '-', EXTRACT(DAY FROM messages.sending_time), '-',
+                        EXTRACT(YEAR FROM messages.sending_time))   AS SENDING_DATE_MMDDYYYY,
+                    CONCAT(EXTRACT(MONTH FROM messages.receiving_time), '-', EXTRACT(DAY FROM messages.receiving_time), '-',
+                        EXTRACT(YEAR FROM messages.receiving_time)) AS RECEIVING_DATE_MMDDYYYY,
+                    CONCAT(EXTRACT(MONTH FROM messages.read_time), '-', EXTRACT(DAY FROM messages.read_time), '-',
+                        EXTRACT(YEAR FROM messages.read_time))      AS READ_DATE_MMDDYYYY,
+                     messages.message_body                          AS MESSAGE_BODY
+              FROM person,
+                   conversation,
+                   messages
+              WHERE conversation.conversation_id LIKE '$conversationIdEmployerSide-to-%'
+                AND person.username = SUBSTRING_INDEX(conversation.conversation_id, '-', '-1')
+                AND messages.conversation_id_fk = conversation.conversation_id
+              ORDER BY messages.sending_time DESC
+              LIMIT 100) AS FINAL_TABLE
+        GROUP BY FINAL_TABLE.CONVERSATION_ID_FK;";
+    return $connection->query($query);
+}
+
+function loadConversationDetails(string $conversationId): mysqli_result|bool {
+    global $connection;
+    return false;
+}
+
+function uploadImage(string $name, string $image): mysqli_result|bool {
+    global $connection;
+    $query = "UPDATE person SET image_src = '$image', image_name = '$name' WHERE username = 'themgi'";
+    return $connection->query($query);
+}
+
+function getImage(): array {
+    global $connection;
+    $query = "SELECT image_src, image_name from person where username='themgi'";
+    return $connection->query($query)->fetch_assoc();
 }

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "./server.php";
+include "./requiredFunctions.php";
 $columnName = "";
 function displayAllJobs(?array $result, string $string = 'No Job Found'): void {
     if ($result != null) {
@@ -645,6 +646,57 @@ if (isset($_REQUEST['function'])) {
 
             func();
             break;
+        case 'searchSuggestionMessages':
+            $value = $_REQUEST["searchQuery"];
+            $conversationIdEmployerSide = $_SESSION["username"];
+            break; // un-complete
+        case 'loadAllConversations':
+            $conversationIdEmployerSide = $_SESSION["username"];
+            $result = loadAllConversations($conversationIdEmployerSide);
+            if (!is_bool($result)) {
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $username = $row["USERNAME"];
+                        $fullName = $row["FULL_NAME"];
+                        $id = $row["CONVERSATION_ID_FK"];
+                        $messageBody = $row["MESSAGE_BODY"];
+
+                        $sendingTime = $row["SENDING_DATE_MMDDYYYY"];
+                        $sendingTime = mb_split("-", $sendingTime);
+
+
+                        $receivingTime = $row["RECEIVING_DATE_MMDDYYYY"];
+                        $readTime = $row["READ_DATE_MMDDYYYY"];
+
+                        $imageBlob = $row["IMAGE_BLOB"];
+                        $flow = $row["FLOW"];
+                        echo "
+                <div class='single-conversation flex-row' role='button' id='$id'>
+                    <div class='image-container'>
+                        <img src='../assets/images/image0.jpg' alt='my_shakal'>
+                    </div>
+                    <div class='conversation-highlights-container w-100'>
+                        <div class='name-and-date flex-row justify-content-between w-100'>
+                            <h6 class='w-auto h-auto m-0 p-0'><strong>$fullName</strong></h6>
+                            <h6 class='w-auto h-auto m-0 p-0 opacity-low'>".getMonthString($sendingTime[0])." ".$sendingTime[1].", ".$sendingTime[2]."</h6>
+                        </div>
+                        <div class='message-content-and-receipt flex-row justify-content-between'>
+                            <div class='actual-message opacity-low'>".substr($messageBody, 0, 20)."...</div>
+                            <div class='receipt opacity-low'>T</div>
+                        </div>
+                    </div>
+                </div>";
+                    }
+                } else {
+                    echo "number of rows is 0";
+                }
+            } else {
+                echo "boolean";
+            }
+            break; // un-complete
+        case 'loadConversationDetails':
+            $conversationId = $_REQUEST["conversationId"];
+            break; // un-complete
         default:
             print_r("I got nothing to do for you!!");
     }
